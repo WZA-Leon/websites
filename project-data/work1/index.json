@@ -1,0 +1,6 @@
+{
+  "title": "智能笔记助手",
+  "description": "基于 Markdown 文档和 JSON 配置自动展示项目简介，适合快速整理学习笔记与项目链接。",
+  "url": "https://example.com",
+  "markdown": "README.md"
+}

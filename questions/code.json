@@ -1,0 +1,18 @@
+{
+  "id": "code",
+  "title": "编程题库",
+  "description": "测试你的编程基础知识与常见概念。",
+  "type": "quiz",
+  "questions": [
+    {"question": "HTML的主要用途是？", "options": ["编写程序逻辑", "定义网页结构", "设置网页样式", "存储数据库"], "answer": 1},
+    {"question": "JavaScript通常在哪个环境中运行？", "options": ["浏览器", "打印机", "移动电源", "电视机"], "answer": 0},
+    {"question": "CSS的作用是？", "options": ["网页结构", "网页样式", "网页数据库", "网页算法"], "answer": 1},
+    {"question": "以下哪个关键字用于声明不会被重新赋值的变量？", "options": ["var", "let", "const", "function"], "answer": 2},
+    {"question": "Git中提交代码的命令是？", "options": ["git change", "git commit -m", "git save", "git upload"], "answer": 1},
+    {"question": "Python中语法块的边界通常由什么表示？", "options": ["大括号", "缩进", "分号", "括号"], "answer": 1},
+    {"question": "要在网页中获取第一个匹配的元素，可以使用哪个方法？", "options": ["querySelector", "getItem", "findElement", "selectOne"], "answer": 0},
+    {"question": "在JavaScript中，=== 与 == 的区别是？", "options": ["没有区别", "===比较值和类型，==只比较值", "===只比较值，==比较类型", "===用于函数"], "answer": 1},
+    {"question": "哪种语言不是前端开发的核心语言？", "options": ["HTML", "CSS", "JavaScript", "Python"], "answer": 3},
+    {"question": "浏览器页面刷新后，以下哪个不会自动保留数据？", "options": ["localStorage", "sessionStorage", "cookie", "普通变量"], "answer": 3}
+  ]
+}

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人介绍</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-user-circle"></i>
+                    <span data-key="siteTitle">个人介绍</span>
+                </a>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html"><i class="fas fa-home"></i> 返回首页</a></li>
+                    <li><a href="#home" data-key="navHome">首页</a></li>
+                    <li><a href="#about" data-key="navAbout">关于WZA</a></li>
+                    <li><a href="#skills" data-key="navSkills">技能</a></li>
+                    <li><a href="#education" data-key="navEducation">教育</a></li>
+                    <li><a href="#experience" data-key="navExperience">经历</a></li>
+                    <li><a href="#contact" class="btn">联系我</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="profile-img-container">
+                        <img src="images/photo.png" alt="个人照片" class="profile-img" id="profileImage" 
+                             data-welcome-zh="欢迎访问我的个人主页！" data-welcome-en="Welcome to my personal homepage!">
+                    </div>
+                    
+                    <h1 data-key="name">个人信息</h1>
+                    <p class="tagline" data-key="motto">不畏将来，不念过往</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 基本信息区域 -->
+    <section class="section" id="basic">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="basicInfo">基本信息</h2>
+            </div>
+            
+            <div class="card">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3 data-key="nameTitle">姓名</h3>
+                            <div class="name-protection" data-hover-text="你知道的太多了">
+                                <span class="censored-text">魏子昂</span>
+                                <span class="real-name" data-key="realName">魏子昂</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3 data-key="location">所在地</h3>
+                            <p data-key="city">大连</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <div>
+                            <h3 data-key="birthdate">出生日期</h3>
+                            <p data-key="birthday">2009年9月23日</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <h3 data-key="education">学历</h3>
+                            <p data-key="educationLevel">高中在读</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div>
+                            <h3 data-key="occupation">职业</h3>
+                            <p data-key="student">学生</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我区域 -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="about">关于我</h2>
+            </div>
+            
+            <div class="card">
+                <p data-key="aboutText">我出生于2009年，现在就读于大连市第五中学。我希望以后我能成为一名科研人员。笔名奇点、琼玉。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能区域 -->
+    <section class="section" id="skills">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="skills">技能</h2>
+            </div>
+            
+            <div class="card">
+                <div class="skills-container">
+                    <span class="skill" data-key="skill1">唱跳</span>
+                    <span class="skill" data-key="skill2">器乐</span>
+                    <span class="skill" data-key="skill3">棋类</span>
+                    <span class="skill" data-key="skill4">编程</span>
+                    <span class="skill" data-key="skill5">绘画</span>
+                    <span class="skill" data-key="skill6">游泳</span>
+                    <span class="skill" data-key="skill7">滑冰</span>
+                    <span class="skill" data-key="skill8">写作</span>
+                    <span class="skill" data-key="skill9">更多潜能开发中</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 教育背景区域 -->
+    <section class="section" id="education">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="educationBg">教育背景</h2>
+            </div>
+            
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025 - <span data-key="present">今</span></div>
+                        <h3 data-key="school1">大连市第五中学</h3>
+                        <p data-key="highSchool">高中</p>
+                        <p data-key="studying">在读。</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2016 - 2025</div>
+                        <h3 data-key="school2">大连市第八十中学</h3>
+                        <p data-key="middleSchool">小学和初中</p>
+                        <p data-key="compulsory">完成了九年义务教育。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工作经历区域 -->
+    <section class="section" id="experience">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="workExp">工作经历</h2>
+            </div>
+            
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2019 - <span data-key="present2">今</span></div>
+                        <h3 data-key="studio">SiveNioo Studios</h3>
+                        <p data-key="founder">总策划</p>
+                        <p data-key="workDesc">创建了该工作室，并制作了大量艺术作品、文学作品、软件。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 网站链接区域 -->
+    <section class="section" id="websites">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="websites">网站链接</h2>
+            </div>
+            
+            <div class="websites-grid">
+                <div class="website-card">
+                    <div class="website-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 data-key="qiongyu">琼玉堂-密码090923</h3>
+                    <p class="card-text">个人作品展示平台</p>
+                    <a href="http://sivenioo-stu.ysepan.com" class="btn" data-key="visit">访问</a>
+                </div>
+                
+                <div class="website-card">
+                    <div class="website-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h3 data-key="github">GitHub</h3>
+                    <p class="card-text">代码仓库与开源项目</p>
+                    <a href="https://github.com" class="btn btn-accent" data-key="visit3">访问</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我区域 -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-key="contact">联系我</h2>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 data-key="email">邮箱</h3>
+                    <p>erjiuwuqi@outlook.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 data-key="phone">电话</h3>
+                    <p>+86 130 1942 8653</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 data-key="address">地址</h3>
+                    <p data-key="china">中华人民共和国，辽宁省，大连市</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <div id="footer-placeholder"></div>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // 点击导航链接后关闭移动菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // 滚动时改变导航栏样式
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.padding = '10px 0';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.padding = '15px 0';
+                header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.05)';
+            }
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // 回到顶部功能
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 图片点击欢迎信息
+        const profileImage = document.getElementById('profileImage');
+        
+        profileImage.addEventListener('click', function() {
+            const currentLang = document.documentElement.lang;
+            let welcomeMessage;
+            
+            if (currentLang === 'zh' || currentLang === 'zh-CN') {
+                welcomeMessage = this.getAttribute('data-welcome-zh');
+            } else {
+                welcomeMessage = this.getAttribute('data-welcome-en');
+            }
+            
+            alert(welcomeMessage);
+        });
+
+        function switchLanguage(lang) {
+            // 更新所有带data-key的元素
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.dataset.key;
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // 更新图片的alt属性
+            const profileImage = document.getElementById('profileImage');
+            profileImage.alt = lang === 'zh' ? '个人照片' : 'Personal Photo';
+            
+            // 更新姓名悬停提示文字
+            document.querySelectorAll('.name-protection').forEach(container => {
+                if (lang === 'zh') {
+                    container.setAttribute('data-hover-text', '你知道得太多了');
+                } else {
+                    container.setAttribute('data-hover-text', 'You have known too much');
+                }
+            });
+            
+            // 更新HTML lang属性
+            document.documentElement.lang = lang;
+            
+            // 更新页面标题
+            document.title = lang === 'zh' ? '个人介绍' : 'Personal Introduction';
+        }
+    </script>
+</body>
+</html>

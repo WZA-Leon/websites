@@ -1,0 +1,8 @@
+[
+  {"id": "life", "title": "生活常识题库", "filename": "life.json", "description": "检测你在日常生活中的常识掌握情况。", "type": "quiz"},
+  {"id": "code", "title": "编程题库", "filename": "code.json", "description": "测试你的编程基础知识与常见概念。", "type": "quiz"},
+  {"id": "science", "title": "科学知识题库", "filename": "science.json", "description": "检验你对基础科学知识的理解。", "type": "quiz"},
+  {"id": "geography", "title": "地理题库", "filename": "geography.json", "description": "挑战你的地理常识和世界认知。", "type": "quiz"},
+  {"id": "culture", "title": "文化历史题库", "filename": "culture.json", "description": "了解历史文化和日常知识。", "type": "quiz"},
+  {"id": "personality", "title": "人格心理测试", "filename": "personality.json", "description": "通过选择题了解你的性格倾向。", "type": "personality"}
+]

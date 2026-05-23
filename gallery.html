@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摄影作品 - WZA Leon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <!-- 摄影作品页面内容 -->
+    <section class="hero gallery-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>摄影作品</h1>
+                    <p>记录生活中的美好瞬间，用镜头讲述故事</p>
+                    <div class="hero-buttons">
+                        <a href="contact.html" class="btn">联系我</a>
+                        <a href="about.html" class="btn btn-accent">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分类选择 -->
+    <section class="gallery-category-section">
+        <div class="container">
+            <h2>选择分类</h2>
+            <div class="category-filter" id="galleryCategories"></div>
+        </div>
+    </section>
+
+    <!-- 作品展示 -->
+    <section class="section gallery">
+        <div class="container">
+            <div id="photograph-root" class="gallery-grid"></div>
+        </div>
+    </section>
+
+    <!-- 图片预览模态框 -->
+    <div id="photoModal" class="photo-modal">
+        <span class="photo-close">&times;</span>
+        <img class="photo-modal-content" id="photoModalImg" src="" alt="">
+        <div class="photo-caption" id="photoCaption"></div>
+    </div>
+
+    <!-- 页脚 -->
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+    <script src="js/gallery.js"></script>
+</body>
+</html>

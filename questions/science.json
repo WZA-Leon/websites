@@ -1,0 +1,18 @@
+{
+  "id": "science",
+  "title": "科学知识题库",
+  "description": "检验你对基础科学知识的理解。",
+  "type": "quiz",
+  "questions": [
+    {"question": "地球绕太阳公转一周约需要多少天？", "options": ["365天", "30天", "7天", "100天"], "answer": 0},
+    {"question": "水的化学式是？", "options": ["H2O", "CO2", "O2", "NaCl"], "answer": 0},
+    {"question": "太阳是由什么主要组成？", "options": ["岩石", "氢气和氦气", "水", "铁"], "answer": 1},
+    {"question": "植物光合作用产生哪种气体？", "options": ["二氧化碳", "氧气", "氮气", "氢气"], "answer": 1},
+    {"question": "人体缺乏维生素D会影响哪项？", "options": ["视力", "骨骼健康", "听力", "嗅觉"], "answer": 1},
+    {"question": "声音在空气中的传播速度大约是？", "options": ["340米/秒", "30米/秒", "3米/秒", "3400米/秒"], "answer": 0},
+    {"question": "地球内部最深的层是？", "options": ["地壳", "地幔", "地核", "地表"], "answer": 2},
+    {"question": "人的血液主要成分之一是？", "options": ["糖", "血浆", "盐", "蛋白质"], "answer": 1},
+    {"question": "哪种能源属于可再生能源？", "options": ["煤炭", "石油", "太阳能", "天然气"], "answer": 2},
+    {"question": "人体最长的骨头是？", "options": ["肱骨", "股骨", "颅骨", "尺骨"], "answer": 1}
+  ]
+}

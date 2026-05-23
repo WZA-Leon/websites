@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客 - WZA-Leon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <!-- 博客英雄区 -->
+    <section class="hero blog-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>创想日志</h1>
+                    <p>分享思考 · 记录成长 · 灵感碰撞</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分类标签 -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="category-tabs">
+                <button class="category-btn active" data-category="all">
+                    <i class="fas fa-list"></i> 全部
+                </button>
+                <button class="category-btn" data-category="编程">
+                    <i class="fas fa-code"></i> 编程
+                </button>
+                <button class="category-btn" data-category="摄影">
+                    <i class="fas fa-camera"></i> 摄影
+                </button>
+                <button class="category-btn" data-category="文学">
+                    <i class="fas fa-pen-fancy"></i> 文学
+                </button>
+                <button class="category-btn" data-category="游戏">
+                    <i class="fas fa-gamepad"></i> 游戏
+                </button>
+            </div>
+
+            <!-- 博客列表 -->
+            <div class="blog-grid" id="blogGrid">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 博客详情模态框 -->
+    <div class="blog-modal" id="blogModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <div class="modal-meta">
+                    <span id="modalDate"></span>
+                    <span id="modalCategory" class="category-tag"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent" class="markdown-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+    <script src="js/blog.js"></script>
+</body>
+</html>

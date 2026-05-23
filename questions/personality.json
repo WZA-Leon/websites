@@ -1,0 +1,68 @@
+{
+  "id": "personality",
+  "title": "人格心理测试",
+  "description": "通过选择题了解你的性格倾向。",
+  "type": "personality",
+  "questions": [
+    {"question": "空闲时你更愿意做什么？", "options": [
+      {"label": "独自思考、读书", "category": "分析型"},
+      {"label": "和朋友一起聊天", "category": "社交型"},
+      {"label": "尝试新奇创意", "category": "创意型"},
+      {"label": "按计划完成任务", "category": "稳定型"}
+    ]},
+    {"question": "遇到问题时你的第一反应是？", "options": [
+      {"label": "分析原因并制定方案", "category": "分析型"},
+      {"label": "寻找他人帮助", "category": "社交型"},
+      {"label": "尝试不同的方法", "category": "创意型"},
+      {"label": "先按照习惯处理", "category": "稳定型"}
+    ]},
+    {"question": "你做决定时更在意？", "options": [
+      {"label": "逻辑与合理性", "category": "分析型"},
+      {"label": "是否让大家开心", "category": "社交型"},
+      {"label": "是否富有变化", "category": "创意型"},
+      {"label": "是否稳妥可靠", "category": "稳定型"}
+    ]},
+    {"question": "你觉得最舒服的学习方式是？", "options": [
+      {"label": "系统归纳总结", "category": "分析型"},
+      {"label": "讨论互动交流", "category": "社交型"},
+      {"label": "动手实践创新", "category": "创意型"},
+      {"label": "循序渐进、重复练习", "category": "稳定型"}
+    ]},
+    {"question": "你更希望别人称赞你哪一点？", "options": [
+      {"label": "聪明、判断力强", "category": "分析型"},
+      {"label": "开朗、善于沟通", "category": "社交型"},
+      {"label": "有想法、与众不同", "category": "创意型"},
+      {"label": "可靠、踏实稳重", "category": "稳定型"}
+    ]},
+    {"question": "团队协作中你最喜欢扮演的角色？", "options": [
+      {"label": "策略制定者", "category": "分析型"},
+      {"label": "气氛推动者", "category": "社交型"},
+      {"label": "创意发想者", "category": "创意型"},
+      {"label": "执行落实者", "category": "稳定型"}
+    ]},
+    {"question": "你认为成功更依赖于？", "options": [
+      {"label": "思考与判断", "category": "分析型"},
+      {"label": "人际关系", "category": "社交型"},
+      {"label": "创新与灵感", "category": "创意型"},
+      {"label": "坚持与纪律", "category": "稳定型"}
+    ]},
+    {"question": "你玩游戏时更在意？", "options": [
+      {"label": "策略与计算", "category": "分析型"},
+      {"label": "和朋友一起玩", "category": "社交型"},
+      {"label": "玩法新颖", "category": "创意型"},
+      {"label": "规则明确、体验平稳", "category": "稳定型"}
+    ]},
+    {"question": "你比较认可哪种风格？", "options": [
+      {"label": "逻辑清晰", "category": "分析型"},
+      {"label": "热闹友好", "category": "社交型"},
+      {"label": "独特创新", "category": "创意型"},
+      {"label": "平稳踏实", "category": "稳定型"}
+    ]},
+    {"question": "你最讨厌哪种工作方式？", "options": [
+      {"label": "毫无思考", "category": "分析型"},
+      {"label": "孤立无援", "category": "社交型"},
+      {"label": "千篇一律的重复", "category": "创意型"},
+      {"label": "太过混乱", "category": "稳定型"}
+    ]}
+  ]
+}

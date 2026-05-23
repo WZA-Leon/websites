@@ -1,0 +1,392 @@
+/* =======================================
+   测验页面特定样式
+   ======================================= */
+
+.quiz-hero {
+    background: linear-gradient(135deg, #3a86ff, #8338ec);
+    padding: 120px 0 80px;
+}
+
+.quiz-hero h1 {
+    font-size: 3.5rem;
+    color: white;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.quiz-hero p {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 分类选择区 */
+.quiz-category-section {
+    padding: 60px 0;
+    background: var(--bg-primary);
+}
+
+.quiz-category-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: var(--text-primary);
+}
+
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-light);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 40px rgba(0,212,255,0.15);
+    background: rgba(0,212,255,0.05);
+}
+
+.category-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.category-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.category-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+body.theme-light .category-card {
+    background: white;
+}
+
+body.theme-light .category-card:hover {
+    background: #f0f0f0;
+    border-color: #333;
+}
+
+body.theme-light .category-card i {
+    color: #333;
+}
+
+body.theme-colorful .category-card:hover {
+    border-color: #ff6b6b;
+    box-shadow: 0 15px 40px rgba(255, 107, 107, 0.15);
+    background: rgba(255, 107, 107, 0.05);
+}
+
+body.theme-colorful .category-card i {
+    background: linear-gradient(90deg, #ff6b6b, #ffd166);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 测验容器 */
+.quiz-container {
+    padding: 60px 0;
+    background: var(--bg-primary);
+}
+
+.quiz-container.hidden {
+    display: none;
+}
+
+/* 进度条 */
+.quiz-progress {
+    height: 4px;
+    background: var(--card-bg);
+    border-radius: 2px;
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    width: 0;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+/* 题目样式 */
+#quiz {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.question {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: var(--transition);
+}
+
+.question:hover {
+    border-color: var(--primary-color);
+}
+
+.question h3 {
+    color: var(--text-primary);
+    margin: 0 0 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.option {
+    background: rgba(0,212,255,0.05);
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option:hover {
+    background: rgba(0,212,255,0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.option.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--glow);
+}
+
+.option::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.option.selected::before {
+    background: white;
+    border-color: white;
+    box-shadow: inset 0 0 0 4px var(--primary-color);
+}
+
+body.theme-light .option {
+    background: #f5f5f5;
+}
+
+body.theme-light .option:hover {
+    background: #e0e0e0;
+    border-color: #333;
+    color: #333;
+}
+
+body.theme-light .option.selected {
+    background: #333;
+    border-color: #333;
+    color: white;
+    box-shadow: none;
+}
+
+body.theme-colorful .option {
+    background: rgba(255, 107, 107, 0.05);
+    border-color: rgba(255, 107, 107, 0.2);
+    color: var(--text-secondary);
+}
+
+body.theme-colorful .option:hover {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+body.theme-colorful .option.selected {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+    color: white;
+}
+
+/* 提交按钮 */
+.submit-btn {
+    display: block;
+    margin: 40px auto;
+    padding: 15px 50px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--glow);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px var(--primary-color);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+body.theme-light .submit-btn {
+    background: #333;
+    color: white;
+    box-shadow: none;
+}
+
+body.theme-light .submit-btn:hover {
+    background: #1a1a1a;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* 结果显示 */
+.result {
+    max-width: 600px;
+    margin: 40px auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 15px;
+    padding: 50px 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.result.hidden {
+    display: none;
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--primary-color) 0deg,
+        var(--primary-color) var(--score-angle, 0deg),
+        rgba(0,212,255,0.1) var(--score-angle, 0deg),
+        rgba(0,212,255,0.1) 360deg
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0,212,255,0.2);
+}
+
+.score-circle::before {
+    content: '';
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+}
+
+.score-text {
+    position: relative;
+    z-index: 1;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+.result h2 {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin: 25px 0 15px;
+}
+
+.result p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin: 15px 0 30px;
+}
+
+.result .btn {
+    margin-top: 20px;
+}
+
+body.theme-light .score-circle {
+    background: conic-gradient(
+        #333 0deg,
+        #333 var(--score-angle, 0deg),
+        #e0e0e0 var(--score-angle, 0deg),
+        #e0e0e0 360deg
+    );
+}
+
+body.theme-light .score-text {
+    color: #333;
+}
+
+body.theme-colorful .score-circle {
+    background: conic-gradient(
+        #ff6b6b 0deg,
+        #ff6b6b var(--score-angle, 0deg),
+        rgba(255, 107, 107, 0.1) var(--score-angle, 0deg),
+        rgba(255, 107, 107, 0.1) 360deg
+    );
+}
+
+body.theme-colorful .score-text {
+    color: #ff6b6b;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .quiz-hero h1 { font-size: 2.2rem; }
+    .quiz-container { padding: 40px 0; }
+    .question { padding: 20px; margin-bottom: 20px; }
+    .options { gap: 10px; }
+    .score-circle { width: 150px; height: 150px; }
+    .score-circle::before { width: 120px; height: 120px; }
+    .score-text { font-size: 2rem; }
+    .category-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .category-cards { grid-template-columns: 1fr; }
+    .option { padding: 12px 15px; font-size: 0.95rem; }
+}

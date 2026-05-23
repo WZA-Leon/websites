@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WZA 测验 - SiveNioo Studios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <!-- 测验内容 -->
+    <section class="hero quiz-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>知识测验</h1>
+                    <p>选择你感兴趣的分类，开始挑战自己吧！</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分类选择 -->
+    <section class="quiz-category-section">
+        <div class="container">
+            <h2>选择测验分类</h2>
+            <div class="category-cards">
+                <button class="category-card" data-category="life">
+                    <i class="fas fa-book"></i>
+                    <h3>生活常识</h3>
+                    <p>10道题</p>
+                </button>
+                <button class="category-card" data-category="culture">
+                    <i class="fas fa-landmark"></i>
+                    <h3>文化知识</h3>
+                    <p>10道题</p>
+                </button>
+                <button class="category-card" data-category="science">
+                    <i class="fas fa-flask"></i>
+                    <h3>科学常识</h3>
+                    <p>10道题</p>
+                </button>
+                <button class="category-card" data-category="geography">
+                    <i class="fas fa-globe"></i>
+                    <h3>地理常识</h3>
+                    <p>10道题</p>
+                </button>
+                <button class="category-card" data-category="code">
+                    <i class="fas fa-code"></i>
+                    <h3>编程基础</h3>
+                    <p>10道题</p>
+                </button>
+                <button class="category-card" data-category="personality">
+                    <i class="fas fa-star"></i>
+                    <h3>性格测试</h3>
+                    <p>12道题</p>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="quiz-container hidden" id="quizContainer">
+        <div class="container">
+            <div class="quiz-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div id="quiz">
+                <!-- 动态生成 -->
+            </div>
+
+            <button class="btn submit-btn" id="submitBtn">提交答案</button>
+        </div>
+    </div>
+
+    <div id="result" class="result hidden">
+        <div class="container">
+            <div class="score-circle">
+                <div class="score-text" id="scoreText">0/10</div>
+            </div>
+            <h2 id="resultTitle">测验完成！</h2>
+            <p id="resultMessage">根据你的得分，这里有一些建议...</p>
+            <button class="btn" onclick="location.reload()">再测一次</button>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>
