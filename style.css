@@ -303,7 +303,7 @@ body.theme-colorful .site-nav {
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--primary-color), transparent 70%);
+    background: radial-gradient(circle, rgba(0,0,0,0.08), transparent 70%);
     opacity: 0.1;
     top: -100px;
     right: -100px;
@@ -315,7 +315,7 @@ body.theme-colorful .site-nav {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--accent-color), transparent 70%);
+    background: radial-gradient(circle, rgba(0,0,0,0.06), transparent 70%);
     opacity: 0.1;
     bottom: -50px;
     left: -50px;
@@ -330,10 +330,11 @@ body.theme-colorful .site-nav {
     font-size: 3.5rem;
     line-height: 1.2;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text-primary);
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: initial;
 }
 .hero p {
     font-size: 1.2rem;

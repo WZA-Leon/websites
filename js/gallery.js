@@ -1,81 +1,80 @@
 // 摄影图库系统 JS
-let galleryData = {
-    categories: ['全部', '风景', '人物', '建筑', '微距'],
-    photos: [
-        {
-            id: 'photo1',
-            name: '日出时刻',
-            category: '风景',
-            image: './images/gallery/landscape1.jpg',
-            description: '清晨的日出，光线温暖而柔和',
-            date: '2024'
-        },
-        {
-            id: 'photo2',
-            name: '城市夜景',
-            category: '建筑',
-            image: './images/gallery/city1.jpg',
-            description: '都市的灯火阑珊',
-            date: '2024'
-        },
-        {
-            id: 'photo3',
-            name: '自然之美',
-            category: '风景',
-            image: './images/gallery/landscape2.jpg',
-            description: '大自然的壮美风景',
-            date: '2024'
-        },
-        {
-            id: 'photo4',
-            name: '微距世界',
-            category: '微距',
-            image: './images/gallery/macro1.jpg',
-            description: '放大视角中的精致细节',
-            date: '2024'
-        }
-    ]
-};
-
+const galleryRoot = './images/photograph';
+const GALLERY_BASE_URL = document.baseURI;
+let galleryCategories = ['all'];
+let galleryPhotos = [];
 let currentGalleryCategory = 'all';
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadGalleryData();
+function resolveGalleryPath(relative) {
+    return new URL(relative, GALLERY_BASE_URL).href;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await initGallery();
+});
+
+async function initGallery() {
+    await loadGalleryData();
     initGalleryCategories();
     renderGallery();
     initPhotoModal();
-});
+}
 
-// 加载摄影数据
 async function loadGalleryData() {
-    try {
-        const response = await fetch('./images/photograph/index.json');
-        const data = await response.json();
-        console.log('摄影数据:', data);
-        
-        // 如果本地有更详细的摄影信息，可以进一步处理
-        // 这里先使用示例数据
-    } catch (error) {
-        console.log('加载摄影数据失败，使用示例数据:', error);
+    const rootIndex = await fetchJSON(resolveGalleryPath(`${galleryRoot}/index.json`));
+    const categories = Array.isArray(rootIndex?.categories) ? rootIndex.categories : [];
+
+    galleryCategories = ['all'];
+    galleryPhotos = [];
+
+    for (const folder of categories) {
+        const catIndex = await fetchJSON(resolveGalleryPath(`${galleryRoot}/${folder}/index.json`));
+        if (!catIndex) continue;
+
+        const categoryName = catIndex.name || folder;
+        galleryCategories.push(categoryName);
+
+        const works = Array.isArray(catIndex.works) ? catIndex.works : [];
+        for (const workItem of works) {
+            const workFolder = typeof workItem === 'string' ? workItem : (workItem.folder || workItem.title || '');
+            if (!workFolder) continue;
+
+            const workIndex = await fetchJSON(resolveGalleryPath(`${galleryRoot}/${folder}/${workFolder}/index.json`));
+            if (!workIndex) continue;
+
+            const imageFile = workIndex.cover || (Array.isArray(workIndex.images) ? workIndex.images[0]?.filename : '');
+                    const image = imageFile ? resolveImagePath(`${galleryRoot}/${folder}/${workFolder}`, imageFile) : '';
+
+            galleryPhotos.push({
+                id: `${folder}-${workFolder}`,
+                name: workIndex.title || workFolder,
+                description: workIndex.description || '',
+                image: image || './images/placeholder.svg',
+                category: categoryName,
+                date: workIndex.date || '',
+                source: `${galleryRoot}/${folder}/${workFolder}`
+            });
+        }
+    }
+
+    if (galleryCategories.length === 1) {
+        galleryCategories = ['all'];
     }
 }
 
-// 初始化分类筛选
 function initGalleryCategories() {
     const categoryContainer = document.getElementById('galleryCategories');
-    
     if (!categoryContainer) return;
-    
-    categoryContainer.innerHTML = galleryData.categories.map(cat => {
-        const value = cat === '全部' ? 'all' : cat;
+
+    categoryContainer.innerHTML = galleryCategories.map(cat => {
+        const value = cat === 'all' ? 'all' : cat;
         return `
             <button class="category-btn ${value === 'all' ? 'active' : ''}" data-category="${value}">
                 ${cat}
             </button>
         `;
     }).join('');
-    
-    // 添加分类点击事件
+
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
@@ -86,20 +85,19 @@ function initGalleryCategories() {
     });
 }
 
-// 渲染图库
 function renderGallery() {
     const container = document.getElementById('photograph-root');
     if (!container) return;
-    
-    const filtered = currentGalleryCategory === 'all' 
-        ? galleryData.photos 
-        : galleryData.photos.filter(p => p.category === currentGalleryCategory);
-    
-    if (filtered.length === 0) {
+
+    const filtered = currentGalleryCategory === 'all'
+        ? galleryPhotos
+        : galleryPhotos.filter(p => p.category === currentGalleryCategory);
+
+    if (!filtered.length) {
         container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">该分类下暂无作品</p>';
         return;
     }
-    
+
     container.innerHTML = filtered.map(photo => `
         <div class="photo-card" data-photo-id="${photo.id}">
             <div class="photo-image">
@@ -120,12 +118,11 @@ function renderGallery() {
             </div>
         </div>
     `).join('');
-    
-    // 添加图片点击事件
+
     document.querySelectorAll('.photo-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const photoId = e.currentTarget.dataset.photoId;
-            const photo = galleryData.photos.find(p => p.id === photoId);
+            const photo = galleryPhotos.find(p => p.id === photoId);
             if (photo) {
                 openPhotoModal(photo);
             }
@@ -133,18 +130,16 @@ function renderGallery() {
     });
 }
 
-// 初始化图片模态框
 function initPhotoModal() {
     const modal = document.getElementById('photoModal');
     const closeBtn = document.querySelector('.photo-close');
-    
     if (!modal || !closeBtn) return;
-    
+
     closeBtn.addEventListener('click', () => {
         modal.classList.remove('show');
         document.body.style.overflow = 'auto';
     });
-    
+
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('show');
@@ -153,17 +148,34 @@ function initPhotoModal() {
     });
 }
 
-// 打开图片模态框
 function openPhotoModal(photo) {
     const modal = document.getElementById('photoModal');
     const img = document.getElementById('photoModalImg');
     const caption = document.getElementById('photoCaption');
-    
     if (!modal) return;
-    
+
     img.src = photo.image;
     img.alt = photo.name;
     caption.innerHTML = `<h3>${photo.name}</h3><p>${photo.description}</p>`;
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
+}
+
+async function fetchJSON(path) {
+    try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    } catch (err) {
+        console.warn('fetchJSON failed:', path, err);
+        return null;
+    }
+}
+
+function resolveImagePath(basePath, relative) {
+    if (!relative) return '';
+    if (/^(https?:)?\/\//.test(relative) || relative.startsWith('/')) {
+        return relative;
+    }
+    return new URL(`${basePath}/${relative}`, GALLERY_BASE_URL).href;
 }

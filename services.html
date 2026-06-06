@@ -6,34 +6,9 @@
     <title>服务 - SiveNioo Studios</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">
-                    <img src="./images/logo.png" alt="[网站Logo]" class="logo-img">
-                    <span>SiveNioo Studios</span>
-                </a>
-                
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="index.html">首页</a></li>
-                    <li><a href="gallery.html">摄影作品</a></li>
-                    <li><a href="projects.html">编程作品</a></li>
-                    <li><a href="links.html">酷站导航</a></li>
-                    <li><a href="quiz.html">WZA 测验</a></li>
-                    <li><a href="contact.html">联系</a></li>
-                    <li><a href="#" class="btn">留言</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div id="nav-placeholder"></div>
 
     <!-- 服务页面内容 -->
     <section class="hero">
@@ -113,23 +88,6 @@
 
     <!-- 页脚 -->
     <div id="footer-placeholder"></div>
-
-    <script>
-        // 移动端菜单切换
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

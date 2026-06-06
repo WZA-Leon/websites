@@ -87,12 +87,12 @@ function buildFooterHTML() {
                 <div class="footer-column">
                     <h3>兴趣领域</h3>
                     <ul class="footer-links">
-                        <li><a href="#">文学</a></li>
-                        <li><a href="#">计算机</a></li>
-                        <li><a href="#">艺术</a></li>
-                        <li><a href="#">地理</a></li>
+                        <li><a href="#">阅读</a></li>
+                        <li><a href="#">旅游</a></li>
+                        <li><a href="#">音乐</a></li>
+                        <li><a href="projects.html">编程</a></li>
+                        <li><a href="gallery.html">摄影</a></li>
                         <li><a href="#">游戏</a></li>
-                        <li><a href="#">数理化</a></li>
                     </ul>
                 </div>
                 
@@ -191,14 +191,7 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
-    // 初始化摄影画廊（如果页面中存在目标容器）
-    if (document.getElementById('photograph-root')) {
-        initPhotoGallery();
-    }
-    // 初始化项目列表（如果页面中存在目标容器）
-    if (document.getElementById('project-root')) {
-        initProjectGallery();
-    }
+    // 页面特定模块由各页面自己的JS负责初始化
 });
 
 /* ---------- 摄影画廊动态生成与查看器 ---------- */

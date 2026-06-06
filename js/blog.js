@@ -1,12 +1,17 @@
 // 博客系统 JS
+const BLOG_BASE_URL = document.baseURI;
 let allArticles = [];
 let currentCategory = 'all';
+
+function resolveBlogPath(relative) {
+    return new URL(relative, BLOG_BASE_URL).href;
+}
 
 // 初始化博客
 async function initBlog() {
     try {
         // 获取博客索引
-        const response = await fetch('./blog-data/index.json');
+        const response = await fetch(resolveBlogPath('./blog-data/index.json'));
         const data = await response.json();
         allArticles = data.articles;
         
@@ -99,7 +104,7 @@ async function openBlogModal(articleId) {
     
     try {
         // 获取markdown文件
-        const response = await fetch(`./blog-data/${articleId}.md`);
+        const response = await fetch(resolveBlogPath(`./blog-data/${articleId}.md`));
         const markdown = await response.text();
         
         // 使用marked渲染markdown

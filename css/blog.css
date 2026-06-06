@@ -2,25 +2,25 @@
    博客页面特定样式
    ======================================= */
 
-.blog-hero {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+ .blog-hero {
+    background: var(--bg-secondary);
     padding: 120px 0 80px;
     position: relative;
     overflow: hidden;
 }
 
-.blog-hero h1 {
+ .blog-hero h1 {
     font-size: 4rem;
     font-weight: 800;
     margin-bottom: 10px;
-    color: white;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    color: var(--text-primary);
+    text-shadow: none;
 }
 
-.blog-hero p {
+ .blog-hero p {
     font-size: 1.3rem;
-    color: rgba(255,255,255,0.9);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: var(--text-secondary);
+    text-shadow: none;
 }
 
 .blog-section {

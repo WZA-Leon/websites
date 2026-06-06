@@ -2,22 +2,22 @@
    摄影页面特定样式
    ======================================= */
 
-.gallery-hero {
-    background: linear-gradient(135deg, #f093fb, #f5576c);
+ .gallery-hero {
+    background: var(--bg-secondary);
     padding: 120px 0 80px;
 }
 
-.gallery-hero h1 {
+ .gallery-hero h1 {
     font-size: 3.5rem;
-    color: white;
+    color: var(--text-primary);
     font-weight: 800;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    text-shadow: none;
 }
 
-.gallery-hero p {
+ .gallery-hero p {
     font-size: 1.3rem;
-    color: rgba(255,255,255,0.95);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: var(--text-secondary);
+    text-shadow: none;
 }
 
 /* 分类选择区 */

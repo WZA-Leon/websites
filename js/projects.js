@@ -1,58 +1,74 @@
 // 项目展示系统 JS
+const projectDataRoot = './project-data';
+const PROJECT_BASE_URL = document.baseURI;
 let projectsData = {
-    categories: ['全部', '前端', '后端', '全栈', '工具'],
-    projects: [
-        {
-            id: 'work1',
-            name: '个人作品集网站',
-            category: '全栈',
-            description: '一个响应式个人作品展示网站，使用HTML5、CSS3和原生JavaScript开发，包含博客、项目、摄影等多个板块',
-            image: './images/projects/project1.jpg',
-            technologies: ['HTML5', 'CSS3', 'JavaScript'],
-            link: '#',
-            date: '2024'
-        }
-    ]
+    categories: ['all'],
+    projects: []
 };
-
 let currentProjectCategory = 'all';
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadProjectsData();
-    initProjectCategories();
-    renderProjects();
+document.addEventListener('DOMContentLoaded', async () => {
+    await initProjects();
 });
 
-// 加载项目数据
-async function loadProjectsData() {
-    try {
-        const response = await fetch('./project-data/index.json');
-        const data = await response.json();
-        console.log('项目数据:', data);
-        
-        // 如果本地有更详细的项目信息，可以进一步处理
-        // 这里先使用示例数据
-    } catch (error) {
-        console.log('加载项目数据失败，使用示例数据:', error);
-    }
+async function initProjects() {
+    await loadProjectsData();
+    initProjectCategories();
+    renderProjects();
 }
 
-// 初始化分类筛选
+async function loadProjectsData() {
+    const rootIndex = await fetchJSON(new URL(`${projectDataRoot}/index.json`, PROJECT_BASE_URL).href);
+    const projectKeys = Array.isArray(rootIndex?.projects) ? rootIndex.projects : [];
+    const categories = new Set(['all']);
+    const projects = [];
+
+    for (const item of projectKeys) {
+        const folder = typeof item === 'string' ? item : (item.folder || item.id || item.name || '');
+        if (!folder) continue;
+
+        const projectIndex = await fetchJSON(new URL(`${projectDataRoot}/${folder}/index.json`, PROJECT_BASE_URL).href);
+        if (!projectIndex) continue;
+
+        const category = projectIndex.category || projectIndex.type || '未分类';
+        categories.add(category);
+
+        const imageFile = projectIndex.cover || projectIndex.image || '';
+        const image = imageFile ? resolveImagePath(`${projectDataRoot}/${folder}`, imageFile) : './images/placeholder.svg';
+        const technologies = Array.isArray(projectIndex.technologies)
+            ? projectIndex.technologies
+            : (typeof projectIndex.technologies === 'string' ? [projectIndex.technologies] : []);
+
+        projects.push({
+            id: folder,
+            name: projectIndex.title || projectIndex.name || folder,
+            category,
+            description: projectIndex.description || projectIndex.intro || '',
+            image,
+            technologies,
+            link: projectIndex.url || projectIndex.link || '#',
+            markdown: projectIndex.markdown || projectIndex.readme || projectIndex.README || 'README.md',
+            date: projectIndex.date || ''
+        });
+    }
+
+    projectsData.categories = Array.from(categories);
+    projectsData.projects = projects;
+}
+
 function initProjectCategories() {
     const categoryContainer = document.getElementById('projectCategories');
-    
     if (!categoryContainer) return;
-    
+
     categoryContainer.innerHTML = projectsData.categories.map(cat => {
-        const value = cat === '全部' ? 'all' : cat;
+        const value = cat === 'all' ? 'all' : cat;
         return `
             <button class="category-btn ${value === 'all' ? 'active' : ''}" data-category="${value}">
                 ${cat}
             </button>
         `;
     }).join('');
-    
-    // 添加分类点击事件
+
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
@@ -63,26 +79,25 @@ function initProjectCategories() {
     });
 }
 
-// 渲染项目列表
 function renderProjects() {
     const container = document.getElementById('project-root');
     if (!container) return;
-    
-    const filtered = currentProjectCategory === 'all' 
-        ? projectsData.projects 
+
+    const filtered = currentProjectCategory === 'all'
+        ? projectsData.projects
         : projectsData.projects.filter(p => p.category === currentProjectCategory);
-    
-    if (filtered.length === 0) {
+
+    if (!filtered.length) {
         container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">该分类下暂无项目</p>';
         return;
     }
-    
+
     container.innerHTML = filtered.map(project => `
         <div class="project-card">
             <div class="project-image">
                 <img src="${project.image}" alt="${project.name}" onerror="this.src='./images/placeholder.svg'">
                 <div class="project-overlay">
-                    <a href="${project.link}" class="project-link" target="_blank">查看项目</a>
+                    ${project.link && project.link !== '#' ? `<a href="${project.link}" class="project-link" target="_blank">访问网址</a>` : ''}
                 </div>
             </div>
             <div class="project-info">
@@ -98,4 +113,23 @@ function renderProjects() {
             </div>
         </div>
     `).join('');
+}
+
+async function fetchJSON(path) {
+    try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+    } catch (err) {
+        console.warn('fetchJSON failed:', path, err);
+        return null;
+    }
+}
+
+function resolveImagePath(basePath, relative) {
+    if (!relative) return '';
+    if (/^(https?:)?\/\//.test(relative) || relative.startsWith('/')) {
+        return relative;
+    }
+    return new URL(`${basePath}/${relative}`, PROJECT_BASE_URL).href;
 }
