@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏设计思考：从玩家到创造者 - WZA-Leon 博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../css/blog.css">
+    <style>
+        .blog-post-body { max-width: 800px; margin: 120px auto 60px; padding: 0 20px; }
+        .blog-post-body .post-header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px solid var(--border-light); }
+        .blog-post-body .post-header h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--text-primary); }
+        .blog-post-body .post-header .post-meta { color: var(--text-secondary); font-size: 0.95rem; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .blog-post-body .post-header .post-meta span { display: flex; align-items: center; gap: 8px; }
+        .blog-post-body .post-header .category-tag { background: var(--primary-color); color: var(--bg-primary); padding: 4px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; }
+        .blog-post-body .post-content { color: var(--text-primary); line-height: 1.8; font-size: 1.05rem; }
+        .blog-post-body .post-content h2 { font-size: 1.8rem; margin: 35px 0 15px; color: var(--text-primary); border-bottom: 2px solid var(--border-light); padding-bottom: 10px; }
+        .blog-post-body .post-content h3 { font-size: 1.4rem; margin: 25px 0 12px; color: var(--text-primary); }
+        .blog-post-body .post-content p { margin-bottom: 16px; color: var(--text-secondary); }
+        .blog-post-body .post-content ul, .blog-post-body .post-content ol { margin: 15px 0; padding-left: 30px; color: var(--text-secondary); }
+        .blog-post-body .post-content li { margin-bottom: 8px; }
+        .blog-post-body .post-content blockquote { border-left: 4px solid var(--primary-color); padding-left: 20px; margin: 20px 0; color: var(--text-secondary); font-style: italic; }
+        .blog-post-body .post-content hr { border: none; border-top: 2px solid var(--border-light); margin: 35px 0; }
+        .blog-post-body .post-footer { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .blog-post-body .post-footer .back-link { color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: var(--transition); }
+        .blog-post-body .post-footer .back-link:hover { transform: translateX(-5px); }
+        .blog-post-body .post-footer .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .blog-post-body .post-footer .tags .tag { background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }
+        body.theme-colorful .blog-post-body .post-header h1 { background: linear-gradient(90deg, #ff6b6b, #ffd166, #06d6a0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        @media (max-width: 768px) { .blog-post-body .post-header h1 { font-size: 1.8rem; } .blog-post-body { margin-top: 100px; } }
+    </style>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <div class="blog-post-body">
+        <div class="post-header">
+            <h1>游戏设计思考：从玩家到创造者</h1>
+            <div class="post-meta">
+                <span><i class="fas fa-calendar"></i> 2026-06-10</span>
+                <span><i class="fas fa-folder"></i> <span class="category-tag">游戏</span></span>
+                <span><i class="fas fa-clock"></i> 阅读约 5 分钟</span>
+            </div>
+        </div>
+
+        <div class="post-content">
+            <p>游戏不仅仅是娱乐，它是一种交互式的艺术形式。作为一名游戏爱好者和独立游戏开发者，我想分享一些关于游戏设计的思考。</p>
+
+            <h2>什么是好的游戏？</h2>
+            <p>一个好的游戏应该具备以下特质：</p>
+            <ul>
+                <li><strong>有趣的玩法</strong> - 核心机制要足够吸引人</li>
+                <li><strong>沉浸的世界</strong> - 让玩家忘记现实</li>
+                <li><strong>合适的难度</strong> - 既不能太简单也不能太难</li>
+                <li><strong>情感共鸣</strong> - 让玩家在游戏中感受到喜怒哀乐</li>
+            </ul>
+
+            <blockquote>「游戏是唯一一种让你主动选择接受挑战的娱乐形式。」</blockquote>
+
+            <h2>独立游戏的优势</h2>
+            <p>相比于3A大作，独立游戏有着独特的魅力：</p>
+            <ol>
+                <li><strong>创新自由</strong> - 不受商业限制，敢于尝试新玩法</li>
+                <li><strong>个人风格</strong> - 开发者的人格魅力融入作品中</li>
+                <li><strong>小而精</strong> - 专注于一个核心创意，做到极致</li>
+            </ol>
+
+            <h2>我的游戏设计工具</h2>
+            <p>作为一名学生开发者，我使用以下工具来制作游戏：</p>
+            <ul>
+                <li><strong>Unity</strong> - 强大的游戏引擎</li>
+                <li><strong>Aseprite</strong> - 像素画绘制工具</li>
+                <li><strong>Bosca Ceoil</strong> - 简单的音乐制作</li>
+                <li><strong>RPG Maker</strong> - 快速原型制作</li>
+            </ul>
+
+            <h2>给新手建议</h2>
+            <p>如果你想开始制作游戏，我的建议是：<strong>从小做起</strong>。不要一开始就想做3A大作，而是先完成一个小游戏，体验完整的开发流程。</p>
+
+            <hr>
+            <p><em>每一个伟大的游戏，都始于一行简单的代码。</em></p>
+        </div>
+
+        <div class="post-footer">
+            <a href="../../blog.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回博客列表</a>
+            <div class="tags">
+                <span class="tag">游戏设计</span>
+                <span class="tag">独立游戏</span>
+                <span class="tag">开发心得</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../script.js"></script>
+</body>
+</html>

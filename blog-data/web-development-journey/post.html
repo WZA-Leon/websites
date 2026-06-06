@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的Web开发之旅 - WZA-Leon 博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../css/blog.css">
+    <style>
+        .blog-post-body { max-width: 800px; margin: 120px auto 60px; padding: 0 20px; }
+        .blog-post-body .post-header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px solid var(--border-light); }
+        .blog-post-body .post-header h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--text-primary); }
+        .blog-post-body .post-header .post-meta { color: var(--text-secondary); font-size: 0.95rem; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .blog-post-body .post-header .post-meta span { display: flex; align-items: center; gap: 8px; }
+        .blog-post-body .post-header .category-tag { background: var(--primary-color); color: var(--bg-primary); padding: 4px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; }
+        .blog-post-body .post-content { color: var(--text-primary); line-height: 1.8; font-size: 1.05rem; }
+        .blog-post-body .post-content h2 { font-size: 1.8rem; margin: 35px 0 15px; color: var(--text-primary); border-bottom: 2px solid var(--border-light); padding-bottom: 10px; }
+        .blog-post-body .post-content h3 { font-size: 1.4rem; margin: 25px 0 12px; color: var(--text-primary); }
+        .blog-post-body .post-content p { margin-bottom: 16px; color: var(--text-secondary); }
+        .blog-post-body .post-content ul, .blog-post-body .post-content ol { margin: 15px 0; padding-left: 30px; color: var(--text-secondary); }
+        .blog-post-body .post-content li { margin-bottom: 8px; }
+        .blog-post-body .post-content code { background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 2px 8px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.95em; }
+        .blog-post-body .post-content pre { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 18px; overflow-x: auto; margin: 20px 0; }
+        .blog-post-body .post-content pre code { background: none; color: var(--text-secondary); padding: 0; }
+        .blog-post-body .post-content blockquote { border-left: 4px solid var(--primary-color); padding-left: 20px; margin: 20px 0; color: var(--text-secondary); font-style: italic; }
+        .blog-post-body .post-content hr { border: none; border-top: 2px solid var(--border-light); margin: 35px 0; }
+        .blog-post-body .post-content img { max-width: 100%; border-radius: 12px; margin: 20px 0; }
+        .blog-post-body .post-content .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .blog-post-body .post-content .resource-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin: 0; }
+        .blog-post-body .post-content video { max-width: 100%; border-radius: 12px; margin: 20px 0; }
+        .blog-post-body .post-footer { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .blog-post-body .post-footer .back-link { color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: var(--transition); }
+        .blog-post-body .post-footer .back-link:hover { transform: translateX(-5px); }
+        .blog-post-body .post-footer .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .blog-post-body .post-footer .tags .tag { background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }
+        body.theme-colorful .blog-post-body .post-header h1 { background: linear-gradient(90deg, #ff6b6b, #ffd166, #06d6a0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        @media (max-width: 768px) { .blog-post-body .post-header h1 { font-size: 1.8rem; } .blog-post-body { margin-top: 100px; } }
+    </style>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <div class="blog-post-body">
+        <div class="post-header">
+            <h1>我的Web开发之旅</h1>
+            <div class="post-meta">
+                <span><i class="fas fa-calendar"></i> 2026-05-20</span>
+                <span><i class="fas fa-folder"></i> <span class="category-tag">编程</span></span>
+                <span><i class="fas fa-clock"></i> 阅读约 5 分钟</span>
+            </div>
+        </div>
+
+        <div class="post-content">
+            <p>作为一名高中生，我从零开始学习Web开发，这是一段充满挑战和收获的旅程。</p>
+
+            <h2>起点：HTML和CSS</h2>
+            <p>最开始，我学习了HTML和CSS的基础。通过创建简单的网页，我理解了网页的结构和样式。</p>
+            <ul>
+                <li>HTML定义了网页的骨骼</li>
+                <li>CSS让网页变得美观</li>
+                <li>每一行代码都是在搭建我的知识大厦</li>
+            </ul>
+
+            <h2>JavaScript的魔力</h2>
+            <p>当我开始学习JavaScript时，我发现代码可以让网页"活起来"。</p>
+            <pre><code>// 一个简单的例子
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('网页已加载！');
+});</code></pre>
+            <p>从事件处理到DOM操作，JavaScript打开了一扇新的大门。</p>
+
+            <h2>框架与工具</h2>
+            <p>后来我接触了更多的框架和工具：</p>
+            <ul>
+                <li><strong>Webpack</strong> - 模块打包</li>
+                <li><strong>Vue.js</strong> - 前端框架</li>
+                <li><strong>Node.js</strong> - 后端开发</li>
+            </ul>
+
+            <h2>心得体会</h2>
+            <p>学习Web开发教会了我：</p>
+            <ol>
+                <li><strong>持之以恒</strong> - 编程需要不断的练习</li>
+                <li><strong>问题解决</strong> - 遇到问题时要学会调试</li>
+                <li><strong>开源社区</strong> - 开源项目是最好的老师</li>
+            </ol>
+
+            <h2>未来目标</h2>
+            <p>我希望继续深入学习，制作更多有趣的Web应用，也希望能为开源社区做出贡献。</p>
+
+            <hr>
+            <p><em>更新于 2026年5月20日</em></p>
+        </div>
+
+        <div class="post-footer">
+            <a href="../../blog.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回博客列表</a>
+            <div class="tags">
+                <span class="tag">Web开发</span>
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JavaScript</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../script.js"></script>
+</body>
+</html>
