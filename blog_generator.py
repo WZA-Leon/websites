@@ -604,11 +604,15 @@ class BlogGeneratorApp:
             self.status_var.set("⚠️ 未找到 blog-list.js，请手动注册")
             return
 
+        # 对 title 和 excerpt 做 JS 字符串转义
+        escaped_title = title.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+        escaped_excerpt = excerpt.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+
         # 构建新条目
         entry = f'''    {{
         id: "{blog_id}",
-        title: "{title}",
-        excerpt: "{excerpt}",
+        title: "{escaped_title}",
+        excerpt: "{escaped_excerpt}",
         date: "{date}",
         category: "{category}",
         tags: {json.dumps(tags, ensure_ascii=False)},

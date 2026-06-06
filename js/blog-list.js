@@ -39,4 +39,14 @@ window.BLOG_LIST = [
         tags: ["摄影", "构图", "入门技巧"],
         url: "./blog-data/photography-tips/post.html"
     }
+,
+    {
+        id: "zadm-random-call",
+        title: "ZADM 随机点名系统",
+        excerpt: "ZADM（子昂点名）是一个基于 Python Tkinter 的图形化随机点名工具，界面简洁、操作直观，支持从 JSON 文件动态加载姓名列表...",
+        date: "2026-06-06",
+        category: "编程",
+        tags: ["Python", "Tkinter", "点名系统"],
+        url: "./blog-data/zadm-random-call/post.html"
+    }
 ];
