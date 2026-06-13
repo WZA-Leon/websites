@@ -78,8 +78,8 @@ body.theme-light .category-btn.active {
 }
 
 body.theme-colorful .category-btn.active {
-    background: #ff6b6b;
-    border-color: #ff6b6b;
+    background: var(--gradient-category);
+    border-color: var(--theme-color);
     box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
 }
 
@@ -227,7 +227,7 @@ body.theme-light .photo-meta .category-badge {
 }
 
 body.theme-colorful .photo-btn {
-    color: #ff6b6b;
+    color: var(--theme-color);
 }
 
 body.theme-colorful .photo-overlay {
@@ -235,7 +235,7 @@ body.theme-colorful .photo-overlay {
 }
 
 body.theme-colorful .photo-meta .category-badge {
-    background: #ff6b6b;
+    background: var(--theme-color);
     color: white;
 }
 

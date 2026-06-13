@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 """
 WZA-Leon 博客生成器
@@ -55,6 +56,8 @@ POST_TEMPLATE = '''<!DOCTYPE html>
         .blog-post-body .post-footer .tags {{ display: flex; gap: 8px; flex-wrap: wrap; }}
         .blog-post-body .post-footer .tags .tag {{ background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }}
         body.theme-colorful .blog-post-body .post-header h1 {{ background: linear-gradient(90deg, #ff6b6b, #ffd166, #06d6a0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }}
+        body.theme-light .blog-post-body .post-content hr,
+        body.theme-colorful .blog-post-body .post-content hr {{ border-top-color: #c0c0c0; }}
         @media (max-width: 768px) {{ .blog-post-body .post-header h1 {{ font-size: 1.8rem; }} .blog-post-body {{ margin-top: 100px; }} }}
     </style>
 </head>
@@ -422,27 +425,26 @@ class BlogGeneratorApp:
         text = re.sub(r'~~([^~]+)~~', r'<del>\1</del>', text)
         return text
 
-    def _process_resources(self, blog_id, output_dir):
-        """处理资源文件，复制到对应目录并生成资源引用 HTML"""
-        if not self.resource_files:
-            return "", []
-
+    def _process_resources(self, blog_id, output_dir, md_content):
+        """处理资源文件，复制到对应目录并生成资源引用 HTML，根据占位符插入指定位置"""
         resource_dir = os.path.join(output_dir, blog_id, "resource")
         os.makedirs(resource_dir, exist_ok=True)
 
-        resource_html_parts = []
-        resource_entries = []
         image_exts = {'.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.svg'}
         video_exts = {'.mp4', '.webm', '.avi', '.mov', '.mkv', '.flv'}
 
-        images = []
-        videos = []
-
+        # 构建文件名到路径的映射
+        name_to_filepath = {}
         for filepath in self.resource_files:
-            if not os.path.isfile(filepath):
-                continue
-            ext = os.path.splitext(filepath)[1].lower()
-            filename = os.path.basename(filepath)
+            if os.path.isfile(filepath):
+                name_to_filepath[os.path.basename(filepath)] = filepath
+
+        # 复制所有资源文件，记录路径映射
+        resource_map = {}  # filename -> rel_path
+        resource_entries = []
+
+        for filename, filepath in name_to_filepath.items():
+            ext = os.path.splitext(filename)[1].lower()
             dest_path = os.path.join(resource_dir, filename)
 
             try:
@@ -452,32 +454,35 @@ class BlogGeneratorApp:
                 continue
 
             rel_path = f"./resource/{filename}"
-
-            if ext in image_exts:
-                images.append(rel_path)
-            elif ext in video_exts:
-                videos.append(rel_path)
-
+            resource_map[filename] = rel_path
             resource_entries.append({
                 "filename": filename,
                 "type": "image" if ext in image_exts else "video",
                 "path": rel_path
             })
 
-        # 生成资源展示区 HTML
-        if images:
-            resource_html_parts.append('<div class="resource-grid">')
-            for img_path in images:
-                resource_html_parts.append(f'<img src="{img_path}" alt="配图">')
-            resource_html_parts.append('</div>')
+        if not resource_map:
+            return "", resource_entries, md_content
 
-        if videos:
-            for vid_path in videos:
-                resource_html_parts.append(
-                    f'<div style="margin: 15px 0;"><video controls><source src="{vid_path}" type="video/mp4">您的浏览器不支持视频播放</video></div>'
-                )
+        # 构建占位符替换映射 - 生成对应 HTML
+        placeholder_replacements = {}
+        for filename, rel_path in resource_map.items():
+            placeholder = f'<!-- resource:{filename} -->'
+            ext = os.path.splitext(filename)[1].lower()
+            if ext in image_exts:
+                html_snippet = f'<div class="resource-wrapper"><img src="{rel_path}" alt="{filename}"></div>'
+            elif ext in video_exts:
+                html_snippet = f'<div class="resource-wrapper"><video controls><source src="{rel_path}" type="video/mp4">您的浏览器不支持视频播放</video></div>'
+            else:
+                html_snippet = ""
+            placeholder_replacements[placeholder] = html_snippet
 
-        return "\n".join(resource_html_parts), resource_entries
+        # 在 Markdown 内容中替换占位符
+        modified_md = md_content
+        for placeholder, html_snippet in placeholder_replacements.items():
+            modified_md = modified_md.replace(placeholder, html_snippet)
+
+        return "", resource_entries, modified_md
 
     def generate_blog(self):
         """生成博客 HTML 文件"""
@@ -505,15 +510,11 @@ class BlogGeneratorApp:
         blog_id = self._slugify(title)
         today = datetime.now().strftime("%Y-%m-%d")
 
-        # 解析 Markdown
-        html_content, excerpt_raw = self._parse_markdown(md_content)
+        # 处理资源（先在 md_content 中替换占位符）
+        resource_html, resource_entries, modified_md = self._process_resources(blog_id, output_base, md_content)
 
-        # 处理资源
-        resource_html, resource_entries = self._process_resources(blog_id, output_base)
-
-        # 如果有资源，追加到内容末尾
-        if resource_html:
-            html_content += "\n" + resource_html
+        # 使用修改后的 Markdown 解析 HTML（资源占位符已被替换为 HTML 标签）
+        html_content, excerpt_raw = self._parse_markdown(modified_md)
 
         # 提取摘要
         excerpt = excerpt_raw if excerpt_raw else self._extract_excerpt(html_content)
@@ -647,7 +648,9 @@ class BlogGeneratorApp:
             messagebox.showinfo("提示", "请先录入 Markdown 内容以预览")
             return
 
-        html_content, _ = self._parse_markdown(md_content)
+        # 预览时也替换资源占位符（使用临时 ID "preview"）
+        _, _, modified_md = self._process_resources("preview", self.output_dir_var.get().strip() or os.getcwd(), md_content)
+        html_content, _ = self._parse_markdown(modified_md)
         today = datetime.now().strftime("%Y-%m-%d")
         word_count = len(md_content)
         read_time = max(1, round(word_count / 500))

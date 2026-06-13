@@ -92,13 +92,13 @@ body.theme-light .category-card i {
 }
 
 body.theme-colorful .category-card:hover {
-    border-color: #ff6b6b;
+    border-color: var(--theme-color);
     box-shadow: 0 15px 40px rgba(255, 107, 107, 0.15);
     background: rgba(255, 107, 107, 0.05);
 }
 
 body.theme-colorful .category-card i {
-    background: linear-gradient(90deg, #ff6b6b, #ffd166);
+    background: var(--gradient-category) text;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -234,13 +234,13 @@ body.theme-colorful .option {
 
 body.theme-colorful .option:hover {
     background: rgba(255, 107, 107, 0.1);
-    border-color: #ff6b6b;
-    color: #ff6b6b;
+    border-color: var(--theme-color);
+    color: var(--theme-color);
 }
 
 body.theme-colorful .option.selected {
-    background: #ff6b6b;
-    border-color: #ff6b6b;
+    background: var(--theme-color);
+    border-color: var(--theme-color);
     color: white;
 }
 
@@ -363,15 +363,15 @@ body.theme-light .score-text {
 
 body.theme-colorful .score-circle {
     background: conic-gradient(
-        #ff6b6b 0deg,
-        #ff6b6b var(--score-angle, 0deg),
+        var(--theme-color) 0deg,
+        var(--theme-color) var(--score-angle, 0deg),
         rgba(255, 107, 107, 0.1) var(--score-angle, 0deg),
         rgba(255, 107, 107, 0.1) 360deg
     );
 }
 
 body.theme-colorful .score-text {
-    color: #ff6b6b;
+    color: var(--theme-color);
 }
 
 /* 响应式 */
