@@ -99,8 +99,8 @@ function buildFooterHTML() {
                 <div class="footer-column">
                     <h3>联系 WZA</h3>
                     <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> 大连 · 甘井子区</li>
-                        <li><i class="fas fa-phone"></i> +86 130 1942 8653</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 大连市 · 甘井子区</li>
+                        <li><i class="fas fa-phone"></i> +86 138 4092 6806</li>
                         <li><i class="fas fa-envelope"></i> wza-dl@outlook.com</li>
                         <li><i class="fas fa-clock"></i> 每周日 19:30 更新</li>
                     </ul>
