@@ -159,6 +159,82 @@ function initSmoothScroll() {
     });
 }
 
+/* ---------- 文章图片：自适应宽度、悬停高光与点击放大 ---------- */
+function wrapContentImages() {
+    document.querySelectorAll('.post-content img, .markdown-content img').forEach((img) => {
+        if (img.closest('.image-frame') || img.closest('pre')) return;
+        const frame = document.createElement('span');
+        frame.className = 'image-frame';
+        img.parentNode.insertBefore(frame, img);
+        frame.appendChild(img);
+    });
+}
+
+let imageWrapQueued = false;
+function scheduleWrapContentImages() {
+    if (imageWrapQueued) return;
+    imageWrapQueued = true;
+    requestAnimationFrame(() => {
+        imageWrapQueued = false;
+        wrapContentImages();
+    });
+}
+
+function initContentImageWrapping() {
+    wrapContentImages();
+    const observer = new MutationObserver(scheduleWrapContentImages);
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+function initContentImageLightbox() {
+    let lightbox = null;
+    let previousBodyOverflow = '';
+
+    function getLightbox() {
+        if (lightbox) return lightbox;
+        lightbox = document.createElement('div');
+        lightbox.className = 'image-lightbox';
+        lightbox.setAttribute('role', 'dialog');
+        lightbox.setAttribute('aria-modal', 'true');
+        lightbox.setAttribute('aria-label', '图片预览');
+        lightbox.innerHTML = `
+            <button class="image-lightbox-close" type="button" aria-label="关闭">×</button>
+            <img class="image-lightbox-img" src="" alt="">
+        `;
+        document.body.appendChild(lightbox);
+        lightbox.addEventListener('click', (event) => {
+            if (event.target === lightbox ||
+                event.target.closest('.image-lightbox-close')) {
+                closeLightbox();
+            }
+        });
+        return lightbox;
+    }
+
+    function closeLightbox() {
+        if (!lightbox) return;
+        lightbox.classList.remove('show');
+        document.body.style.overflow = previousBodyOverflow;
+    }
+
+    document.addEventListener('click', (event) => {
+        const image = event.target.closest('.post-content img, .markdown-content img');
+        if (!image) return;
+        event.preventDefault();
+        const box = getLightbox();
+        const preview = box.querySelector('.image-lightbox-img');
+        preview.src = image.currentSrc || image.src;
+        preview.alt = image.alt || '';
+        previousBodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => box.classList.add('show'));
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeLightbox();
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     // 如果页面中没有导航，则注入
     if (!document.querySelector('#main-nav')) {
@@ -184,6 +260,8 @@ window.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initSmoothScroll();
     initThemeToggle();
+    initContentImageWrapping();
+    initContentImageLightbox();
 
     // 页面淡入
     document.body.style.opacity = '0';

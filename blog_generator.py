@@ -55,7 +55,11 @@ POST_TEMPLATE = '''<!DOCTYPE html>
         .blog-post-body .post-footer .back-link:hover {{ transform: translateX(-5px); }}
         .blog-post-body .post-footer .tags {{ display: flex; gap: 8px; flex-wrap: wrap; }}
         .blog-post-body .post-footer .tags .tag {{ background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }}
-        body.theme-colorful .blog-post-body .post-header h1 {{ background: linear-gradient(90deg, #ff6b6b, #ffd166, #06d6a0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }}
+        body.theme-colorful .blog-post-body .post-header h1 {{ background: linear-gradient(120deg, #1a1d29 0%, #4d6bfe 55%, #6b8cff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }}
+        body.theme-colorful .blog-post-body .post-content pre {{ background: #0f1424; border-color: #1c2540; }}
+        body.theme-colorful .blog-post-body .post-content pre code {{ background: none; color: #d6e0ff; }}
+        body.theme-colorful .blog-post-body .post-content code {{ background: #f2f5fb; color: #3a54d6; }}
+        body.theme-colorful .blog-post-body .post-footer .tags .tag {{ background: rgba(77, 107, 254, 0.10); color: #3a54d6; border-color: rgba(77, 107, 254, 0.20); }}
         body.theme-light .blog-post-body .post-content hr,
         body.theme-colorful .blog-post-body .post-content hr {{ border-top-color: #c0c0c0; }}
         @media (max-width: 768px) {{ .blog-post-body .post-header h1 {{ font-size: 1.8rem; }} .blog-post-body {{ margin-top: 100px; }} }}
