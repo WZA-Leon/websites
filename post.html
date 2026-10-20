@@ -23,6 +23,20 @@
         .blog-post-body .post-footer .tags .tag { background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }
         body.theme-colorful .blog-post-body .post-header h1 { background: linear-gradient(120deg, #1a1d29 0%, #4d6bfe 55%, #6b8cff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         @media (max-width: 768px) { .blog-post-body .post-header h1 { font-size: 1.8rem; } .blog-post-body { margin-top: 100px; } }
+        @media (max-width: 600px) {
+            .blog-post-body { margin: 96px auto 40px; padding: 0 16px; }
+            .blog-post-body .post-header { margin-bottom: 28px; padding-bottom: 22px; }
+            .blog-post-body .post-header h1 { font-size: 1.7rem; }
+            .blog-post-body .post-header .post-meta { gap: 10px; font-size: 0.85rem; }
+            .blog-post-body .post-footer { flex-direction: column; align-items: flex-start; }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .blog-post-body { animation: postEnter 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+        }
+        @keyframes postEnter {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: none; }
+        }
     </style>
 </head>
 <body>

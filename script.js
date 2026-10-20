@@ -3,7 +3,8 @@
 // 使用同一套导航/页脚资源路径。
 const SITE_BASE = (() => {
     const script = document.currentScript ||
-        Array.from(document.scripts).find(s => /(^|\/)script\.js(?:[?#]|$)/.test(s.getAttribute('src') || ''));
+        Array.from(document.getElementsByTagName('script'))
+            .find(s => /(^|\/)script\.js(?:[?#]|$)/.test(s.getAttribute('src') || ''));
     if (script && script.src) {
         return new URL('.', script.src).href;
     }
@@ -34,7 +35,7 @@ function buildNavHTML() {
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <button id="themeToggle" class="theme-btn" title="切换主题">🌈</button>
-                <button id="mobileMenuBtn" class="mobile-menu" aria-label="菜单">
+                <button id="mobileMenuBtn" class="mobile-menu" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -135,29 +136,48 @@ function initMobileMenu() {
     const navLinks = document.getElementById('navLinks');
     if (!mobileMenuBtn || !navLinks) return;
 
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        const icon = mobileMenuBtn.querySelector('i');
-        if (navLinks.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
+    const icon = mobileMenuBtn.querySelector('i');
+
+    function setOpen(open) {
+        navLinks.classList.toggle('active', open);
+        document.body.classList.toggle('nav-open', open);
+        mobileMenuBtn.setAttribute('aria-expanded', String(open));
+        if (!icon) return;
+        icon.classList.toggle('fa-bars', !open);
+        icon.classList.toggle('fa-times', open);
+    }
+
+    mobileMenuBtn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        setOpen(!navLinks.classList.contains('active'));
     });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        });
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => setOpen(false));
     });
+
+    document.addEventListener('click', (event) => {
+        if (!navLinks.classList.contains('active')) return;
+        if (!(event.target instanceof Element)) return;
+        if (event.target.closest('#main-nav')) return;
+        setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !navLinks.classList.contains('active')) return;
+        setOpen(false);
+        mobileMenuBtn.focus();
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) setOpen(false);
+    }, { passive: true });
+
+    window.addEventListener('pageshow', () => setOpen(false));
 }
 
 function initSmoothScroll() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
@@ -167,10 +187,182 @@ function initSmoothScroll() {
                 e.preventDefault();
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
+                    behavior: reduceMotion ? 'auto' : 'smooth'
                 });
             }
         });
+    });
+}
+
+/* ---------- 导航状态与当前页面高亮 ---------- */
+function initNavState() {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+
+    const updateShadow = () => {
+        nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    updateShadow();
+    window.addEventListener('scroll', updateShadow, { passive: true });
+
+    const normalizePath = path => path.replace(/\/index\.html$/, '/');
+    const current = new URL(window.location.href);
+    const currentPath = normalizePath(current.pathname);
+    const isBlogPage = /\/blog\.html$/.test(current.pathname) ||
+        /\/post\.html$/.test(current.pathname) ||
+        /\/blog-data\//.test(current.pathname);
+
+    nav.querySelectorAll('.nav-links a').forEach(link => {
+        const target = new URL(link.href, window.location.href);
+        const targetPath = normalizePath(target.pathname);
+        const samePage = targetPath === currentPath;
+        const isBlogLink = /\/blog\.html$/.test(target.pathname);
+        if (samePage || (isBlogPage && isBlogLink)) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        }
+    });
+}
+
+/* ---------- 滚动进入视口的揭示动画 ---------- */
+function initScrollReveal() {
+    if (!('IntersectionObserver' in window)) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const selector = [
+        '.section-title',
+        '.about-text',
+        '.feature-card',
+        '.contact-card',
+        '.project-card',
+        '.blog-card',
+        '.photo-card',
+        '.work-card',
+        '.photo-category-header',
+        '.link-category',
+        '.info-item',
+        '.timeline-item',
+        '.skill',
+        '.site-map-card',
+        '.card',
+        '.question',
+        '.result',
+        '.category-tabs',
+        '.category-card',
+        '.quiz-category-section h2',
+        '.post-header',
+        '.post-content'
+    ].join(',');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const element = entry.target;
+            element.classList.add('is-visible');
+            observer.unobserve(element);
+
+            // 动画结束后移除 reveal 类，恢复卡片自身的 hover 过渡。
+            let timer = 0;
+            function finish() {
+                element.removeEventListener('transitionend', onEnd);
+                window.clearTimeout(timer);
+                element.classList.remove('reveal', 'is-visible');
+                element.style.removeProperty('--reveal-delay');
+            }
+            function onEnd(event) {
+                if (event.target !== element || event.propertyName !== 'opacity') return;
+                finish();
+            }
+            timer = window.setTimeout(finish, 1200);
+            element.addEventListener('transitionend', onEnd);
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+
+    function prepare(element) {
+        if (!(element instanceof Element)) return;
+        if (element.dataset.revealReady === 'true') return;
+        element.dataset.revealReady = 'true';
+
+        const rect = element.getBoundingClientRect();
+        // 首屏内已可见的元素不再隐藏，避免加载时闪烁。
+        if (rect.top < window.innerHeight * 0.92) return;
+
+        const siblings = element.parentElement
+            ? Array.from(element.parentElement.children).filter(child => child.matches(selector))
+            : [element];
+        const index = Math.max(0, siblings.indexOf(element));
+        element.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 45}ms`);
+
+        element.classList.add('reveal');
+        observer.observe(element);
+    }
+
+    document.querySelectorAll(selector).forEach(prepare);
+
+    const mutationObserver = new MutationObserver(records => {
+        records.forEach(record => {
+            record.addedNodes.forEach(node => {
+                if (!(node instanceof Element)) return;
+                if (node.matches(selector)) prepare(node);
+                node.querySelectorAll(selector).forEach(prepare);
+            });
+        });
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+}
+
+/* ---------- 站内切换：滑屏加载层 ---------- */
+function initPageTransitions() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let navigating = false;
+
+    function createTransitionLayer() {
+        const layer = document.createElement('div');
+        layer.className = 'page-transition';
+        layer.setAttribute('aria-hidden', 'true');
+        layer.innerHTML = '<span class="page-transition-mark"></span>';
+        document.body.appendChild(layer);
+        return layer;
+    }
+
+    document.addEventListener('click', (event) => {
+        if (navigating || event.defaultPrevented ||
+            (event.button != null && event.button !== 0)) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (!(event.target instanceof Element)) return;
+
+        const link = event.target.closest('a[href]');
+        if (!link) return;
+        if (link.target && link.target !== '_self') return;
+        if (link.hasAttribute('download')) return;
+        if (link.closest('[data-no-transition]')) return;
+
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') ||
+            /^(mailto:|tel:|javascript:|data:)/i.test(href)) return;
+
+        const url = new URL(href, window.location.href);
+        if (url.origin !== window.location.origin) return;
+        if (url.hash) return;
+
+        const normalizePath = path => path.replace(/\/index\.html$/, '/');
+        const current = new URL(window.location.href);
+        if (normalizePath(url.pathname) === normalizePath(current.pathname) &&
+            url.search === current.search) return;
+
+        navigating = true;
+        const layer = createTransitionLayer();
+        void layer.offsetWidth;
+        requestAnimationFrame(() => layer.classList.add('is-active'));
+        window.setTimeout(() => {
+            window.location.href = url.href;
+        }, 440);
+    });
+
+    window.addEventListener('pageshow', () => {
+        navigating = false;
+        document.querySelectorAll('.page-transition').forEach(layer => layer.remove());
     });
 }
 
@@ -275,15 +467,11 @@ window.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     initSmoothScroll();
     initThemeToggle();
+    initNavState();
     initContentImageWrapping();
     initContentImageLightbox();
-
-    // 页面淡入
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
+    initScrollReveal();
+    initPageTransitions();
     // 页面特定模块由各页面自己的JS负责初始化
 });
 
