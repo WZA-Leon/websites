@@ -1,6 +1,6 @@
 // ========================================
 // 博客文章手动列表
-// 每新增一篇博客，在这里添加一条记录
+// 每新增一篇博客：添加 blog-data/<id>.md，并在这里添加一条记录
 // ========================================
 window.BLOG_LIST = [
     {
@@ -10,7 +10,7 @@ window.BLOG_LIST = [
         date: "2026-06-01",
         category: "文学",
         tags: ["创意写作", "文学", "写作技巧"],
-        url: "./blog-data/creative-writing/post.html"
+        url: "./post.html?id=creative-writing"
     },
     {
         id: "game-design-thoughts",
@@ -19,7 +19,7 @@ window.BLOG_LIST = [
         date: "2026-06-10",
         category: "游戏",
         tags: ["游戏设计", "独立游戏", "开发心得"],
-        url: "./blog-data/game-design-thoughts/post.html"
+        url: "./post.html?id=game-design-thoughts"
     },
     {
         id: "web-development-journey",
@@ -28,7 +28,7 @@ window.BLOG_LIST = [
         date: "2026-05-20",
         category: "编程",
         tags: ["Web开发", "HTML", "CSS", "JavaScript"],
-        url: "./blog-data/web-development-journey/post.html"
+        url: "./post.html?id=web-development-journey"
     },
     {
         id: "photography-tips",
@@ -37,26 +37,16 @@ window.BLOG_LIST = [
         date: "2026-05-15",
         category: "摄影",
         tags: ["摄影", "构图", "入门技巧"],
-        url: "./blog-data/photography-tips/post.html"
+        url: "./post.html?id=photography-tips"
     }
 ,
     {
-        id: "zadm-random-call",
+        id: "readme",
         title: "ZADM 随机点名系统",
         excerpt: "ZADM（子昂点名）是一个基于 Python Tkinter 的图形化随机点名工具，界面简洁、操作直观，支持从 JSON 文件动态加载姓名列表...",
         date: "2026-06-06",
         category: "编程",
         tags: ["Python", "Tkinter", "点名系统"],
-        url: "./blog-data/zadm-random-call/post.html"
-    }
-,
-    {
-        id: "readme",
-        title: "Readme",
-        excerpt: "ZADM 随机点名系统\n\nZADM（子昂点名）是一个基于 Python Tkinter 的图形化随机点名工具，界面简洁、操作直观，支持从 JSON 文件动态加载姓名列表，提供滚动抽选、名单管理、语法高亮代码查看等实用功能，适合课堂互动、活动抽奖等场景。\n\n\n\n✨ 主要特性\n\n\n🎲 随机滚动点名：姓名...",
-        date: "2026-06-06",
-        category: "编程",
-        tags: ["1"],
-        url: "./blog-data/readme/post.html"
+        url: "./post.html?id=readme"
     }
 ];

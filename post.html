@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章 - WZA-Leon 博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/blog.css">
+    <style>
+        .blog-post-body { max-width: 800px; margin: 120px auto 60px; padding: 0 20px; }
+        .blog-post-body .post-header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 2px solid var(--border-light); }
+        .blog-post-body .post-header h1 { font-size: 2.5rem; margin-bottom: 15px; color: var(--text-primary); }
+        .blog-post-body .post-header .post-meta { color: var(--text-secondary); font-size: 0.95rem; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .blog-post-body .post-header .post-meta span { display: flex; align-items: center; gap: 8px; }
+        .blog-post-body .post-header .category-tag { background: var(--primary-color); color: var(--bg-primary); padding: 4px 14px; border-radius: 15px; font-size: 0.85rem; font-weight: 600; }
+        .blog-post-body .post-content img { max-width: 100%; border-radius: 12px; margin: 20px 0; }
+        .blog-post-body .post-content video { max-width: 100%; border-radius: 12px; margin: 20px 0; }
+        .blog-post-body .post-footer { margin-top: 40px; padding-top: 25px; border-top: 2px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .blog-post-body .post-footer .back-link { color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: var(--transition); }
+        .blog-post-body .post-footer .back-link:hover { transform: translateX(-5px); }
+        .blog-post-body .post-footer .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .blog-post-body .post-footer .tags .tag { background: rgba(0,212,255,0.1); color: var(--primary-color); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; border: 1px solid rgba(0,212,255,0.2); }
+        body.theme-colorful .blog-post-body .post-header h1 { background: linear-gradient(120deg, #1a1d29 0%, #4d6bfe 55%, #6b8cff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        @media (max-width: 768px) { .blog-post-body .post-header h1 { font-size: 1.8rem; } .blog-post-body { margin-top: 100px; } }
+    </style>
+</head>
+<body>
+    <div id="nav-placeholder"></div>
+
+    <main class="blog-post-body">
+        <article>
+            <header class="post-header">
+                <h1 id="postTitle">正在加载…</h1>
+                <div class="post-meta">
+                    <span><i class="fas fa-calendar"></i> <span id="postDate"></span></span>
+                    <span><i class="fas fa-folder"></i> <span class="category-tag" id="postCategory"></span></span>
+                    <span><i class="fas fa-clock"></i> 阅读约 <span id="postReadTime">1</span> 分钟</span>
+                </div>
+            </header>
+
+            <div class="post-content markdown-content" id="postContent">
+                <p class="no-content">正在加载文章…</p>
+            </div>
+
+            <div class="post-footer">
+                <a href="blog.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回博客列表</a>
+                <div class="tags" id="postTags"></div>
+            </div>
+        </article>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+    <script src="js/blog-list.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+    <script src="js/blog-post.js"></script>
+</body>
+</html>

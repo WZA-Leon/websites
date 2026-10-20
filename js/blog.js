@@ -39,7 +39,7 @@ function renderBlogList(articles) {
     }
 
     blogGrid.innerHTML = articles.map(article => {
-        const url = article.url || `./blog-data/${article.id}/post.html`;
+        const url = article.url || `./post.html?id=${encodeURIComponent(article.id)}`;
         const tags = Array.isArray(article.tags) 
             ? article.tags.map(t => `<span class="tag">${t}</span>`).join('') 
             : '';

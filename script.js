@@ -1,21 +1,36 @@
 // 在页面加载后注入导航栏和页脚，并初始化交互
+// 以 script.js 自身位置为站点根目录，保证根目录页面与 blog-data 下的文章页
+// 使用同一套导航/页脚资源路径。
+const SITE_BASE = (() => {
+    const script = document.currentScript ||
+        Array.from(document.scripts).find(s => /(^|\/)script\.js(?:[?#]|$)/.test(s.getAttribute('src') || ''));
+    if (script && script.src) {
+        return new URL('.', script.src).href;
+    }
+    return new URL('./', document.baseURI).href;
+})();
+
+function sitePath(path) {
+    return new URL(path, SITE_BASE).href;
+}
+
 function buildNavHTML() {
     return `
     <nav id="main-nav" class="site-nav">
         <div class="container nav-container">
-            <a class="brand" href="index.html">
-                <img src="images/photo.png" alt="avatar" class="nav-avatar">
+            <a class="brand" href="${sitePath('index.html')}">
+                <img src="${sitePath('images/photo.png')}" alt="avatar" class="nav-avatar">
                 <span>WZA · Leon</span>
             </a>
             <div id="navLinks" class="nav-links">
-                <a href="index.html">首页</a>
-                <a href="features.html">探索</a>
-                <a href="projects.html">项目</a>
-                <a href="gallery.html">摄影</a>
-                <a href="blog.html">博客</a>
-                <a href="about.html">关于</a>
-                <a href="contact.html">联系</a>
-                <a href="quiz.html">测验</a>
+                <a href="${sitePath('index.html')}">首页</a>
+                <a href="${sitePath('features.html')}">探索</a>
+                <a href="${sitePath('projects.html')}">项目</a>
+                <a href="${sitePath('gallery.html')}">摄影</a>
+                <a href="${sitePath('blog.html')}">博客</a>
+                <a href="${sitePath('about.html')}">关于</a>
+                <a href="${sitePath('contact.html')}">联系</a>
+                <a href="${sitePath('quiz.html')}">测验</a>
             </div>
             <div style="display:flex;align-items:center;gap:12px;">
                 <button id="themeToggle" class="theme-btn" title="切换主题">🌈</button>
@@ -76,11 +91,11 @@ function buildFooterHTML() {
                 <div class="footer-column">
                     <h3>快速链接</h3>
                     <ul class="footer-links">
-                        <li><a href="index.html">首页</a></li>
-                        <li><a href="features.html">探索</a></li>
-                        <li><a href="about.html">关于WZA</a></li>
-                        <li><a href="projects.html">项目</a></li>
-                        <li><a href="contact.html">联系我们</a></li>
+                        <li><a href="${sitePath('index.html')}">首页</a></li>
+                        <li><a href="${sitePath('features.html')}">探索</a></li>
+                        <li><a href="${sitePath('about.html')}">关于WZA</a></li>
+                        <li><a href="${sitePath('projects.html')}">项目</a></li>
+                        <li><a href="${sitePath('contact.html')}">联系我们</a></li>
                     </ul>
                 </div>
                 
@@ -90,8 +105,8 @@ function buildFooterHTML() {
                         <li><a href="#">阅读</a></li>
                         <li><a href="#">旅游</a></li>
                         <li><a href="#">音乐</a></li>
-                        <li><a href="projects.html">编程</a></li>
-                        <li><a href="gallery.html">摄影</a></li>
+                        <li><a href="${sitePath('projects.html')}">编程</a></li>
+                        <li><a href="${sitePath('gallery.html')}">摄影</a></li>
                         <li><a href="#">游戏</a></li>
                     </ul>
                 </div>
@@ -287,7 +302,7 @@ async function fetchJSON(path) {
 async function initPhotoGallery() {
     const root = document.getElementById('photograph-root');
     root.innerHTML = '';
-    const top = await fetchJSON('./images/photograph/index.json');
+    const top = await fetchJSON(sitePath('images/photograph/index.json'));
     const categories = top?.categories || top || [];
     if (!Array.isArray(categories) || categories.length === 0) {
         root.innerHTML = '<p class="error">无法加载作品索引。</p>';
@@ -298,13 +313,13 @@ async function initPhotoGallery() {
         const folder = typeof cat === 'string' ? cat : (cat.folder || cat.name || '');
         if (!folder) continue;
 
-        const catPath = `./images/photograph/${folder}`;
+        const catPath = sitePath(`images/photograph/${folder}`);
         const catIndex = await fetchJSON(`${catPath}/index.json`);
         if (!catIndex) continue;
 
         const categoryName = catIndex.name || folder;
         const categoryDesc = catIndex.description || catIndex.summary || '';
-        const categoryCover = catIndex.cover ? resolveImagePath(catPath, catIndex.cover) : 'images/photo.png';
+        const categoryCover = catIndex.cover ? resolveImagePath(catPath, catIndex.cover) : sitePath('images/photo.png');
         const works = Array.isArray(catIndex.works) ? catIndex.works : [];
 
         const catEl = document.createElement('div');
@@ -330,7 +345,7 @@ async function initPhotoGallery() {
             const title = workIndex?.title || work.title || workFolder;
             const desc = workIndex?.description || work.description || '';
             const coverRel = workIndex?.cover || work.cover || '';
-            const cover = coverRel ? resolveImagePath(workPath, coverRel) : 'images/photo.png';
+            const cover = coverRel ? resolveImagePath(workPath, coverRel) : sitePath('images/photo.png');
 
             const card = document.createElement('div');
             card.className = 'work-card';
@@ -414,7 +429,7 @@ function closeViewer() {
 async function initProjectGallery() {
     const root = document.getElementById('project-root');
     root.innerHTML = '';
-    const top = await fetchJSON('./project-data/index.json');
+    const top = await fetchJSON(sitePath('project-data/index.json'));
     const projects = Array.isArray(top?.projects) ? top.projects : top || [];
     if (!Array.isArray(projects) || projects.length === 0) {
         root.innerHTML = '<p class="error">无法加载项目索引。</p>';
@@ -425,7 +440,7 @@ async function initProjectGallery() {
         const folder = typeof item === 'string' ? item : (item.folder || item.title || '');
         if (!folder) continue;
 
-        const projectPath = `./project-data/${folder}`;
+        const projectPath = sitePath(`project-data/${folder}`);
         const projectIndex = await fetchJSON(`${projectPath}/index.json`);
         if (!projectIndex) continue;
 

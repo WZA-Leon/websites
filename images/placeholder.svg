@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-label="图片占位">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1a1d29"/>
+            <stop offset="1" stop-color="#4d6bfe"/>
+        </linearGradient>
+    </defs>
+    <rect width="800" height="450" fill="url(#bg)"/>
+    <g fill="none" stroke="#ffffff" stroke-opacity="0.72" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="300" y="145" width="200" height="145" rx="12"/>
+        <path d="M330 260l50-55 40 40 30-30 50 45"/>
+        <circle cx="350" cy="190" r="14" fill="#ffffff" fill-opacity="0.72" stroke="none"/>
+    </g>
+    <text x="400" y="345" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="28" letter-spacing="4" fill="#ffffff" fill-opacity="0.75">PROJECT</text>
+</svg>
