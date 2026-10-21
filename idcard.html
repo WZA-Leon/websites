@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人介绍</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -238,19 +240,6 @@
     </button>
 
     <script>
-        // 滚动时改变导航栏样式
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.site-nav');
-            if (!header) return;
-            if (window.scrollY > 100) {
-                header.style.padding = '10px 0';
-                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.padding = '15px 0';
-                header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.05)';
-            }
-        });
-        
         // 平滑滚动到锚点
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -269,15 +258,6 @@
             });
         });
         
-        // 页面加载动画
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 0.5s';
-            
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100);
-        });
     </script>
 </body>
 </html>

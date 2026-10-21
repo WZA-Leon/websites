@@ -9,8 +9,12 @@ function resolveGalleryPath(relative) {
     return new URL(relative, GALLERY_BASE_URL).href;
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await initGallery();
+document.addEventListener('DOMContentLoaded', () => {
+    const ready = initGallery().then(() => {
+        const root = document.getElementById('photograph-root');
+        return window.SiteLoader ? window.SiteLoader.waitForImages(root) : undefined;
+    });
+    if (window.SiteLoader) window.SiteLoader.waitFor(ready);
 });
 
 async function initGallery() {

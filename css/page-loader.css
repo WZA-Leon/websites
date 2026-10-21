@@ -1,0 +1,112 @@
+/* =======================================================
+   全站页面加载层（首次加载 + 站内跳转）
+   由 js/page-loader.js 控制显示与隐藏
+   ======================================================= */
+
+.site-loader {
+    --loader-bg: var(--bg-primary, var(--bg, #0a0a0a));
+    --loader-panel: var(--bg-secondary, var(--bg, #050505));
+    --loader-accent: var(--primary-color, var(--brand, #4d6bfe));
+    --loader-text: var(--text-secondary, var(--text-2, #999999));
+    --loader-border: var(--border-light, var(--line, rgba(255, 255, 255, 0.14)));
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--loader-bg) 0%, var(--loader-panel) 100%);
+    color: var(--loader-text);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    will-change: opacity;
+}
+
+.site-loader::before {
+    content: '';
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--loader-accent) 0%, transparent 70%);
+    opacity: 0.12;
+    filter: blur(18px);
+    pointer-events: none;
+}
+
+.site-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.site-loader-spinner {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border: 3px solid var(--loader-border);
+    border-top-color: var(--loader-accent);
+    border-radius: 50%;
+    animation: siteLoaderSpin 0.8s linear infinite;
+}
+
+.site-loader.is-hidden .site-loader-spinner {
+    animation-play-state: paused;
+}
+
+.site-loader-text {
+    position: relative;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    opacity: 0.65;
+}
+
+.site-loader-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@keyframes siteLoaderSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* 亮色主题 */
+html.theme-light .site-loader {
+    --loader-bg: #ffffff;
+    --loader-panel: #f5f5f5;
+    --loader-accent: #000000;
+    --loader-text: #555555;
+    --loader-border: #e0e0e0;
+}
+
+/* 彩色主题 */
+html.theme-colorful .site-loader {
+    --loader-bg: #f7f9fc;
+    --loader-panel: #eef2ff;
+    --loader-accent: #4d6bfe;
+    --loader-text: #5a6072;
+    --loader-border: #e6eaf2;
+}
+
+@media (max-width: 480px) {
+    .site-loader { gap: 15px; }
+    .site-loader-spinner { width: 40px; height: 40px; }
+    .site-loader-text { font-size: 0.66rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-loader { transition-duration: 0.01ms; }
+    .site-loader-spinner { animation-duration: 1.6s; }
+}

@@ -29,6 +29,7 @@ function buildNavHTML() {
                 <a href="${sitePath('projects.html')}">项目</a>
                 <a href="${sitePath('gallery.html')}">摄影</a>
                 <a href="${sitePath('blog.html')}">博客</a>
+                <a href="${sitePath('friends.html')}">友链</a>
                 <a href="${sitePath('about.html')}">关于</a>
                 <a href="${sitePath('contact.html')}">联系</a>
                 <a href="${sitePath('quiz.html')}">测验</a>
@@ -47,8 +48,13 @@ function buildNavHTML() {
 // 主题管理（移除色盲模式）
 const THEMES = ['colorful','dark','light'];
 function applyTheme(name) {
+    const root = document.documentElement;
     document.body.classList.remove(...THEMES.map(t=>`theme-${t}`));
-    if (THEMES.includes(name)) document.body.classList.add(`theme-${name}`);
+    root.classList.remove(...THEMES.map(t=>`theme-${t}`));
+    if (THEMES.includes(name)) {
+        document.body.classList.add(`theme-${name}`);
+        root.classList.add(`theme-${name}`);
+    }
     document.body.classList.add('theme-transition');
     try { localStorage.setItem('site-theme', name); } catch(e){}
     const btn = document.getElementById('themeToggle');
@@ -62,7 +68,10 @@ function applyTheme(name) {
 }
 
 function initThemeToggle() {
-    const saved = (localStorage.getItem('site-theme')) || 'dark';
+    let saved = 'dark';
+    try {
+        saved = localStorage.getItem('site-theme') || 'dark';
+    } catch (e) {}
     applyTheme(saved);
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
@@ -96,6 +105,7 @@ function buildFooterHTML() {
                         <li><a href="${sitePath('features.html')}">探索</a></li>
                         <li><a href="${sitePath('about.html')}">关于WZA</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
+                        <li><a href="${sitePath('friends.html')}">友链</a></li>
                         <li><a href="${sitePath('contact.html')}">联系我们</a></li>
                     </ul>
                 </div>
@@ -235,6 +245,7 @@ function initScrollReveal() {
         '.feature-card',
         '.contact-card',
         '.project-card',
+        '.friend-card',
         '.blog-card',
         '.photo-card',
         '.work-card',
@@ -309,61 +320,6 @@ function initScrollReveal() {
         });
     });
     mutationObserver.observe(document.body, { childList: true, subtree: true });
-}
-
-/* ---------- 站内切换：滑屏加载层 ---------- */
-function initPageTransitions() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let navigating = false;
-
-    function createTransitionLayer() {
-        const layer = document.createElement('div');
-        layer.className = 'page-transition';
-        layer.setAttribute('aria-hidden', 'true');
-        layer.innerHTML = '<span class="page-transition-mark"></span>';
-        document.body.appendChild(layer);
-        return layer;
-    }
-
-    document.addEventListener('click', (event) => {
-        if (navigating || event.defaultPrevented ||
-            (event.button != null && event.button !== 0)) return;
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        if (!(event.target instanceof Element)) return;
-
-        const link = event.target.closest('a[href]');
-        if (!link) return;
-        if (link.target && link.target !== '_self') return;
-        if (link.hasAttribute('download')) return;
-        if (link.closest('[data-no-transition]')) return;
-
-        const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') ||
-            /^(mailto:|tel:|javascript:|data:)/i.test(href)) return;
-
-        const url = new URL(href, window.location.href);
-        if (url.origin !== window.location.origin) return;
-        if (url.hash) return;
-
-        const normalizePath = path => path.replace(/\/index\.html$/, '/');
-        const current = new URL(window.location.href);
-        if (normalizePath(url.pathname) === normalizePath(current.pathname) &&
-            url.search === current.search) return;
-
-        navigating = true;
-        const layer = createTransitionLayer();
-        void layer.offsetWidth;
-        requestAnimationFrame(() => layer.classList.add('is-active'));
-        window.setTimeout(() => {
-            window.location.href = url.href;
-        }, 440);
-    });
-
-    window.addEventListener('pageshow', () => {
-        navigating = false;
-        document.querySelectorAll('.page-transition').forEach(layer => layer.remove());
-    });
 }
 
 /* ---------- 文章图片：自适应宽度、悬停高光与点击放大 ---------- */
@@ -471,7 +427,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initContentImageWrapping();
     initContentImageLightbox();
     initScrollReveal();
-    initPageTransitions();
     // 页面特定模块由各页面自己的JS负责初始化
 });
 

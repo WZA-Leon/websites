@@ -48,7 +48,7 @@
     const markdownUrl = new URL(`./blog-data/${encodeURIComponent(article.id)}.md`, document.baseURI);
     const contentBase = new URL('./blog-data/', document.baseURI);
 
-    fetch(markdownUrl)
+    const loadPromise = fetch(markdownUrl)
         .then(response => {
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return response.text();
@@ -66,11 +66,18 @@
 
             const charCount = markdown.replace(/\s+/g, '').length;
             if (readTimeEl) readTimeEl.textContent = String(Math.max(1, Math.round(charCount / 500)));
+
+            // 文章内图片加载完再隐藏全站加载层，避免图片弹出造成跳动。
+            if (window.SiteLoader) {
+                return window.SiteLoader.waitForImages(contentEl);
+            }
         })
         .catch(error => {
             console.error('Failed to load markdown:', markdownUrl.href, error);
             showError('文章加载失败，请稍后重试。');
         });
+
+    if (window.SiteLoader) window.SiteLoader.waitFor(loadPromise);
 
     function resolveRelativeUrls(container, baseUrl) {
         const absoluteUrl = value => {

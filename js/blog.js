@@ -7,6 +7,10 @@ function initBlog() {
     // 从 window.BLOG_LIST 获取数据
     allArticles = window.BLOG_LIST || [];
     renderBlogList(allArticles);
+
+    if (window.SiteLoader) {
+        window.SiteLoader.waitForImages(document.getElementById('blogGrid'));
+    }
     
     // 分类按钮事件
     document.querySelectorAll('.category-btn').forEach(btn => {

@@ -1697,52 +1697,6 @@ img:hover {
     }
 }
 
-/* 站内跳转时的滑屏加载层（由 script.js 注入） */
-.page-transition {
-    position: fixed;
-    inset: 0;
-    z-index: 5000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    transform: translateX(100%);
-    transition: transform 0.42s cubic-bezier(0.76, 0, 0.24, 1);
-    will-change: transform;
-    pointer-events: none;
-}
-
-.page-transition.is-active {
-    transform: translateX(0);
-    pointer-events: auto;
-}
-
-.page-transition::after {
-    content: 'WZA · LEON';
-    position: absolute;
-    bottom: calc(48px + env(safe-area-inset-bottom, 0px));
-    bottom: max(12vh, calc(48px + env(safe-area-inset-bottom, 0px)));
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--text-secondary);
-    font-size: 0.72rem;
-    letter-spacing: 0.28em;
-    opacity: 0.55;
-}
-
-.page-transition-mark {
-    width: 42px;
-    height: 42px;
-    border: 3px solid var(--border-light);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: pageSpin 0.8s linear infinite;
-}
-
-@keyframes pageSpin {
-    to { transform: rotate(360deg); }
-}
-
 /* 滚动进入视口的揭示动画 */
 .reveal {
     opacity: 0;
@@ -2112,8 +2066,6 @@ button,
         transform: none !important;
         transition: none !important;
     }
-
-    .page-transition { display: none !important; }
 
     *,
     *::before,

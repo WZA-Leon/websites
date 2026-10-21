@@ -14,6 +14,10 @@ function initProjects() {
     projectsData.categories = Array.from(cats);
     initProjectCategories();
     renderProjects();
+
+    if (window.SiteLoader) {
+        window.SiteLoader.waitForImages(document.getElementById('project-root'));
+    }
 }
 
 function initProjectCategories() {
@@ -83,4 +87,3 @@ if (document.readyState === 'loading') {
 } else {
     initProjects();
 }
-
