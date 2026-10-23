@@ -5,6 +5,11 @@ files = glob.glob('*.html')
 for path in files:
     with open(path, 'r', encoding='utf-8') as f:
         text = f.read()
+
+    # 好友个人主页是独立页面，不注入导航栏和页脚。
+    if 'friend-home' in text:
+        continue
+
     orig = text
 
     text = re.sub(r'<header>[\s\S]*?</header>', '', text, flags=re.IGNORECASE)

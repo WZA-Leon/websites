@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reori · 个人主页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/friends.css">
+</head>
+<body class="friend-home friend-home--reori theme-dark">
+    <script>
+        (function () {
+            var theme = 'dark';
+            try { theme = localStorage.getItem('site-theme') || 'dark'; } catch (e) {}
+            if (['dark', 'light', 'colorful'].indexOf(theme) === -1) theme = 'dark';
+            document.body.classList.remove('theme-dark', 'theme-light', 'theme-colorful');
+            document.body.classList.add('theme-' + theme);
+        })();
+    </script>
+
+    <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        <span>返回友链</span>
+    </a>
+
+    <main class="friend-home-main">
+        <section class="friend-home-hero">
+            <div class="container">
+                <div class="friend-home-profile">
+                    <img class="friend-home-avatar" src="../images/friends/origin.svg" alt="Reori 的头像" width="150" height="150">
+                    <div class="friend-home-title">
+                        <p class="friend-home-kicker">FRIEND PROFILE · 001</p>
+                        <h1>Reori<span>.</span></h1>
+                        <p class="friend-home-tagline">写代码，也写自己的工具链。</p>
+                        <div class="friend-home-meta">
+                            <span><i class="fas fa-location-dot" aria-hidden="true"></i> 大连</span>
+                            <span><i class="fas fa-code" aria-hidden="true"></i> C++ / Web / P2P</span>
+                            <span><i class="fas fa-circle-check" aria-hidden="true"></i> 开放交流</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container friend-home-content">
+            <div class="friend-home-grid">
+                <div class="friend-home-main-col">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-user-astronaut" aria-hidden="true"></i> 关于我</h2>
+                        <p>我是 Reori，WZA 的同年级同学，也是一个喜欢把东西拆开再装回去的开发者。</p>
+                        <p>最早从 C++ 入门，后来慢慢接触 Web、网络编程和分布式系统。比起只调用现成框架，我更喜欢弄清楚一个请求从发出到返回，中间到底经过了哪些环节。</p>
+                        <p>现在主要维护一个开放 BBS、一套轻量云文件存储和一个 P2P 实验项目，也会写一些编码解码、多维码和 AI 五子棋之类的小工具。</p>
+                        <p class="friend-home-quote">“先把东西做出来，再慢慢把它做对。”</p>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-cubes" aria-hidden="true"></i> 正在做的事</h2>
+                        <div class="friend-home-project-grid">
+                            <article class="friend-home-project">
+                                <h3>开放 BBS</h3>
+                                <p>一个可以自由发帖、回复和站内信的小型社区，支持 Markdown、主题分类和简单的权限系统。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>Node.js</span><span>WebSocket</span><span>SQLite</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>轻量云存储</h3>
+                                <p>面向个人和小团队的文件存储服务，支持分片上传、断点续传、分享链接和简单的回收站。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>C++</span><span>HTTP</span><span>对象存储</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>P2P 实验</h3>
+                                <p>在浏览器和桌面端之间尝试点对点传输，研究 NAT 穿透、连接复用和传输加密。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>P2P</span><span>WebRTC</span><span>加密</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>AI 五子棋</h3>
+                                <p>用极小化极大搜索和启发式评估实现的五子棋 AI，支持难度选择和棋谱回放。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>C++</span><span>搜索</span><span>评估函数</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-code" aria-hidden="true"></i> 技能与工具</h2>
+                        <div class="skills-container">
+                            <span class="skill">C++17</span>
+                            <span class="skill">Web</span>
+                            <span class="skill">Node.js</span>
+                            <span class="skill">WebSocket</span>
+                            <span class="skill">P2P</span>
+                            <span class="skill">Linux</span>
+                            <span class="skill">Git</span>
+                            <span class="skill">SQLite</span>
+                            <span class="skill">网络编程</span>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> 时间线</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2024</div>
+                                <h3>第一行 C++</h3>
+                                <p>从控制台小游戏开始，第一次理解指针、内存和编译到底在做什么。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2025</div>
+                                <h3>开放 BBS 上线</h3>
+                                <p>把课堂上的网络知识变成了一个真能被人访问的小社区。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026</div>
+                                <h3>Reori.cn 与云存储</h3>
+                                <p>开始维护自己的域名和文件服务，也第一次认真处理断点续传和权限。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">现在</div>
+                                <h3>P2P 实验进行中</h3>
+                                <p>在折腾连接、穿透和加密，希望做一个人人都能看懂的文件传输 demo。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-book-open" aria-hidden="true"></i> 最近</h2>
+                        <ul class="friend-home-recent">
+                            <li>在读《计算机网络：自顶向下方法》，边读边写笔记。</li>
+                            <li>在写一个更小的 P2P 文件传输 demo，目标是“打开就能用”。</li>
+                            <li>在听游戏原声和后摇，写代码的时候尤其需要。</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <aside class="friend-home-side">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-id-card" aria-hidden="true"></i> 基本信息</h2>
+                        <ul class="friend-home-info-list">
+                            <li><span>身份</span><strong>高中生 / 独立开发者</strong></li>
+                            <li><span>所在地</span><strong>大连</strong></li>
+                            <li><span>方向</span><strong>C++ / Web / 网络</strong></li>
+                            <li><span>状态</span><strong>开放交流</strong></li>
+                            <li><span>网站</span><strong>reori.cn</strong></li>
+                        </ul>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-paper-plane" aria-hidden="true"></i> 联系方式</h2>
+                        <ul class="friend-home-contact-list">
+                            <li>
+                                <a href="mailto:reori@example.com">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>邮箱</small><strong>reori@example.com</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://reori.cn" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-globe" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>个人网站</small><strong>reori.cn</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://reori.cn" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-comments" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>留言板</small><strong>去 BBS 打个招呼</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>GitHub</small><strong>github.com</strong></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                </aside>
+            </div>
+
+            <p class="friend-home-note">这是 Reori 的示例好友主页；联系方式与项目信息为演示内容，可自行替换。</p>
+        </div>
+    </main>
+</body>
+</html>
