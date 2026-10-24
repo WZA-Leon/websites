@@ -9,21 +9,16 @@
     <link rel="stylesheet" href="../css/friends.css">
     <link rel="stylesheet" href="../css/audio-player.css">
 </head>
-<body class="friend-home friend-home--moyu theme-dark">
-    <script>
-        (function () {
-            var theme = 'dark';
-            try { theme = localStorage.getItem('site-theme') || 'dark'; } catch (e) {}
-            if (['dark', 'light', 'colorful'].indexOf(theme) === -1) theme = 'dark';
-            document.body.classList.remove('theme-dark', 'theme-light', 'theme-colorful');
-            document.body.classList.add('theme-' + theme);
-        })();
-    </script>
+<body class="friend-home friend-home--hyz theme-colorful">
+    <script src="../js/friend-theme.js"></script>
 
-    <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
-        <i class="fas fa-arrow-left" aria-hidden="true"></i>
-        <span>返回友链</span>
-    </a>
+    <header class="friend-home-header">
+        <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span>返回友链</span>
+        </a>
+        <button type="button" class="friend-home-theme" id="friendThemeToggle" data-friend-theme-toggle title="切换主题" aria-label="切换主题">🌈</button>
+    </header>
 
     <main class="friend-home-main">
         <section class="friend-home-hero">
@@ -55,7 +50,7 @@
             <div class="friend-home-grid">
                 <div class="friend-home-main-col">
                     <section class="card friend-home-card">
-                        <h2><i class="fas fa-palette" aria-hidden="true"></i> 关于我</h2>
+                        <h2><i class="fas fa-user" aria-hidden="true"></i> 关于我</h2>
                         <p>我是贺煜之，2009 年 10 月 17 日出生，现在在大连沙河口区读高二，学校是辽宁师大附中。</p>
                         <p>平常没什么特别固定的爱好，学习之外就是跟朋友待着，聊聊天、打打游戏。足球也算一个吧，但真谈不上多爱踢，就是有人喊就去跑一会儿，没人喊也不会专门想着。</p>
                         <p>我这个人比较爱说话，也挺爱笑的，脾气还行，别人开我玩笑我基本不生气（除非你把我球抢走了还耍赖）。班里有什么事喊我一声，我一般都乐意去搭把手。</p>
@@ -64,7 +59,7 @@
                     </section>
 
                     <section class="card friend-home-card">
-                        <h2><i class="fas fa-paintbrush" aria-hidden="true"></i> 正在做的事</h2>
+                        <h2><i class="fas fa-futbol" aria-hidden="true"></i> 正在做的事</h2>
                         <div class="friend-home-project-grid">
                             <article class="friend-home-project">
                                 <h3>偶尔踢球</h3>
@@ -176,8 +171,20 @@
                             </li>
                             <li>
                                 <a href="https://example.com" target="_blank" rel="noopener">
-                                    <span class="friend-home-contact-icon"><i class="fas fa-book" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-icon"><i class="fas fa-book-open" aria-hidden="true"></i></span>
                                     <span class="friend-home-contact-text"><small>小红书</small><strong>日常碎碎念</strong></span>
                                 </a>
                             </li>
  
+                        </ul>
+                    </section>
+
+                </aside>
+            </div>
+
+            <p class="friend-home-note">这是贺煜之的示例好友主页；联系方式与项目信息为演示内容，可自行替换。</p>
+        </div>
+    </main>
+    <script src="../js/audio-player.js"></script>
+</body>
+</html>

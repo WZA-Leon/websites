@@ -1,0 +1,6 @@
+{
+  "title": "ZADM 随机点名",
+  "description": "基于 Python Tkinter 的图形化随机点名工具，支持滚动抽选、名单管理和 JSON 配置。",
+  "url": "",
+  "markdown": "README.md"
+}

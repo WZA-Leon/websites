@@ -9,21 +9,16 @@
     <link rel="stylesheet" href="../css/friends.css">
     <link rel="stylesheet" href="../css/audio-player.css">
 </head>
-<body class="friend-home friend-home--xinghe theme-dark">
-    <script>
-        (function () {
-            var theme = 'dark';
-            try { theme = localStorage.getItem('site-theme') || 'dark'; } catch (e) {}
-            if (['dark', 'light', 'colorful'].indexOf(theme) === -1) theme = 'dark';
-            document.body.classList.remove('theme-dark', 'theme-light', 'theme-colorful');
-            document.body.classList.add('theme-' + theme);
-        })();
-    </script>
+<body class="friend-home friend-home--xinghe theme-colorful">
+    <script src="../js/friend-theme.js"></script>
 
-    <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
-        <i class="fas fa-arrow-left" aria-hidden="true"></i>
-        <span>返回友链</span>
-    </a>
+    <header class="friend-home-header">
+        <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span>返回友链</span>
+        </a>
+        <button type="button" class="friend-home-theme" id="friendThemeToggle" data-friend-theme-toggle title="切换主题" aria-label="切换主题">🌈</button>
+    </header>
 
     <main class="friend-home-main">
         <section class="friend-home-hero">

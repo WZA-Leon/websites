@@ -3,101 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>酷站导航 - WZA Leon</title>
+    <title>外部资源导航 - WZA Leon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/site-refresh.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- 编程作品页面内容 -->
-    <section class="hero">
+    <section class="page-hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>资源<span>与 链接</span></h1>
-                    <p>收集我常用的学习资源、工具与灵感来源，供同学参考。</p>
-                    <div class="hero-buttons">
-                        <a href="contact.html" class="btn">联系我</a>
-                        <a href="about.html" class="btn btn-accent">了解更多</a>
-                    </div>
+            <div class="page-hero-copy">
+                <p class="page-kicker"><i class="fas fa-globe" aria-hidden="true"></i> EXTERNAL DIRECTORY</p>
+                <h1 class="page-title">站外的好东西<br><span>集中放在这里</span></h1>
+                <p class="page-lead">这一页只收录外部站点：学习资料、常用工具、灵感来源和社区。站内自己整理的指南请去资源库。</p>
+                <div class="page-meta">
+                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 学习</span>
+                    <span><i class="fas fa-wrench" aria-hidden="true"></i> 工具</span>
+                    <span><i class="fas fa-lightbulb" aria-hidden="true"></i> 灵感</span>
+                    <span><i class="fas fa-users" aria-hidden="true"></i> 社区</span>
                 </div>
+                <div class="page-actions">
+                    <a href="resources.html" class="btn">站内资源库</a>
+                    <a href="friends.html" class="btn btn-accent">朋友的主页</a>
+                </div>
+            </div>
+            <aside class="page-hero-panel">
+                <h2>导航说明</h2>
+                <p>外部链接会在新标签页打开。</p>
+                <div class="hero-stat-list">
+                    <div class="hero-stat"><strong>04</strong><span>分类</span></div>
+                    <div class="hero-stat"><strong>12</strong><span>精选站点</span></div>
+                    <div class="hero-stat"><strong>↗</strong><span>站外链接</span></div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">DIRECTORY</p>
+                    <h2>外部资源导航</h2>
+                    <p>按用途分组，不做无意义的堆砌。每个链接都尽量保留一句说明。</p>
+                </div>
+            </div>
+
+            <div class="directory-grid">
+                <section class="directory-card">
+                    <h3><i class="fas fa-graduation-cap" aria-hidden="true"></i> 学习资料</h3>
+                    <div class="directory-links">
+                        <a href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN Web Docs <small>Web 标准</small></a>
+                        <a href="https://www.freecodecamp.org/" target="_blank" rel="noopener">freeCodeCamp <small>练习</small></a>
+                        <a href="https://www.runoob.com/" target="_blank" rel="noopener">菜鸟教程 <small>入门参考</small></a>
+                    </div>
+                </section>
+                <section class="directory-card">
+                    <h3><i class="fas fa-wrench" aria-hidden="true"></i> 常用工具</h3>
+                    <div class="directory-links">
+                        <a href="https://github.com/" target="_blank" rel="noopener">GitHub <small>代码托管</small></a>
+                        <a href="https://www.figma.com/" target="_blank" rel="noopener">Figma <small>界面设计</small></a>
+                        <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code <small>编辑器</small></a>
+                    </div>
+                </section>
+                <section class="directory-card">
+                    <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> 灵感与审美</h3>
+                    <div class="directory-links">
+                        <a href="https://www.behance.net/" target="_blank" rel="noopener">Behance <small>设计作品</small></a>
+                        <a href="https://www.pinterest.com/" target="_blank" rel="noopener">Pinterest <small>视觉收集</small></a>
+                        <a href="https://www.bilibili.com/" target="_blank" rel="noopener">Bilibili <small>视频灵感</small></a>
+                    </div>
+                </section>
+                <section class="directory-card">
+                    <h3><i class="fas fa-users" aria-hidden="true"></i> 社区与讨论</h3>
+                    <div class="directory-links">
+                        <a href="https://stackoverflow.com/" target="_blank" rel="noopener">Stack Overflow <small>问题搜索</small></a>
+                        <a href="https://www.zhihu.com/" target="_blank" rel="noopener">知乎 <small>中文讨论</small></a>
+                        <a href="https://www.v2ex.com/" target="_blank" rel="noopener">V2EX <small>技术社区</small></a>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
 
-    <!-- 项目展示 -->
-    <section class="section projects">
+    <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>项目集</h2>
-                <p>精选编程项目，展现不同的技术栈和应用场景</p>
-            </div>
-            
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="images/placeholder.svg" alt="项目1">
-                        <div class="project-tech">
-                            <span>Python</span>
-                            <span>Flask</span>
-                            <span>HTML/CSS</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>个人博客系统</h3>
-                        <p>基于 Flask 的个人博客网站，支持文章发布、评论系统等功能。</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">查看演示</a>
-                            <a href="#" class="btn btn-small btn-accent">源码</a>
-                        </div>
-                    </div>
+            <div class="cta-band">
+                <div>
+                    <h2>想交换友链？</h2>
+                    <p>如果是个人站点或创作主页，欢迎从友链页面看看目前的伙伴。</p>
                 </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="images/placeholder.svg" alt="项目2">
-                        <div class="project-tech">
-                            <span>JavaScript</span>
-                            <span>Node.js</span>
-                            <span>React</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>任务管理应用</h3>
-                        <p>现代化的任务管理工具，支持团队协作和项目跟踪。</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">查看演示</a>
-                            <a href="#" class="btn btn-small btn-accent">源码</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="images/placeholder.svg" alt="项目3">
-                        <div class="project-tech">
-                            <span>Python</span>
-                            <span>TensorFlow</span>
-                            <span>AI/ML</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>AI 图像识别</h3>
-                        <p>基于深度学习的图像识别项目，支持多种物体识别。</p>
-                        <div class="project-links">
-                            <a href="#" class="btn btn-small">查看演示</a>
-                            <a href="#" class="btn btn-small btn-accent">源码</a>
-                        </div>
-                    </div>
-                </div>
+                <a href="friends.html" class="btn">去友链页面</a>
             </div>
         </div>
     </section>
 
-    <!-- 页脚占位（由 script.js 注入） -->
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
 </body>

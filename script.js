@@ -25,7 +25,7 @@ function buildNavHTML() {
             </a>
             <div id="navLinks" class="nav-links">
                 <a href="${sitePath('index.html')}">首页</a>
-                <a href="${sitePath('features.html')}">探索</a>
+                <a href="${sitePath('resources.html')}">资源</a>
                 <a href="${sitePath('projects.html')}">项目</a>
                 <a href="${sitePath('gallery.html')}">摄影</a>
                 <a href="${sitePath('blog.html')}">博客</a>
@@ -68,15 +68,16 @@ function applyTheme(name) {
 }
 
 function initThemeToggle() {
-    let saved = 'dark';
+    let saved = 'colorful';
     try {
-        saved = localStorage.getItem('site-theme') || 'dark';
+        saved = localStorage.getItem('site-theme') || 'colorful';
     } catch (e) {}
+    if (!THEMES.includes(saved)) saved = 'colorful';
     applyTheme(saved);
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
     btn.addEventListener('click', () => {
-        const current = THEMES.find(t=>document.body.classList.contains(`theme-${t}`)) || 'dark';
+        const current = THEMES.find(t=>document.body.classList.contains(`theme-${t}`)) || 'colorful';
         const next = THEMES[(THEMES.indexOf(current)+1) % THEMES.length];
         applyTheme(next);
     });
@@ -102,7 +103,7 @@ function buildFooterHTML() {
                     <h3>快速链接</h3>
                     <ul class="footer-links">
                         <li><a href="${sitePath('index.html')}">首页</a></li>
-                        <li><a href="${sitePath('features.html')}">探索</a></li>
+                        <li><a href="${sitePath('resources.html')}">资源</a></li>
                         <li><a href="${sitePath('about.html')}">关于WZA</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
                         <li><a href="${sitePath('friends.html')}">友链</a></li>
@@ -221,13 +222,18 @@ function initNavState() {
     const isBlogPage = /\/blog\.html$/.test(current.pathname) ||
         /\/post\.html$/.test(current.pathname) ||
         /\/blog-data\//.test(current.pathname);
+    const isProjectPage = /\/project\.html$/.test(current.pathname);
+    const isResourcePage = /\/resource\.html$/.test(current.pathname);
 
     nav.querySelectorAll('.nav-links a').forEach(link => {
         const target = new URL(link.href, window.location.href);
         const targetPath = normalizePath(target.pathname);
         const samePage = targetPath === currentPath;
         const isBlogLink = /\/blog\.html$/.test(target.pathname);
-        if (samePage || (isBlogPage && isBlogLink)) {
+        const isProjectLink = /\/projects\.html$/.test(target.pathname);
+        const isResourceLink = /\/resources\.html$/.test(target.pathname);
+        if (samePage || (isBlogPage && isBlogLink) ||
+            (isProjectPage && isProjectLink) || (isResourcePage && isResourceLink)) {
             link.classList.add('active');
             link.setAttribute('aria-current', 'page');
         }
@@ -567,43 +573,4 @@ function openViewer(catPath, workFolder, workIndex) {
 function closeViewer() {
     const v = document.getElementById('photo-viewer');
     if (v) v.classList.remove('show');
-}
-
-async function initProjectGallery() {
-    const root = document.getElementById('project-root');
-    root.innerHTML = '';
-    const top = await fetchJSON(sitePath('project-data/index.json'));
-    const projects = Array.isArray(top?.projects) ? top.projects : top || [];
-    if (!Array.isArray(projects) || projects.length === 0) {
-        root.innerHTML = '<p class="error">无法加载项目索引。</p>';
-        return;
-    }
-
-    for (const item of projects) {
-        const folder = typeof item === 'string' ? item : (item.folder || item.title || '');
-        if (!folder) continue;
-
-        const projectPath = sitePath(`project-data/${folder}`);
-        const projectIndex = await fetchJSON(`${projectPath}/index.json`);
-        if (!projectIndex) continue;
-
-        const title = projectIndex.title || projectIndex.name || folder;
-        const description = projectIndex.description || projectIndex.intro || '';
-        const url = projectIndex.url || projectIndex.link || '';
-        const markdown = projectIndex.markdown || projectIndex.readme || 'README.md';
-
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.innerHTML = `
-            <div class="project-content">
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <div class="project-links">
-                    ${url ? `<a href="${url}" target="_blank" rel="noopener" class="btn btn-small">访问网址</a>` : ''}
-                    <a href="${projectPath}/${markdown}" target="_blank" rel="noopener" class="btn btn-small btn-accent">查看文档</a>
-                </div>
-            </div>
-        `;
-        root.appendChild(card);
-    }
 }

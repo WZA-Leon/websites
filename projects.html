@@ -3,48 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>编程作品 - WZA Leon</title>
+    <title>项目 - WZA Leon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/site-refresh.css">
     <link rel="stylesheet" href="css/projects.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- 计算机特长页面内容 -->
-    <section class="hero projects-hero">
+    <section class="page-hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>编程项目</h1>
-                    <p>展示我的编程作品和技术成果</p>
-                    <div class="hero-buttons">
-                        <a href="contact.html" class="btn">联系我</a>
-                        <a href="about.html" class="btn btn-accent">了解更多</a>
-                    </div>
+            <div class="page-hero-copy">
+                <p class="page-kicker"><i class="fas fa-cube" aria-hidden="true"></i> PROJECTS · 作品目录</p>
+                <h1 class="page-title">把想法做成<br><span>能运行的东西</span></h1>
+                <p class="page-lead">从个人网站到小工具，这里记录正在开发、已经上线和仍在实验的项目。每个项目都有独立的 Markdown 文档，方便继续迭代。</p>
+                <div class="page-meta">
+                    <span><i class="fas fa-code" aria-hidden="true"></i> 3 个项目</span>
+                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> 网站 / 工具</span>
+                    <span><i class="fas fa-file-lines" aria-hidden="true"></i> Markdown 文档</span>
+                </div>
+                <div class="page-actions">
+                    <a href="#project-list" class="btn">浏览项目 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                    <a href="resources.html" class="btn btn-accent">看资源库</a>
+                </div>
+            </div>
+            <aside class="page-hero-panel">
+                <h2>项目状态</h2>
+                <p>小步构建，持续维护。</p>
+                <div class="hero-stat-list">
+                    <div class="hero-stat"><strong>03</strong><span>收录项目</span></div>
+                    <div class="hero-stat"><strong>02</strong><span>项目类型</span></div>
+                    <div class="hero-stat"><strong>∞</strong><span>继续迭代</span></div>
+                </div>
+                <div class="hero-code"><b>build</b> → <b>ship</b> → <b>refine</b><br><b>docs</b> project-data/&lt;id&gt;/README.md</div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section" id="project-list">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">CATALOG</p>
+                    <h2>项目目录</h2>
+                    <p>按类型筛选，打开项目文档查看设计思路、技术栈和后续计划。</p>
+                </div>
+            </div>
+
+            <div class="category-filter" id="projectCategories"></div>
+            <div id="project-root" class="projects-grid"></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">WORKFLOW</p>
+                    <h2>一个项目怎么开始</h2>
+                    <p>先做最小可用版本，再逐渐补上文档、细节和性能。</p>
+                </div>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <span class="process-number">01</span>
+                    <h3>拆问题</h3>
+                    <p>写下目标、限制和不做什么，先把范围控制住。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">02</span>
+                    <h3>做原型</h3>
+                    <p>用最简单的结构跑通主流程，再决定是否值得继续打磨。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">03</span>
+                    <h3>补文档</h3>
+                    <p>把决策、用法和遗留问题写进 README，方便下一次回来。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 分类选择 -->
-    <section class="projects-category-section">
+    <section class="section">
         <div class="container">
-            <h2>选择分类</h2>
-            <div class="category-filter" id="projectCategories"></div>
+            <div class="cta-band">
+                <div>
+                    <h2>想一起做点什么？</h2>
+                    <p>如果你有有趣的网站、工具或实验想法，欢迎来聊。</p>
+                </div>
+                <a href="contact.html" class="btn">联系 WZA</a>
+            </div>
         </div>
     </section>
 
-    <!-- 项目展示 -->
-    <section class="section projects">
-        <div class="container">
-            <div id="project-root" class="projects-grid"></div>
-        </div>
-    </section>
-
-        <!-- 页脚 -->
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
     <script src="js/projects-list.js"></script>

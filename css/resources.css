@@ -1,0 +1,180 @@
+/* =======================================================
+   资源库列表
+   ======================================================= */
+
+.resource-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 26px;
+}
+
+.resource-filter {
+    padding: 8px 15px;
+    color: var(--text-secondary);
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.resource-filter:hover,
+.resource-filter.is-active {
+    color: var(--bg-primary);
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.resource-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.resource-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 16px 16px 0 0;
+    opacity: 0.75;
+}
+
+.resource-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: var(--glow);
+}
+
+.resource-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.resource-type {
+    padding: 3px 9px;
+    color: var(--primary-color);
+    background: rgba(127, 127, 127, 0.08);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.resource-date {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+}
+
+.resource-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+    line-height: 1.45;
+}
+
+.resource-card h3 a {
+    color: var(--text-primary);
+}
+
+.resource-card h3 a:hover {
+    color: var(--primary-color);
+}
+
+.resource-card p {
+    flex: 1;
+    margin: 0 0 14px;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.75;
+}
+
+.resource-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.resource-tags span {
+    padding: 3px 8px;
+    color: var(--text-secondary);
+    background: rgba(127, 127, 127, 0.07);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-size: 0.7rem;
+}
+
+.resource-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 13px;
+    border-top: 1px dashed var(--border-light);
+}
+
+.resource-card-footer > span {
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+}
+
+.resource-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.resource-read i {
+    transition: transform 0.25s ease;
+}
+
+.resource-card:hover .resource-read i {
+    transform: translateX(3px);
+}
+
+.resource-empty {
+    grid-column: 1 / -1;
+    padding: 46px 20px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .resource-card {
+        padding: 19px;
+    }
+
+    .resource-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

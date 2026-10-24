@@ -10,11 +10,11 @@
         : false;
 
     // 尽早同步主题类，保证加载层颜色与已保存主题一致
-    let savedTheme = 'dark';
+    let savedTheme = 'colorful';
     try {
-        savedTheme = localStorage.getItem('site-theme') || 'dark';
+        savedTheme = localStorage.getItem('site-theme') || 'colorful';
     } catch (e) {}
-    if (!THEMES.includes(savedTheme)) savedTheme = 'dark';
+    if (!THEMES.includes(savedTheme)) savedTheme = 'colorful';
     THEMES.forEach(theme => root.classList.remove(`theme-${theme}`));
     root.classList.add(`theme-${savedTheme}`);
 

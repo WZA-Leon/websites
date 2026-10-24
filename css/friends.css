@@ -349,7 +349,7 @@ body.theme-colorful .friend-card:hover {
 }
 
 /* =======================================================
-   好友个人主页（独立页面，无页眉页脚）
+   好友个人主页（独立页面，仅保留返回与主题切换）
    ======================================================= */
 
 .friend-home {
@@ -374,13 +374,33 @@ body.theme-colorful .friend-card:hover {
     --friend-accent-soft: rgba(228, 154, 77, 0.18);
 }
 
-.friend-home-back {
+.friend-home--hyz {
+    --friend-accent: #d97757;
+    --friend-accent-soft: rgba(217, 119, 87, 0.18);
+}
+
+.friend-home-header {
     position: fixed;
-    top: 22px;
-    left: 22px;
+    top: 0;
+    right: 0;
+    left: 0;
     z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px clamp(14px, 3vw, 28px);
+    pointer-events: none;
+}
+
+.friend-home-header > * {
+    pointer-events: auto;
+}
+
+.friend-home-back {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 9px;
     padding: 10px 16px;
     color: var(--text-primary);
@@ -392,6 +412,36 @@ body.theme-colorful .friend-card:hover {
     font-size: 0.88rem;
     font-weight: 600;
     transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.friend-home-theme {
+    display: inline-flex;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 50%;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.friend-home-theme:hover {
+    border-color: var(--friend-accent);
+    transform: translateY(-2px);
+}
+
+.friend-home-theme:focus-visible {
+    outline: 2px solid var(--friend-accent);
+    outline-offset: 3px;
 }
 
 .friend-home-back i {
@@ -758,12 +808,98 @@ body.theme-colorful .friend-card:hover {
     opacity: 0.8;
 }
 
-body.theme-light .friend-home-back {
+body.theme-light .friend-home-back,
+body.theme-light .friend-home-theme {
     background: rgba(255, 255, 255, 0.92);
+    border-color: #e0e0e0;
 }
 
 body.theme-colorful .friend-home-card {
     box-shadow: 0 8px 30px rgba(77, 107, 254, 0.10);
+}
+
+/* 彩色主题下拉开与纯白主题的层次 */
+body.theme-colorful.friend-home {
+    background:
+        radial-gradient(circle at 10% 0%, rgba(107, 140, 255, 0.34), transparent 34%),
+        radial-gradient(circle at 92% 10%, rgba(77, 107, 254, 0.22), transparent 32%),
+        linear-gradient(180deg, #dce8ff 0%, #eaf2ff 38%, #f7f9fc 100%);
+    background-attachment: fixed;
+}
+
+body.theme-colorful .friend-home-hero {
+    background:
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.65), transparent 40%),
+        radial-gradient(circle at 88% 26%, var(--friend-accent-soft), transparent 38%),
+        linear-gradient(135deg, #cfdcff 0%, #e1eaff 46%, #f0f5ff 100%);
+    border-bottom-color: rgba(77, 107, 254, 0.24);
+}
+
+body.theme-colorful .friend-home-hero::before {
+    opacity: 0.26;
+}
+
+body.theme-colorful .friend-home-hero::after {
+    background-image:
+        linear-gradient(rgba(77, 107, 254, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 107, 254, 0.08) 1px, transparent 1px);
+    opacity: 0.85;
+}
+
+body.theme-colorful .friend-home-card {
+    background: rgba(237, 244, 255, 0.9);
+    border-color: rgba(77, 107, 254, 0.24);
+    box-shadow: 0 16px 44px rgba(77, 107, 254, 0.16);
+}
+
+body.theme-colorful .friend-home-meta span {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(77, 107, 254, 0.22);
+}
+
+body.theme-colorful .friend-home-project {
+    background: #e8f0ff;
+    border-color: rgba(77, 107, 254, 0.18);
+}
+
+body.theme-colorful .friend-home-note {
+    border-top-color: rgba(77, 107, 254, 0.28);
+}
+
+body.theme-colorful .friend-home-header .friend-home-back,
+body.theme-colorful .friend-home-header .friend-home-theme {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(77, 107, 254, 0.22);
+    box-shadow: 0 10px 28px rgba(77, 107, 254, 0.18);
+}
+
+body.theme-light .friend-home {
+    --friend-accent: #222222;
+    --friend-accent-soft: rgba(0, 0, 0, 0.06);
+}
+
+body.theme-light.friend-home {
+    background: #ffffff;
+}
+
+body.theme-light .friend-home-hero {
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+}
+
+body.theme-light .friend-home-card {
+    background: #ffffff;
+    border-color: #e4e4e4;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+body.theme-light .friend-home-project {
+    background: #fafafa;
+    border-color: #e4e4e4;
+}
+
+body.theme-light .friend-home-meta span {
+    background: #ffffff;
+    border-color: #e0e0e0;
 }
 
 @media (max-width: 900px) {
@@ -860,11 +996,21 @@ body.theme-colorful .friend-home-card {
         height: 48px;
     }
 
+    .friend-home-header {
+        padding: 12px 14px;
+    }
+
     .friend-home-back {
-        top: 12px;
-        left: 12px;
+        min-height: 40px;
         padding: 9px 14px;
         font-size: 0.82rem;
+    }
+
+    .friend-home-theme {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 
     .friend-home-avatar {
@@ -899,12 +1045,14 @@ body.theme-colorful .friend-home-card {
     }
 
     .friend-home-back,
+    .friend-home-theme,
     .friend-home-project,
     .friend-home-contact-list a {
         transition-duration: 0.01ms;
     }
 
     .friend-home-back:hover,
+    .friend-home-theme:hover,
     .friend-home-project:hover {
         transform: none;
     }
