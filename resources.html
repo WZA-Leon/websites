@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源库 - WZA Leon</title>
+    <title>云盘分享 - WZA Leon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
@@ -17,45 +17,53 @@
     <section class="page-hero">
         <div class="container">
             <div class="page-hero-copy">
-                <p class="page-kicker"><i class="fas fa-box-open" aria-hidden="true"></i> RESOURCES · 可复用资料</p>
-                <h1 class="page-title">把走过的路，<br><span>整理成地图</span></h1>
-                <p class="page-lead">这里放的是可以反复使用的指南、清单和速查表：写作流程、前端动效、摄影准备、Git 命令。每一份都用 Markdown 维护，方便随时修改。</p>
+                <p class="page-kicker"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i> CLOUD SHARE · 云盘分享</p>
+                <h1 class="page-title">把收藏的文件<br><span>放进共享链接</span></h1>
+                <p class="page-lead">这里集中分享我放在云盘上的学习资料、软件工具、摄影素材和电子书。站内自己写的教程和长文已经全部搬到博客，这个页面只保留可以直接转存或下载的内容。</p>
                 <div class="page-meta">
-                    <span><i class="fas fa-file-lines" aria-hidden="true"></i> 4 份资源</span>
-                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> 4 个分类</span>
-                    <span><i class="fas fa-code" aria-hidden="true"></i> Markdown 渲染</span>
+                    <span id="shareCountMeta"><i class="fas fa-box-open" aria-hidden="true"></i> 0 份分享</span>
+                    <span><i class="fas fa-cloud" aria-hidden="true"></i> 多平台链接</span>
+                    <span><i class="fas fa-key" aria-hidden="true"></i> 提取码标注</span>
+                    <span><i class="fas fa-circle-check" aria-hidden="true"></i> 发布前校验</span>
                 </div>
                 <div class="page-actions">
-                    <a href="#resource-library" class="btn">浏览资源 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
-                    <a href="contact.html" class="btn btn-accent">推荐资源</a>
+                    <a href="#share-list" class="btn">浏览分享 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                    <a href="blog.html" class="btn btn-accent">去博客看文章</a>
                 </div>
             </div>
             <aside class="page-hero-panel">
-                <h2>资源库状态</h2>
-                <p>按使用场景整理，而不是按发布时间堆积。</p>
+                <h2>分享状态</h2>
+                <p id="shareStatusText">第一批分享正在整理，链接准备好后会出现在这里。</p>
                 <div class="hero-stat-list">
-                    <div class="hero-stat"><strong>04</strong><span>当前资源</span></div>
-                    <div class="hero-stat"><strong>04</strong><span>覆盖分类</span></div>
-                    <div class="hero-stat"><strong>22</strong><span>预计阅读分钟</span></div>
+                    <div class="hero-stat"><strong id="statShares">0</strong><span>份分享</span></div>
+                    <div class="hero-stat"><strong id="statCategories">0</strong><span>个分类</span></div>
+                    <div class="hero-stat"><strong id="statUpdated">—</strong><span>最近更新</span></div>
                 </div>
-                <div class="hero-code"><b>format</b> markdown<br><b>update</b> whenever needed<br><b>goal</b> reuse &gt; repeat</div>
+                <div class="hero-code"><b>share</b> cloud link + code<br><b>check</b> before publish<br><b>note</b> 失效请留言</div>
             </aside>
         </div>
     </section>
 
-    <section class="section" id="resource-library">
+    <section class="section" id="share-list">
         <div class="container">
             <div class="section-head">
                 <div>
-                    <p class="section-kicker">LIBRARY</p>
-                    <h2>资源库</h2>
-                    <p>先选一个分类，再打开需要的指南。所有内容都可以直接复制、修改和继续补充。</p>
+                    <p class="section-kicker">SHARE LIST</p>
+                    <h2>云盘分享清单</h2>
+                    <p>按用途筛选，打开链接后输入提取码即可。每一条都写清楚平台、大小和更新时间，避免点进去才发现不是自己要找的东西。</p>
                 </div>
-                <a href="projects.html" class="btn btn-small">看项目</a>
+                <a href="contact.html" class="btn btn-small">反馈失效 <i class="fas fa-flag" aria-hidden="true"></i></a>
             </div>
 
-            <div class="resource-filter-bar" id="resourceCategories"></div>
-            <div class="resource-grid" id="resourceGrid"></div>
+            <div class="share-toolbar" id="shareToolbar" hidden>
+                <div class="share-filters" id="shareCategories" role="group" aria-label="按分类筛选"></div>
+                <label class="share-search">
+                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                    <input type="search" id="shareSearch" aria-label="搜索分享" placeholder="搜索标题、标签或文件名…" autocomplete="off">
+                </label>
+            </div>
+
+            <div class="share-grid" id="shareGrid" aria-live="polite"></div>
         </div>
     </section>
 
@@ -63,26 +71,48 @@
         <div class="container">
             <div class="section-head">
                 <div>
-                    <p class="section-kicker">HOW TO USE</p>
-                    <h2>怎么使用这些资源</h2>
-                    <p>资源不是收藏夹，而是下一次动手时可以打开的工作台。</p>
+                    <p class="section-kicker">HOW IT WORKS</p>
+                    <h2>怎么拿到文件</h2>
+                    <p>云盘链接通常需要多一步提取码，按这三步走就不会卡住。</p>
                 </div>
             </div>
             <div class="process-grid">
                 <div class="process-step">
                     <span class="process-number">01</span>
-                    <h3>按场景挑选</h3>
-                    <p>写作、前端、摄影、开发，各自有独立的分类和标签。</p>
+                    <h3>打开网盘链接</h3>
+                    <p>点击卡片上的“打开网盘”，会在新标签页进入对应的分享页面。</p>
                 </div>
                 <div class="process-step">
                     <span class="process-number">02</span>
-                    <h3>打开 Markdown 文档</h3>
-                    <p>每份资源都有完整正文，支持代码块、表格和清单。</p>
+                    <h3>输入提取码</h3>
+                    <p>需要提取码的条目会把码写在卡片里，点“复制”就不用再手打。</p>
                 </div>
                 <div class="process-step">
                     <span class="process-number">03</span>
-                    <h3>改成自己的版本</h3>
-                    <p>复制到自己的笔记里，删掉不需要的部分，留下真正有用的步骤。</p>
+                    <h3>转存或下载</h3>
+                    <p>登录自己的网盘账号后转存，或者直接下载。大文件建议先转存再慢慢下。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="share-info-grid">
+                <div class="share-info-card">
+                    <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                    <h3>版权说明</h3>
+                    <p>只分享个人整理或允许公开传播的资料。如果某份文件侵犯了你的权益，请通过联系页告诉我，我会尽快删除。</p>
+                </div>
+                <div class="share-info-card">
+                    <i class="fas fa-link-slash" aria-hidden="true"></i>
+                    <h3>链接失效</h3>
+                    <p>网盘链接可能因为过期、误删或平台调整而失效。遇到打不开的情况，带上分享标题反馈给我，我会补链。</p>
+                </div>
+                <div class="share-info-card">
+                    <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                    <h3>想要别的资料</h3>
+                    <p>如果正在找某份笔记、工具或素材，也可以告诉我。如果手上有，我会整理后放到这一页。</p>
                 </div>
             </div>
         </div>
@@ -92,17 +122,19 @@
         <div class="container">
             <div class="cta-band">
                 <div>
-                    <h2>有想补充的资源？</h2>
-                    <p>如果你有一份觉得值得分享的清单、模板或教程，欢迎告诉 WZA。</p>
+                    <h2>有想找的文件？</h2>
+                    <p>告诉我你需要什么，或者哪条分享已经失效。能补的链接，我都会补上。</p>
                 </div>
                 <a href="contact.html" class="btn">联系 WZA</a>
             </div>
         </div>
     </section>
 
+    <div class="share-toast" id="shareToast" role="status" aria-live="polite"></div>
+
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
-    <script src="js/resources-list.js"></script>
+    <script src="js/shares-list.js"></script>
     <script src="js/resources.js"></script>
 </body>
 </html>

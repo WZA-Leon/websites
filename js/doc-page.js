@@ -1,6 +1,5 @@
-// 项目 / 资源共用的 Markdown 文档渲染器
+// 项目 Markdown 文档渲染器
 (function () {
-    const type = document.body.dataset.docType === 'resource' ? 'resource' : 'project';
     const contentEl = document.getElementById('docContent');
     const titleEl = document.getElementById('docTitle');
     const descriptionEl = document.getElementById('docDescription');
@@ -14,9 +13,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    const list = type === 'resource'
-        ? (Array.isArray(window.RESOURCES_LIST) ? window.RESOURCES_LIST : [])
-        : (Array.isArray(window.PROJECTS_LIST) ? window.PROJECTS_LIST : []);
+    const list = Array.isArray(window.PROJECTS_LIST) ? window.PROJECTS_LIST : [];
     const item = list.find(entry => entry.id === id);
 
     function showError(message) {
@@ -31,18 +28,17 @@
     if (!item) {
         if (titleEl) titleEl.textContent = '内容未找到';
         document.title = '内容未找到 - WZA-Leon';
-        showError(id ? '没有找到这份内容。' : '缺少 id 参数，请从列表进入。');
+        showError(id ? '没有找到这个项目。' : '缺少 id 参数，请从项目列表进入。');
         return;
     }
 
-    const base = type === 'resource'
-        ? new URL('./resources-data/', document.baseURI)
-        : new URL(`./project-data/${encodeURIComponent(item.id)}/`, document.baseURI);
-    const markdownFile = item.markdown || (type === 'resource' ? `${item.id}.md` : 'README.md');
+    const title = item.title || item.name || '项目文档';
+    const base = new URL(`./project-data/${encodeURIComponent(item.id)}/`, document.baseURI);
+    const markdownFile = item.markdown || 'README.md';
     const markdownUrl = new URL(markdownFile, base);
 
-    document.title = `${item.title} - WZA-Leon`;
-    if (titleEl) titleEl.textContent = item.title;
+    document.title = `${title} - WZA-Leon`;
+    if (titleEl) titleEl.textContent = title;
     if (descriptionEl) descriptionEl.textContent = item.description || '';
     if (categoryEl) categoryEl.textContent = item.category || '';
     if (dateEl) dateEl.textContent = item.date || '';
@@ -53,11 +49,9 @@
             .join('');
     }
     if (actionsEl) {
-        if (type === 'project' && item.link) {
-            actionsEl.innerHTML = `<a class="btn" href="${item.link}" target="_blank" rel="noopener">访问项目 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`;
-        } else {
-            actionsEl.innerHTML = '';
-        }
+        actionsEl.innerHTML = item.link
+            ? `<a class="btn" href="${item.link}" target="_blank" rel="noopener">访问项目 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`
+            : '';
     }
 
     if (!window.marked || typeof window.marked.parse !== 'function') {
@@ -103,6 +97,16 @@
                 const resolved = absoluteUrl(element.getAttribute(attribute));
                 if (resolved) element.setAttribute(attribute, resolved);
             });
+        });
+
+        container.querySelectorAll('[srcset]').forEach(element => {
+            const srcset = element.getAttribute('srcset');
+            if (!srcset) return;
+            const resolved = srcset.split(',').map(part => {
+                const [url, ...descriptor] = part.trim().split(/\s+/);
+                return [absoluteUrl(url), ...descriptor].join(' ');
+            }).join(', ');
+            element.setAttribute('srcset', resolved);
         });
     }
 })();

@@ -17,7 +17,7 @@ window.PROJECTS_LIST = [
     {
         id: "work2",
         name: "WZA 创想日志",
-        description: "一个持续生长的个人网站：博客、项目、摄影、资源库和若干小实验都收在这里。",
+        description: "一个持续生长的个人网站：博客、项目、摄影、云盘分享和若干小实验都收在这里。",
         category: "网站",
         date: "2026-10-15",
         technologies: ["HTML", "CSS", "JavaScript"],

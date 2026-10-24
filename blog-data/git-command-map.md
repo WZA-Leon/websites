@@ -16,7 +16,7 @@ git remote -v
 git status
 git diff
 git add .
-git commit -m "feat: 添加资源库"
+git commit -m "feat: 添加云盘分享"
 git log --oneline --graph --decorate -10
 ```
 
@@ -24,10 +24,10 @@ git log --oneline --graph --decorate -10
 
 ```bash
 git branch
-git switch -c feature/resources
+git switch -c feature/shares
 git switch main
-git merge feature/resources
-git branch -d feature/resources
+git merge feature/shares
+git branch -d feature/shares
 ```
 
 ## 同步远程
@@ -35,7 +35,7 @@ git branch -d feature/resources
 ```bash
 git fetch origin
 git pull --rebase
-git push -u origin feature/resources
+git push -u origin feature/shares
 ```
 
 ## 临时保存

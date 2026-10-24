@@ -42,6 +42,28 @@
 - **项目工具**：Python（`uv` 管理依赖，`PyInstaller` 打包）
 - **源码仓库**：GitHub 上的 `WZA-Leon` 账号下可见 `Picchooser` 等项目
 
+## 内容维护
+
+站点没有后端，所有内容都通过静态文件维护：
+
+- **博客文章**：正文放在 `blog-data/<id>.md`，列表信息写在 `js/blog-list.js`。
+- **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
+- **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
+- **旧资源链接**：`resource.html?id=<id>` 会自动跳转到对应的博客文章，原来的 4 份指南已经迁入博客。
+
+云盘分享的常用字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| `title` / `description` | 分享标题和一句说明 |
+| `platform` | `baidu`、`aliyun`、`quark`、`pan123`、`lanzou`、`onedrive`、`gdrive`、`mega`、`other` |
+| `category` | 分类，例如“学习资料”“软件工具” |
+| `url` / `code` | 网盘链接与提取码 |
+| `size` / `date` | 文件大小与更新日期 |
+| `files` / `tags` | 文件清单与标签 |
+| `note` | 解压密码等补充说明 |
+| `status` | `active`（可用）、`expired`（已失效）、`planned`（整理中） |
+
 ## 免责声明
 
 本站内容除特别注明外，均为个人学习与创作记录，不代表任何机构立场。

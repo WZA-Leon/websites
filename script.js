@@ -25,7 +25,7 @@ function buildNavHTML() {
             </a>
             <div id="navLinks" class="nav-links">
                 <a href="${sitePath('index.html')}">首页</a>
-                <a href="${sitePath('resources.html')}">资源</a>
+                <a href="${sitePath('resources.html')}">云盘</a>
                 <a href="${sitePath('projects.html')}">项目</a>
                 <a href="${sitePath('gallery.html')}">摄影</a>
                 <a href="${sitePath('blog.html')}">博客</a>
@@ -103,7 +103,7 @@ function buildFooterHTML() {
                     <h3>快速链接</h3>
                     <ul class="footer-links">
                         <li><a href="${sitePath('index.html')}">首页</a></li>
-                        <li><a href="${sitePath('resources.html')}">资源</a></li>
+                        <li><a href="${sitePath('resources.html')}">云盘</a></li>
                         <li><a href="${sitePath('about.html')}">关于WZA</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
                         <li><a href="${sitePath('friends.html')}">友链</a></li>
@@ -223,7 +223,6 @@ function initNavState() {
         /\/post\.html$/.test(current.pathname) ||
         /\/blog-data\//.test(current.pathname);
     const isProjectPage = /\/project\.html$/.test(current.pathname);
-    const isResourcePage = /\/resource\.html$/.test(current.pathname);
 
     nav.querySelectorAll('.nav-links a').forEach(link => {
         const target = new URL(link.href, window.location.href);
@@ -231,9 +230,7 @@ function initNavState() {
         const samePage = targetPath === currentPath;
         const isBlogLink = /\/blog\.html$/.test(target.pathname);
         const isProjectLink = /\/projects\.html$/.test(target.pathname);
-        const isResourceLink = /\/resources\.html$/.test(target.pathname);
-        if (samePage || (isBlogPage && isBlogLink) ||
-            (isProjectPage && isProjectLink) || (isResourcePage && isResourceLink)) {
+        if (samePage || (isBlogPage && isBlogLink) || (isProjectPage && isProjectLink)) {
             link.classList.add('active');
             link.setAttribute('aria-current', 'page');
         }

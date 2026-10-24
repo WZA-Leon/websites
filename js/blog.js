@@ -4,8 +4,10 @@ let allArticles = [];
 let currentCategory = 'all';
 
 function initBlog() {
-    // 从 window.BLOG_LIST 获取数据
-    allArticles = window.BLOG_LIST || [];
+    // 从 window.BLOG_LIST 获取数据，并按日期从新到旧展示
+    allArticles = (window.BLOG_LIST || []).slice().sort((a, b) =>
+        String(b.date || '').localeCompare(String(a.date || ''))
+    );
     renderBlogList(allArticles);
 
     if (window.SiteLoader) {

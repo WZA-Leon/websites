@@ -1,6 +1,62 @@
 {
   "articles": [
     {
+      "id": "markdown-workflow",
+      "title": "Markdown 写作工作流",
+      "category": "编程",
+      "date": "2026-10-18",
+      "excerpt": "从草稿、目录到发布：一套适合个人站点的 Markdown 写作流程。",
+      "tags": ["Markdown", "写作", "工作流", "指南"]
+    },
+    {
+      "id": "css-motion-performance",
+      "title": "CSS 动画性能清单",
+      "category": "编程",
+      "date": "2026-10-12",
+      "excerpt": "在实现滚动、悬浮和页面切换动画时，优先检查这些性能细节。",
+      "tags": ["CSS", "动画", "性能", "清单"]
+    },
+    {
+      "id": "photo-prep-checklist",
+      "title": "摄影前期检查表",
+      "category": "摄影",
+      "date": "2026-10-06",
+      "excerpt": "出门拍摄前快速过一遍：器材、参数、天气和备份。",
+      "tags": ["摄影", "前期", "清单"]
+    },
+    {
+      "id": "git-command-map",
+      "title": "Git 常用命令地图",
+      "category": "编程",
+      "date": "2026-09-28",
+      "excerpt": "把日常最常用的 Git 命令按场景整理成一张可查找的地图。",
+      "tags": ["Git", "版本控制", "速查"]
+    },
+    {
+      "id": "game-design-thoughts",
+      "title": "独立游戏设计初探",
+      "category": "游戏",
+      "date": "2026-06-10",
+      "excerpt": "关于独立游戏设计的思考和体验。",
+      "tags": ["游戏", "设计", "独立开发"]
+    },
+    {
+      "id": "readme",
+      "title": "ZADM 随机点名系统",
+      "category": "编程",
+      "date": "2026-06-06",
+      "excerpt": "基于 Python Tkinter 的图形化随机点名工具。",
+      "tags": ["Python", "Tkinter", "点名系统"]
+    },
+    {
+      "id": "creative-writing",
+      "title": "创意写作的思路",
+      "category": "文学",
+      "date": "2026-06-01",
+      "excerpt": "如何构思和创作有趣的故事和文章。",
+      "tags": ["写作", "创意", "文学"]
+    },
+    {
       "id": "web-development-journey",
       "title": "我的Web开发之旅",
       "category": "编程",
@@ -15,22 +71,6 @@
       "date": "2026-05-15",
       "excerpt": "分享一些实用的摄影构图技巧和经验。",
       "tags": ["摄影", "构图", "技巧"]
-    },
-    {
-      "id": "creative-writing",
-      "title": "创意写作的思路",
-      "category": "文学",
-      "date": "2026-05-10",
-      "excerpt": "如何构思和创作有趣的故事和文章。",
-      "tags": ["写作", "创意", "文学"]
-    },
-    {
-      "id": "game-design-thoughts",
-      "title": "独立游戏设计初探",
-      "category": "游戏",
-      "date": "2026-05-05",
-      "excerpt": "关于独立游戏设计的思考和体验。",
-      "tags": ["游戏", "设计", "独立开发"]
     }
   ],
   "categories": [

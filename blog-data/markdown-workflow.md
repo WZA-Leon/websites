@@ -17,7 +17,7 @@
 
 ```text
 blog-data/markdown-workflow.md
-resources-data/markdown-workflow.md
+project-data/work1/README.md
 ```
 
 文章标题可以改，文件名尽量不要改。这样站内链接、索引和收藏都不会失效。
@@ -43,6 +43,6 @@ resources-data/markdown-workflow.md
 
 ## 5. 让内容可复用
 
-同一份笔记可以拆成博客、资源清单和项目文档。不要为了“每个栏目都要有内容”而复制整篇文章，换一个角度重写开头和结尾即可。
+同一份笔记可以拆成博客文章、项目文档和分享说明。不要为了“每个栏目都要有内容”而复制整篇文章，换一个角度重写开头和结尾即可。
 
 > 好的文档不是一次写完的，而是被不断使用、修正和补充的。

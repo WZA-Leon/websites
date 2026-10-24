@@ -3,43 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源 - WZA-Leon</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/page-loader.css">
-    <script src="js/page-loader.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/docs.css">
+    <meta name="robots" content="noindex">
+    <title>内容已迁移 - WZA Leon</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+            color: #1a1d29;
+            background: #f7f9fc;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            text-align: center;
+        }
+        .migration-card {
+            max-width: 460px;
+            padding: 32px 28px;
+            background: #fff;
+            border: 1px solid #e6eaf2;
+            border-radius: 18px;
+            box-shadow: 0 18px 44px rgba(77, 107, 254, 0.1);
+        }
+        h1 { margin: 0 0 10px; font-size: 1.25rem; }
+        p { margin: 0 0 8px; color: #5a6072; line-height: 1.8; }
+        a { color: #4d6bfe; font-weight: 600; }
+    </style>
 </head>
-<body data-doc-type="resource">
-    <div id="nav-placeholder"></div>
+<body>
+    <div class="migration-card">
+        <h1>内容已迁移到博客</h1>
+        <p>这份指南现在作为博客文章继续维护，正在为你跳转…</p>
+        <p><a id="migrationLink" href="blog.html">如果没有自动跳转，点这里</a></p>
+    </div>
 
-    <main class="doc-page">
-        <div class="container">
-            <a class="doc-back" href="resources.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> 返回资源库</a>
-
-            <header class="doc-hero">
-                <p class="doc-kicker">RESOURCE FILE</p>
-                <h1 id="docTitle">正在加载资源…</h1>
-                <p class="doc-description" id="docDescription"></p>
-                <div class="doc-meta">
-                    <span><i class="fas fa-folder" aria-hidden="true"></i> <span id="docCategory">资源</span></span>
-                    <span><i class="fas fa-calendar" aria-hidden="true"></i> <span id="docDate"></span></span>
-                    <span><i class="fas fa-clock" aria-hidden="true"></i> 阅读约 <span id="docReadTime">1</span> 分钟</span>
-                </div>
-                <div class="doc-meta" id="docTags"></div>
-                <div class="doc-actions" id="docActions"></div>
-            </header>
-
-            <article class="doc-content" id="docContent">
-                <p class="doc-error">正在加载资源内容…</p>
-            </article>
-        </div>
-    </main>
-
-    <div id="footer-placeholder"></div>
-    <script src="script.js"></script>
-    <script src="js/resources-list.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-    <script src="js/doc-page.js"></script>
+    <script>
+        (function () {
+            const id = new URLSearchParams(window.location.search).get('id');
+            const target = id
+                ? 'post.html?id=' + encodeURIComponent(id)
+                : 'blog.html';
+            const link = document.getElementById('migrationLink');
+            if (link) link.href = target;
+            window.location.replace(target);
+        })();
+    </script>
 </body>
 </html>
