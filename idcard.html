@@ -3,261 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人介绍</title>
+    <title>魏子昂 · 个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/page-loader.css">
-    <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/friends.css">
+    <link rel="stylesheet" href="css/audio-player.css">
 </head>
-<body>
-    <div id="nav-placeholder"></div>
+<body class="friend-home theme-colorful">
+    <script src="js/friend-theme.js"></script>
 
-    <!-- 英雄区域 -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <div class="profile-img-container">
-                        <img src="images/photo.png" alt="个人照片" class="profile-img" id="profileImage" 
-                             data-welcome-zh="欢迎访问我的个人主页！" data-welcome-en="Welcome to my personal homepage!">
+    <header class="friend-home-header">
+        <a class="friend-home-back" href="index.html" aria-label="返回首页">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span>返回首页</span>
+        </a>
+        <button type="button" class="friend-home-theme" id="friendThemeToggle" data-friend-theme-toggle title="切换主题" aria-label="切换主题">🌈</button>
+    </header>
+
+    <main class="friend-home-main">
+        <section class="friend-home-hero">
+            <div class="container">
+                <div class="friend-home-profile">
+                    <img class="friend-home-avatar" src="images/photo.png" alt="魏子昂的头像" width="150" height="150">
+                    <div class="friend-home-title">
+                        <p class="friend-home-kicker">PERSONAL PROFILE · WZA</p>
+                        <h1>魏子昂<span>.</span></h1>
+                        <p class="friend-home-tagline">WZA / Leon · 不畏将来，不念过往。</p>
+                        <div class="friend-home-meta">
+                            <span><i class="fas fa-location-dot" aria-hidden="true"></i> 大连</span>
+                            <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 高中在读</span>
+                            <span><i class="fas fa-code" aria-hidden="true"></i> 编程 / 摄影</span>
+                            <span><i class="fas fa-globe" aria-hidden="true"></i> 创想日志</span>
+                        </div>
                     </div>
-                    
-                    <h1 data-key="name">个人信息</h1>
-                    <p class="tagline" data-key="motto">不畏将来，不念过往</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 基本信息区域 -->
-    <section class="section" id="basic">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="basicInfo">基本信息</h2>
-            </div>
-            
-            <div class="card">
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-user"></i>
+        <div class="container friend-home-content">
+            <div class="audio-player-mount"
+                 data-audio-player
+                 data-src="media/colors.mp3"
+                 data-title="Colors"
+                 data-artist="WZA · 边听边看"></div>
+
+            <div class="friend-home-grid">
+                <div class="friend-home-main-col">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-star" aria-hidden="true"></i> 关于我</h2>
+                        <p>我是魏子昂，网名 WZA / Leon，2010 年出生，现在在大连读高中。</p>
+                        <p>这个网站是我的数字实验室：写代码、拍照片、做小工具，也记录一些想法。我喜欢把零散的东西整理成可以反复使用的页面和文档。</p>
+                        <p>感兴趣的方向很杂：Web 开发、摄影、写作、游戏，偶尔也研究地理和音乐。比起一开始就做到完美，我更习惯先做出来，再慢慢打磨。</p>
+                        <p class="friend-home-quote">“保持好奇，保持创作。”</p>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-rocket" aria-hidden="true"></i> 我在做的事</h2>
+                        <div class="friend-home-project-grid">
+                            <article class="friend-home-project">
+                                <h3>WZA 创想日志</h3>
+                                <p>个人网站，收着博客、项目、摄影和云盘分享。2026 年 10 月上线，还在继续生长。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>Picchooser</h3>
+                                <p>用 Python 按 EXIF 拍摄时间整理照片，自动区分连拍、孤立照片和无拍摄信息。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>Python</span><span>EXIF</span><span>工具</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>摄影</h3>
+                                <p>拍风景、人像和日常光线，把照片整理成可以慢慢翻的图库。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>摄影</span><span>图库</span><span>日常</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>博客与写作</h3>
+                                <p>记录 Web 开发、摄影、游戏设计和创作手记，也整理可以复用的清单。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>博客</span><span>写作</span><span>清单</span>
+                                </div>
+                            </article>
                         </div>
-                        <div>
-                            <h3 data-key="nameTitle">姓名</h3>
-                            <div class="name-protection" data-hover-text="你知道的太多了">
-                                <span class="real-name" data-key="realName">魏子昂</span>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> 技能与爱好</h2>
+                        <div class="skills-container">
+                            <span class="skill">编程</span>
+                            <span class="skill">摄影</span>
+                            <span class="skill">写作</span>
+                            <span class="skill">棋类</span>
+                            <span class="skill">绘画</span>
+                            <span class="skill">游泳</span>
+                            <span class="skill">Web</span>
+                            <span class="skill">Python</span>
+                            <span class="skill">更多潜能开发中</span>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> 时间线</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2010</div>
+                                <h3>出生在大连</h3>
+                                <p>5 月 7 日出生。关于那天的天气，家里人的说法不太一致，我也没法考证。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2016 – 2025</div>
+                                <h3>小学与初中</h3>
+                                <p>完成了九年义务教育，也认识了一群到现在还在联系的朋友。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2025</div>
+                                <h3>高中</h3>
+                                <p>进入大连市第五中学，开始把更多时间放在编程、摄影和网站上。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026</div>
+                                <h3>网站立项与上线</h3>
+                                <p>5 月 5 日搭起框架，10 月 15 日上线到 wza-leon.top。之后一直在补内容、改细节。</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div>
-                            <h3 data-key="location">所在地</h3>
-                            <p data-key="city">大连</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-birthday-cake"></i>
-                        </div>
-                        <div>
-                            <h3 data-key="birthdate">出生日期</h3>
-                            <p data-key="birthday">2010年5月7日</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div>
-                            <h3 data-key="education">学历</h3>
-                            <p data-key="educationLevel">高中在读</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-item">
-                        <div class="info-icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div>
-                            <h3 data-key="occupation">职业</h3>
-                            <p data-key="student">学生</p>
-                        </div>
-                    </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-book-open" aria-hidden="true"></i> 最近</h2>
+                        <ul class="friend-home-recent">
+                            <li>在维护 WZA 创想日志，补完云盘分享和好友主页的细节。</li>
+                            <li>在整理摄影作品、项目文档和博客文章。</li>
+                            <li>在学新的 Web 技巧，也继续折腾 Python 小工具。</li>
+                            <li>给自己定的更新时间是每周日 19:30。</li>
+                        </ul>
+                    </section>
                 </div>
+
+                <aside class="friend-home-side">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-id-card" aria-hidden="true"></i> 基本信息</h2>
+                        <ul class="friend-home-info-list">
+                            <li><span>姓名</span><strong>魏子昂</strong></li>
+                            <li><span>网名</span><strong>WZA / Leon</strong></li>
+                            <li><span>出生</span><strong>2010 年 5 月 7 日</strong></li>
+                            <li><span>所在地</span><strong>大连 · 甘井子</strong></li>
+                            <li><span>学历</span><strong>高中在读</strong></li>
+                            <li><span>学校</span><strong>大连市第五中学</strong></li>
+                            <li><span>身份</span><strong>学生 / 创作者</strong></li>
+                            <li><span>方向</span><strong>编程 · 摄影 · 写作</strong></li>
+                            <li><span>网站</span><strong>wza-leon.top</strong></li>
+                        </ul>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-paper-plane" aria-hidden="true"></i> 联系方式</h2>
+                        <ul class="friend-home-contact-list">
+                            <li>
+                                <a href="mailto:wza-dl@outlook.com">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>邮箱</small><strong>wza-dl@outlook.com</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tel:+8613840926806">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>电话</small><strong>+86 138 4092 6806</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/WZA-Leon" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>GitHub</small><strong>github.com/WZA-Leon</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wza-leon.top" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-globe" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>个人网站</small><strong>wza-leon.top</strong></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                </aside>
             </div>
+
+            <p class="friend-home-note">这是 WZA 的个人介绍页；欢迎通过邮件或 GitHub 联系，网站每周日 19:30 更新。</p>
         </div>
-    </section>
+    </main>
 
-    <!-- 关于我区域 -->
-    <section class="section about" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="about">关于我</h2>
-            </div>
-            
-            <div class="card">
-                <p data-key="aboutText">我出生于2010年，现在就读于大连市第五中学</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 技能区域 -->
-    <section class="section" id="skills">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="skills">技能</h2>
-            </div>
-            
-            <div class="card">
-                <div class="skills-container">
-                    <span class="skill" data-key="skill3">棋类</span>
-                    <span class="skill" data-key="skill4">编程</span>
-                    <span class="skill" data-key="skill5">绘画</span>
-                    <span class="skill" data-key="skill6">游泳</span>
-                    <span class="skill" data-key="skill9">更多潜能开发中</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 教育背景区域 -->
-    <section class="section" id="education">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="educationBg">教育背景</h2>
-            </div>
-            
-            <div class="card">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2025 - <span data-key="present">今</span></div>
-                        <h3 data-key="school1">大连市第五中学</h3>
-                        <p data-key="highSchool">高中</p>
-                        <p data-key="studying">在读</p>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2016 - 2025</div>
-                        <h3 data-key="school2">大连市第汇文中学</h3>
-                        <p data-key="middleSchool">小学和初中</p>
-                        <p data-key="compulsory">完成了九年义务教育</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 工作经历区域 -->
-    <section class="section" id="experience">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="workExp">工作经历</h2>
-            </div>
-            
-            <div class="card">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026.5.5</div>
-                        <h3 data-key="studio">网站立项</h3>
-                        <p data-key="founder">WZA</p>
-                        <p data-key="workDesc">创建了该网站的框架，并编写了基础CSS和JS</p>
-                        <div class="timeline-date">2026.10.15</div>
-                        <h3 data-key="studio">网站上线</h3>
-                        <p data-key="founder">WZA</p>
-                        <p data-key="workDesc">在这一天将页面上线到 wza-leon.top</p> 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 网站链接区域 -->
-    <section class="section" id="websites">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="websites">网站链接</h2>
-            </div>
-                
-                <div class="website-card">
-                    <div class="website-icon">
-                        <i class="fab fa-github"></i>
-                    </div>
-                    <h3 data-key="github">GitHub</h3>
-                    <p class="card-text">代码仓库与开源项目</p>
-                    <a href="https://github.com/WZA-Leon" class="btn btn-accent" data-key="visit3">访问</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 联系我区域 -->
-    <section class="section" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2 data-key="contact">联系我</h2>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="info-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h3 data-key="email">邮箱</h3>
-                    <p>wza-dl@outlook.com</p>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="info-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h3 data-key="phone">电话</h3>
-                    <p>+86 13840926806</p>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="info-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3 data-key="address">地址</h3>
-                    <p data-key="china">中华人民共和国 辽宁省 大连市 甘井子区</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <div id="footer-placeholder"></div>
-    <script src="script.js"></script>
-
-    <!-- 回到顶部按钮 -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script>
-        // 平滑滚动到锚点
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-    </script>
+    <script src="js/audio-player.js"></script>
 </body>
 </html>
