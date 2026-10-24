@@ -1,7 +1,7 @@
 {
   "id": "code",
-  "title": "编程题库",
-  "description": "测试你的编程基础知识与常见概念。",
+  "title": "编程基础",
+  "description": "Web、Python 与开发工具",
   "type": "quiz",
   "questions": [
     {"question": "HTML的主要用途是？", "options": ["编写程序逻辑", "定义网页结构", "设置网页样式", "存储数据库"], "answer": 1},
@@ -13,6 +13,11 @@
     {"question": "要在网页中获取第一个匹配的元素，可以使用哪个方法？", "options": ["querySelector", "getItem", "findElement", "selectOne"], "answer": 0},
     {"question": "在JavaScript中，=== 与 == 的区别是？", "options": ["没有区别", "===比较值和类型，==只比较值", "===只比较值，==比较类型", "===用于函数"], "answer": 1},
     {"question": "哪种语言不是前端开发的核心语言？", "options": ["HTML", "CSS", "JavaScript", "Python"], "answer": 3},
-    {"question": "浏览器页面刷新后，以下哪个不会自动保留数据？", "options": ["localStorage", "sessionStorage", "cookie", "普通变量"], "answer": 3}
+    {"question": "浏览器页面刷新后，以下哪个不会自动保留数据？", "options": ["localStorage", "sessionStorage", "cookie", "普通变量"], "answer": 3},
+    {"question": "HTML 中用于创建无序列表的标签是？", "options": ["<ol>", "<ul>", "<li>", "<list>"], "answer": 1},
+    {"question": "CSS 中用于设置文字颜色的属性是？", "options": ["background", "color", "font", "text-style"], "answer": 1},
+    {"question": "JavaScript 中，数组的 length 属性表示？", "options": ["数组元素个数", "数组第一个元素", "数组类型", "数组排序方式"], "answer": 0},
+    {"question": "以下哪个 Git 命令可以查看当前工作区状态？", "options": ["git log", "git status", "git branch", "git remote"], "answer": 1},
+    {"question": "Python 中用于输出内容的函数是？", "options": ["echo()", "print()", "console.log()", "printf()"], "answer": 1}
   ]
 }

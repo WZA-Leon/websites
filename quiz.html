@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WZA 测验 - SiveNioo Studios</title>
+    <title>WZA 测验 · 知识挑战</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
@@ -13,81 +13,158 @@
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- 测验内容 -->
     <section class="hero quiz-hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>知识测验</h1>
-                    <p>选择你感兴趣的分类，开始挑战自己吧！</p>
+            <div class="quiz-hero-inner">
+                <p class="quiz-kicker"><i class="fas fa-circle-question" aria-hidden="true"></i> WZA QUIZ</p>
+                <h1>知识测验</h1>
+                <p class="quiz-hero-lead">选一个感兴趣的分类，答完题会给出得分、逐题回顾，以及可以复制或下载的答题数据。</p>
+                <div class="quiz-hero-stats">
+                    <span><strong>6</strong><small>个分类</small></span>
+                    <span><strong id="quizTotalQuestions">90</strong><small>道题目</small></span>
+                    <span><strong>JSON</strong><small>答题数据</small></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 分类选择 -->
-    <section class="quiz-category-section">
+    <section class="quiz-category-section" id="categorySection">
         <div class="container">
-            <h2>选择测验分类</h2>
-            <div class="category-cards">
-                <button class="category-card" data-category="life">
-                    <i class="fas fa-book"></i>
-                    <h3>生活常识</h3>
-                    <p>10道题</p>
+            <div class="quiz-section-head">
+                <p class="quiz-kicker">CHOOSE A TOPIC</p>
+                <h2>选择测验分类</h2>
+                <p>每个分类 15 道题。提交后可以查看正确答案、逐题回顾，并导出本次作答的 JSON 数据。</p>
+            </div>
+
+            <div class="category-cards" id="categoryCards">
+                <button type="button" class="category-card" data-category="life">
+                    <span class="category-icon"><i class="fas fa-seedling" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>生活常识</strong>
+                        <small>水果、健康与日常小知识</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
-                <button class="category-card" data-category="culture">
-                    <i class="fas fa-landmark"></i>
-                    <h3>文化知识</h3>
-                    <p>10道题</p>
+
+                <button type="button" class="category-card" data-category="culture">
+                    <span class="category-icon"><i class="fas fa-landmark" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>文化知识</strong>
+                        <small>节日、文学与历史常识</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
-                <button class="category-card" data-category="science">
-                    <i class="fas fa-flask"></i>
-                    <h3>科学常识</h3>
-                    <p>10道题</p>
+
+                <button type="button" class="category-card" data-category="science">
+                    <span class="category-icon"><i class="fas fa-flask" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>科学常识</strong>
+                        <small>物理、化学与生物基础</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
-                <button class="category-card" data-category="geography">
-                    <i class="fas fa-globe"></i>
-                    <h3>地理常识</h3>
-                    <p>10道题</p>
+
+                <button type="button" class="category-card" data-category="geography">
+                    <span class="category-icon"><i class="fas fa-earth-asia" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>地理常识</strong>
+                        <small>国家、城市与自然地理</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
-                <button class="category-card" data-category="code">
-                    <i class="fas fa-code"></i>
-                    <h3>编程基础</h3>
-                    <p>10道题</p>
+
+                <button type="button" class="category-card" data-category="code">
+                    <span class="category-icon"><i class="fas fa-code" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>编程基础</strong>
+                        <small>Web、Python 与开发工具</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
-                <button class="category-card" data-category="personality">
-                    <i class="fas fa-star"></i>
-                    <h3>性格测试</h3>
-                    <p>12道题</p>
+
+                <button type="button" class="category-card" data-category="personality">
+                    <span class="category-icon"><i class="fas fa-fingerprint" aria-hidden="true"></i></span>
+                    <span class="category-copy">
+                        <strong>性格测试</strong>
+                        <small>用 15 道题看看你的倾向</small>
+                    </span>
+                    <span class="category-count">15 道题</span>
+                    <span class="category-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                 </button>
             </div>
         </div>
     </section>
 
-    <div class="quiz-container hidden" id="quizContainer">
-        <div class="container">
-            <div class="quiz-progress">
+    <section class="quiz-container hidden" id="quizContainer">
+        <div class="container quiz-shell">
+            <div class="quiz-toolbar">
+                <button type="button" class="quiz-back" id="quizBackBtn"><i class="fas fa-arrow-left" aria-hidden="true"></i> 返回分类</button>
+                <div class="quiz-progress-meta">
+                    <span class="quiz-category-name" id="quizCategoryLabel">测验</span>
+                    <span class="quiz-answered-count" id="quizAnsweredCount">0 / 0 已作答</span>
+                </div>
+            </div>
+
+            <div class="quiz-progress" id="quizProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
 
-            <div id="quiz">
-                <!-- 动态生成 -->
+            <div id="quiz" class="quiz-question-list"></div>
+
+            <div class="quiz-submit-area">
+                <p class="quiz-warning" id="quizWarning" role="status" aria-live="polite"></p>
+                <button type="button" class="btn submit-btn" id="submitBtn">提交答案 <i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="result hidden" id="result" aria-live="polite">
+        <div class="container quiz-shell">
+            <div class="result-hero card">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-text" id="scoreText">0/15</div>
+                </div>
+                <div class="result-copy">
+                    <p class="quiz-kicker">YOUR RESULT</p>
+                    <h2 id="resultTitle">测验完成！</h2>
+                    <p id="resultMessage">正在整理你的答题结果…</p>
+                    <div class="result-stats" id="resultStats"></div>
+                    <div class="quiz-actions">
+                        <button type="button" class="btn" id="retryBtn"><i class="fas fa-rotate-right" aria-hidden="true"></i> 再测一次</button>
+                        <button type="button" class="quiz-btn-ghost" id="backToCategoriesBtn"><i class="fas fa-layer-group" aria-hidden="true"></i> 换个分类</button>
+                    </div>
+                </div>
             </div>
 
-            <button class="btn submit-btn" id="submitBtn">提交答案</button>
-        </div>
-    </div>
+            <div class="answer-data card" id="answerDataSection">
+                <div class="answer-data-head">
+                    <div>
+                        <p class="quiz-kicker">ANSWER DATA</p>
+                        <h3>答题数据</h3>
+                        <p>本次作答的完整记录，可以复制或下载为 JSON 文件。</p>
+                    </div>
+                    <div class="answer-data-actions">
+                        <button type="button" class="quiz-btn-small" id="copyDataBtn"><i class="fas fa-copy" aria-hidden="true"></i> 复制 JSON</button>
+                        <button type="button" class="quiz-btn-small" id="downloadDataBtn"><i class="fas fa-download" aria-hidden="true"></i> 下载 JSON</button>
+                    </div>
+                </div>
 
-    <div id="result" class="result hidden">
-        <div class="container">
-            <div class="score-circle">
-                <div class="score-text" id="scoreText">0/10</div>
+                <div class="answer-review" id="answerReview"></div>
+
+                <details class="answer-json">
+                    <summary>查看原始 JSON</summary>
+                    <pre id="answerDataPreview"></pre>
+                </details>
             </div>
-            <h2 id="resultTitle">测验完成！</h2>
-            <p id="resultMessage">根据你的得分，这里有一些建议...</p>
-            <button class="btn" onclick="location.reload()">再测一次</button>
         </div>
-    </div>
+    </section>
+
+    <div class="quiz-toast" id="quizToast" role="status" aria-live="polite"></div>
 
     <div id="footer-placeholder"></div>
 

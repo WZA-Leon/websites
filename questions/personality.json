@@ -1,7 +1,7 @@
 {
   "id": "personality",
-  "title": "人格心理测试",
-  "description": "通过选择题了解你的性格倾向。",
+  "title": "性格测试",
+  "description": "用 15 道题看看你的倾向",
   "type": "personality",
   "questions": [
     {"question": "空闲时你更愿意做什么？", "options": [
@@ -63,6 +63,36 @@
       {"label": "孤立无援", "category": "社交型"},
       {"label": "千篇一律的重复", "category": "创意型"},
       {"label": "太过混乱", "category": "稳定型"}
+    ]},
+    {"question": "面对一项全新的任务，你更愿意？", "options": [
+      {"label": "先弄清规则再动手", "category": "分析型"},
+      {"label": "先找人一起商量", "category": "社交型"},
+      {"label": "直接试试看", "category": "创意型"},
+      {"label": "按熟悉的方法一步步来", "category": "稳定型"}
+    ]},
+    {"question": "你更容易被哪种活动吸引？", "options": [
+      {"label": "解谜与推理", "category": "分析型"},
+      {"label": "聚会与交流", "category": "社交型"},
+      {"label": "创作与设计", "category": "创意型"},
+      {"label": "整理与规划", "category": "稳定型"}
+    ]},
+    {"question": "朋友向你倾诉时，你通常？", "options": [
+      {"label": "帮忙分析解决办法", "category": "分析型"},
+      {"label": "先安慰和陪伴", "category": "社交型"},
+      {"label": "提出新的角度", "category": "创意型"},
+      {"label": "提醒现实条件", "category": "稳定型"}
+    ]},
+    {"question": "你希望自己的房间是什么样？", "options": [
+      {"label": "井井有条、分类清楚", "category": "分析型"},
+      {"label": "适合朋友来玩", "category": "社交型"},
+      {"label": "有很多个性装饰", "category": "创意型"},
+      {"label": "简单舒服、东西固定", "category": "稳定型"}
+    ]},
+    {"question": "做长期计划时，你会？", "options": [
+      {"label": "列出详细步骤", "category": "分析型"},
+      {"label": "先问问同伴的意见", "category": "社交型"},
+      {"label": "留出很多变化空间", "category": "创意型"},
+      {"label": "按固定节奏执行", "category": "稳定型"}
     ]}
   ]
 }

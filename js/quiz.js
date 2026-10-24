@@ -1,549 +1,627 @@
-// 测验系统 JS
-let quizData = {};
-let currentCategory = null;
-let selectedAnswers = {};
+// ========================================
+// 测验系统
+// 题库位于 questions/*.json，按分类异步加载。
+// ========================================
+(function () {
+    'use strict';
 
-// 题库数据结构
-const quizDatabase = {
-    life: {
-        title: "生活常识",
-        questions: [
-            {
-                id: 1,
-                text: "以下哪种水果含有最多的维生素C？",
-                options: ["苹果", "猕猴桃", "香蕉", "橙子"],
-                correct: 1
-            },
-            {
-                id: 2,
-                text: "人体最大的器官是？",
-                options: ["心脏", "皮肤", "肝脏", "大脑"],
-                correct: 1
-            },
-            {
-                id: 3,
-                text: "以下哪种烹饪方法最健康？",
-                options: ["油炸", "蒸", "煎", "烤"],
-                correct: 1
-            },
-            {
-                id: 4,
-                text: "成年人每天应该睡多少小时？",
-                options: ["4-6小时", "7-9小时", "10-12小时", "2-4小时"],
-                correct: 1
-            },
-            {
-                id: 5,
-                text: "以下哪种运动最适合减肥？",
-                options: ["举重", "有氧运动", "瑜伽", "游泳"],
-                correct: 1
-            },
-            {
-                id: 6,
-                text: "人体含水量最多的器官是？",
-                options: ["血液", "大脑", "肌肉", "皮肤"],
-                correct: 1
-            },
-            {
-                id: 7,
-                text: "以下哪种维生素主要存在于水果和蔬菜中？",
-                options: ["维生素A", "维生素C", "维生素D", "维生素K"],
-                correct: 1
-            },
-            {
-                id: 8,
-                text: "健康饮食中碳水化合物应该占总热量的多少？",
-                options: ["10-20%", "45-65%", "25-35%", "70-80%"],
-                correct: 1
-            },
-            {
-                id: 9,
-                text: "以下哪种行为最有助于保护环境？",
-                options: ["使用一次性塑料袋", "回收利用", "过度用水", "开车出行"],
-                correct: 1
-            },
-            {
-                id: 10,
-                text: "压力过大时，以下哪种方法最有效？",
-                options: ["吃垃圾食品", "深呼吸和冥想", "熬夜工作", "喝咖啡"],
-                correct: 1
-            }
-        ]
-    },
-    culture: {
-        title: "文化知识",
-        questions: [
-            {
-                id: 1,
-                text: "中国古代四大名著不包括以下哪部作品？",
-                options: ["红楼梦", "三体", "三国演义", "西游记"],
-                correct: 1
-            },
-            {
-                id: 2,
-                text: "莎士比亚是哪个国家的著名戏剧家？",
-                options: ["法国", "英国", "意大利", "西班牙"],
-                correct: 1
-            },
-            {
-                id: 3,
-                text: "以下哪一个不是中国传统节日？",
-                options: ["春节", "圣诞节", "中秋节", "端午节"],
-                correct: 1
-            },
-            {
-                id: 4,
-                text: "古代埃及的标志性建筑物是？",
-                options: ["帕台农神庙", "金字塔", "比萨斜塔", "自由女神像"],
-                correct: 1
-            },
-            {
-                id: 5,
-                text: "儒家文化中最重要的德行是？",
-                options: ["勇气", "仁义", "聪慧", "财富"],
-                correct: 1
-            },
-            {
-                id: 6,
-                text: "唐诗三百首中最著名的诗人是？",
-                options: ["李白", "杜甫", "白居易", "都对"],
-                correct: 3
-            },
-            {
-                id: 7,
-                text: "文艺复兴运动最早发源于哪个国家？",
-                options: ["法国", "德国", "意大利", "西班牙"],
-                correct: 2
-            },
-            {
-                id: 8,
-                text: "中国书法中的'楷书'是由哪种书体发展而来？",
-                options: ["篆书", "隶书", "行书", "草书"],
-                correct: 1
-            },
-            {
-                id: 9,
-                text: "京剧是中国传统艺术，它融合了哪些艺术形式？",
-                options: ["唱、念、做、打", "琴、棋、书、画", "诗、词、曲、赋", "礼、乐、射、御"],
-                correct: 0
-            },
-            {
-                id: 10,
-                text: "以下哪部作品是列夫·托尔斯泰的著作？",
-                options: ["罪与罚", "战争与和平", "人间喜剧", "人性的弱点"],
-                correct: 1
-            }
-        ]
-    },
-    science: {
-        title: "科学常识",
-        questions: [
-            {
-                id: 1,
-                text: "以下哪种元素的原子序数最小？",
-                options: ["氧", "氮", "碳", "氢"],
-                correct: 3
-            },
-            {
-                id: 2,
-                text: "光在真空中的传播速度约为多少？",
-                options: ["3×10^8 m/s", "3×10^5 m/s", "3×10^6 m/s", "3×10^7 m/s"],
-                correct: 0
-            },
-            {
-                id: 3,
-                text: "地球绕太阳一周需要多长时间？",
-                options: ["365天", "365.25天", "364天", "366天"],
-                correct: 1
-            },
-            {
-                id: 4,
-                text: "以下哪种物质是绝缘体？",
-                options: ["铜", "塑料", "铝", "银"],
-                correct: 1
-            },
-            {
-                id: 5,
-                text: "人体中最硬的物质是？",
-                options: ["骨头", "牙釉质", "指甲", "皮肤"],
-                correct: 1
-            },
-            {
-                id: 6,
-                text: "DNA的双螺旋结构是由谁发现的？",
-                options: ["巴斯德", "门捷列夫", "沃森和克里克", "爱因斯坦"],
-                correct: 2
-            },
-            {
-                id: 7,
-                text: "物体的质量和重量有什么区别？",
-                options: ["没有区别", "质量是物体所含物质的多少，重量是重力作用", "重量是物体所含物质的多少，质量是重力作用", "重量和质量都一样"],
-                correct: 1
-            },
-            {
-                id: 8,
-                text: "以下哪种能量转换最常见？",
-                options: ["化学能→光能", "机械能→化学能", "电能→机械能", "光能→热能"],
-                correct: 3
-            },
-            {
-                id: 9,
-                text: "细胞核内包含的主要物质是？",
-                options: ["蛋白质", "DNA和RNA", "脂肪", "糖类"],
-                correct: 1
-            },
-            {
-                id: 10,
-                text: "以下哪种物质具有防腐作用？",
-                options: ["糖", "盐", "油", "都有"],
-                correct: 3
-            }
-        ]
-    },
-    geography: {
-        title: "地理常识",
-        questions: [
-            {
-                id: 1,
-                text: "世界上最大的洲是？",
-                options: ["亚洲", "非洲", "北美洲", "南美洲"],
-                correct: 0
-            },
-            {
-                id: 2,
-                text: "以下哪个国家是海岛国？",
-                options: ["英国", "日本", "新西兰", "都是"],
-                correct: 3
-            },
-            {
-                id: 3,
-                text: "赤道将地球分为？",
-                options: ["东西两半球", "南北两半球", "上下两部分", "不分"],
-                correct: 1
-            },
-            {
-                id: 4,
-                text: "喜马拉雅山脉位于哪两个国家之间？",
-                options: ["中国和印度", "中国和尼泊尔", "印度和尼泊尔", "中国、尼泊尔和印度"],
-                correct: 3
-            },
-            {
-                id: 5,
-                text: "撒哈拉沙漠位于哪个大洲？",
-                options: ["亚洲", "非洲", "南美洲", "大洋洲"],
-                correct: 1
-            },
-            {
-                id: 6,
-                text: "大连位于中国的哪个方向？",
-                options: ["东北", "东南", "西北", "西南"],
-                correct: 0
-            },
-            {
-                id: 7,
-                text: "亚马逊河流经哪个大陆？",
-                options: ["非洲", "亚洲", "南美洲", "北美洲"],
-                correct: 2
-            },
-            {
-                id: 8,
-                text: "以下哪个城市不是中国首都？",
-                options: ["北京", "西安", "南京", "都是首都"],
-                correct: 3
-            },
-            {
-                id: 9,
-                text: "澳大利亚的首都是？",
-                options: ["悉尼", "墨尔本", "堪培拉", "布里斯班"],
-                correct: 2
-            },
-            {
-                id: 10,
-                text: "海拔最高的地方是？",
-                options: ["珠穆朗玛峰", "乞力马扎罗山", "勃朗峰", "厄尔布鲁士山"],
-                correct: 0
-            }
-        ]
-    },
-    code: {
-        title: "编程基础",
-        questions: [
-            {
-                id: 1,
-                text: "HTML中用来创建段落的标签是？",
-                options: ["<para>", "<p>", "<paragraph>", "<text>"],
-                correct: 1
-            },
-            {
-                id: 2,
-                text: "CSS代表什么？",
-                options: ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style Sheets", "Coded Style Sheets"],
-                correct: 1
-            },
-            {
-                id: 3,
-                text: "JavaScript中定义变量使用哪个关键字？",
-                options: ["var、let、const", "variable", "define", "declare"],
-                correct: 0
-            },
-            {
-                id: 4,
-                text: "以下哪个不是编程语言？",
-                options: ["Python", "Java", "HTML", "C++"],
-                correct: 2
-            },
-            {
-                id: 5,
-                text: "什么是API？",
-                options: ["应用程序接口", "高级程序指令", "自动程序集成", "应用编程实例"],
-                correct: 0
-            },
-            {
-                id: 6,
-                text: "Git的主要用途是？",
-                options: ["编写代码", "版本控制", "编译程序", "管理服务器"],
-                correct: 1
-            },
-            {
-                id: 7,
-                text: "以下哪个是前端技术？",
-                options: ["Node.js", "React", "Python", "都不是"],
-                correct: 1
-            },
-            {
-                id: 8,
-                text: "什么是JSON？",
-                options: ["Java Script Object Nation", "Java Script Object Notation", "Java Standard Object Notation", "JavaScript Official Notation"],
-                correct: 1
-            },
-            {
-                id: 9,
-                text: "Python中用来重复执行代码的关键字是？",
-                options: ["repeat", "loop", "for", "都对"],
-                correct: 3
-            },
-            {
-                id: 10,
-                text: "什么是响应式设计？",
-                options: ["快速响应用户", "使网站在各种设备上都能正常显示", "页面加载快", "安全的设计"],
-                correct: 1
-            }
-        ]
-    },
-    personality: {
-        title: "性格测试",
-        questions: [
-            {
-                id: 1,
-                text: "你通常如何度过周末？",
-                options: ["宅在家里", "外出冒险", "和朋友聚会", "工作或学习"],
-                correct: -1
-            },
-            {
-                id: 2,
-                text: "面对困难时，你的反应是？",
-                options: ["逃避", "坚持", "寻求帮助", "分析解决"],
-                correct: -1
-            },
-            {
-                id: 3,
-                text: "你认为自己是什么样的人？",
-                options: ["外向热情", "内向温和", "理性分析", "创意十足"],
-                correct: -1
-            },
-            {
-                id: 4,
-                text: "在团队中，你通常扮演什么角色？",
-                options: ["领导者", "执行者", "思考者", "支持者"],
-                correct: -1
-            },
-            {
-                id: 5,
-                text: "遇到陌生人，你的态度是？",
-                options: ["主动交流", "被动接受", "保持距离", "观察他们"],
-                correct: -1
-            },
-            {
-                id: 6,
-                text: "你的学习风格是？",
-                options: ["通过实践学习", "通过听讲学习", "通过阅读学习", "通过讨论学习"],
-                correct: -1
-            },
-            {
-                id: 7,
-                text: "压力大时，你会？",
-                options: ["运动释放", "倾诉宣泄", "冥想静思", "投入工作"],
-                correct: -1
-            },
-            {
-                id: 8,
-                text: "你对未来的态度是？",
-                options: ["乐观期待", "谨慎规划", "随遇而安", "担忧害怕"],
-                correct: -1
-            },
-            {
-                id: 9,
-                text: "你最重视的是？",
-                options: ["成功成就", "家庭关系", "个人兴趣", "社会贡献"],
-                correct: -1
-            },
-            {
-                id: 10,
-                text: "你的最大优点是？",
-                options: ["行动力强", "同理心强", "思维深入", "适应性强"],
-                correct: -1
-            },
-            {
-                id: 11,
-                text: "处理冲突时，你通常？",
-                options: ["直接对抗", "委婉协商", "避免冲突", "寻求妥协"],
-                correct: -1
-            },
-            {
-                id: 12,
-                text: "你的理想生活是？",
-                options: ["充满冒险", "稳定舒适", "自由创意", "帮助他人"],
-                correct: -1
-            }
-        ]
+    const categorySection = document.getElementById('categorySection');
+    const quizContainer = document.getElementById('quizContainer');
+    const result = document.getElementById('result');
+    const quizEl = document.getElementById('quiz');
+    const progressBar = document.getElementById('progressBar');
+    const progressWrap = document.getElementById('quizProgress');
+    const submitBtn = document.getElementById('submitBtn');
+    const warningEl = document.getElementById('quizWarning');
+    const toast = document.getElementById('quizToast');
+
+    if (!quizEl) return;
+
+    const PERSONALITY_META = {
+        '分析型': { icon: 'fa-brain', description: '你习惯先理解规则，再做出判断。' },
+        '社交型': { icon: 'fa-comments', description: '你从人与人的连接中获得能量。' },
+        '创意型': { icon: 'fa-lightbulb', description: '你更喜欢新的角度和不一样的做法。' },
+        '稳定型': { icon: 'fa-anchor', description: '你重视可靠、秩序和持续的节奏。' }
+    };
+
+    const state = {
+        category: null,
+        quiz: null,
+        answers: {},
+        startedAt: 0,
+        answerData: null
+    };
+
+    const quizCache = new Map();
+    let loadingCategory = null;
+    let toastTimer = 0;
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[character]));
     }
-};
 
-// 初始化测验
-document.addEventListener('DOMContentLoaded', () => {
-    // 设置分类卡片点击事件
-    document.querySelectorAll('.category-card').forEach(card => {
-        card.addEventListener('click', startQuiz);
-    });
-});
+    function formatQuestion(value) {
+        return escapeHtml(value).replace(/\n/g, '<br>');
+    }
 
-// 开始测验
-function startQuiz(e) {
-    const category = e.currentTarget.dataset.category;
-    currentCategory = category;
-    selectedAnswers = {};
-    
-    const quiz = quizDatabase[category];
-    if (!quiz) return;
-    
-    // 隐藏分类选择，显示测验容器
-    document.querySelector('.quiz-category-section').style.display = 'none';
-    document.getElementById('quizContainer').classList.remove('hidden');
-    
-    // 渲染题目
-    renderQuestions(quiz.questions);
-    
-    // 设置提交按钮
-    document.getElementById('submitBtn').addEventListener('click', () => {
-        submitQuiz(quiz.questions.length);
-    });
-}
+    function optionLabel(option) {
+        if (typeof option === 'string') return option;
+        if (option && typeof option.label === 'string') return option.label;
+        return '';
+    }
 
-// 渲染题目
-function renderQuestions(questions) {
-    const quizContainer = document.getElementById('quiz');
-    quizContainer.innerHTML = questions.map((q, index) => `
-        <div class="question" data-index="${index}">
-            <h3>${index + 1}. ${q.text}</h3>
-            <div class="options">
-                ${q.options.map((option, optIndex) => `
-                    <button class="option" data-option="${optIndex}">
-                        <span class="option-text">${option}</span>
-                    </button>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
-    
-    // 添加选项点击事件
-    document.querySelectorAll('.option').forEach(option => {
-        option.addEventListener('click', function() {
-            const questionDiv = this.closest('.question');
-            const questionIndex = questionDiv.dataset.index;
-            const optionIndex = this.dataset.option;
-            
-            // 移除同题其他选项的选中状态
-            questionDiv.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected');
+    function getOption(question, index) {
+        if (!question || !Array.isArray(question.options)) return null;
+        return question.options[index] || null;
+    }
+
+    function scrollToElement(element) {
+        if (!element) return;
+        const reduceMotion = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const top = element.getBoundingClientRect().top + window.scrollY - 86;
+        window.scrollTo({
+            top: Math.max(0, top),
+            behavior: reduceMotion ? 'auto' : 'smooth'
+        });
+    }
+
+    function showToast(message, duration = 2600) {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('is-visible');
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => {
+            toast.classList.remove('is-visible');
+        }, duration);
+    }
+
+    async function fetchJson(url) {
+        const response = await fetch(url, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+    }
+
+    async function loadQuiz(category) {
+        if (quizCache.has(category)) return quizCache.get(category);
+        const data = await fetchJson(`questions/${category}.json`);
+        if (!data || !Array.isArray(data.questions) || !data.questions.length) {
+            throw new Error('题库为空或格式不正确');
+        }
+        quizCache.set(category, data);
+        return data;
+    }
+
+    async function startQuiz(category) {
+        if (loadingCategory) return;
+
+        const card = Array.from(document.querySelectorAll('.category-card'))
+            .find(item => item.dataset.category === category);
+        const countEl = card ? card.querySelector('.category-count') : null;
+        const originalCount = countEl ? countEl.textContent : '';
+
+        loadingCategory = category;
+        if (card) {
+            card.classList.add('is-loading');
+            card.setAttribute('aria-busy', 'true');
+        }
+        if (countEl) countEl.textContent = '加载中…';
+
+        try {
+            const quiz = await loadQuiz(category);
+
+            state.category = category;
+            state.quiz = quiz;
+            state.answers = {};
+            state.startedAt = Date.now();
+            state.answerData = null;
+
+            categorySection.classList.add('hidden');
+            result.classList.add('hidden');
+            result.classList.remove('is-personality');
+            quizContainer.classList.remove('hidden');
+
+            const label = document.getElementById('quizCategoryLabel');
+            if (label) label.textContent = quiz.title || category;
+            if (warningEl) warningEl.textContent = '';
+            if (submitBtn) submitBtn.disabled = false;
+
+            renderQuestions(quiz);
+            updateProgress();
+
+            // 等布局完成后再滚动，避免隐藏分类区后仍停留在页面底部。
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => scrollToElement(quizContainer));
             });
-            
-            // 添加选中状态
-            this.classList.add('selected');
-            selectedAnswers[questionIndex] = optionIndex;
-            
-            // 更新进度条
-            updateProgressBar(questions.length);
-        });
-    });
-}
-
-// 更新进度条
-function updateProgressBar(total) {
-    const answered = Object.keys(selectedAnswers).length;
-    const percentage = (answered / total) * 100;
-    document.getElementById('progressBar').style.width = percentage + '%';
-}
-
-// 提交测验
-function submitQuiz(totalQuestions) {
-    const quiz = quizDatabase[currentCategory];
-    let score = 0;
-    
-    // 如果是性格测试，不计分
-    if (currentCategory === 'personality') {
-        showPersonalityResult();
-    } else {
-        // 计算分数
-        quiz.questions.forEach((q, index) => {
-            const selectedIndex = selectedAnswers[index];
-            if (selectedIndex !== undefined && parseInt(selectedIndex) === q.correct) {
-                score++;
+        } catch (error) {
+            console.error('Failed to load quiz:', category, error);
+            showToast('题库加载失败，请通过本地服务器或线上地址访问后重试。', 4200);
+        } finally {
+            loadingCategory = null;
+            if (card) {
+                card.classList.remove('is-loading');
+                card.removeAttribute('aria-busy');
             }
+            if (countEl) countEl.textContent = originalCount;
+        }
+    }
+
+    function renderQuestions(quiz) {
+        quizEl.innerHTML = quiz.questions.map((question, index) => {
+            const options = Array.isArray(question.options) ? question.options : [];
+            return `
+                <article class="question" data-index="${index}" id="question-${index}">
+                    <div class="question-head">
+                        <span class="question-number">${String(index + 1).padStart(2, '0')}</span>
+                        <h3 class="question-text">${formatQuestion(question.question)}</h3>
+                    </div>
+                    <div class="options" role="group" aria-label="第 ${index + 1} 题选项">
+                        ${options.map((option, optionIndex) => `
+                            <button type="button" class="option" data-option="${optionIndex}" aria-pressed="false">
+                                <span class="option-key">${String.fromCharCode(65 + optionIndex)}</span>
+                                <span class="option-text">${escapeHtml(optionLabel(option))}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </article>
+            `;
+        }).join('');
+
+        quizEl.querySelectorAll('.option').forEach(button => {
+            button.addEventListener('click', onOptionClick);
         });
-        
-        showResult(score, totalQuestions);
     }
-}
 
-// 显示结果
-function showResult(score, total) {
-    document.getElementById('quizContainer').classList.add('hidden');
-    document.getElementById('result').classList.remove('hidden');
-    
-    const percentage = Math.round((score / total) * 100);
-    const angle = (score / total) * 360;
-    
-    document.getElementById('scoreText').textContent = `${score}/${total}`;
-    document.querySelector('.score-circle').style.setProperty('--score-angle', `${angle}deg`);
-    
-    let title, message;
-    if (percentage >= 90) {
-        title = "🎉 优秀！你表现得很棒！";
-        message = `你的正确率为${percentage}%。你对这个领域的知识掌握得非常扎实！继续保持这种学习热情。`;
-    } else if (percentage >= 80) {
-        title = "👍 很好！再接再厉！";
-        message = `你的正确率为${percentage}%。你的知识基础不错，还有一些需要加强的地方。`;
-    } else if (percentage >= 70) {
-        title = "🙂 及格！还可以更好！";
-        message = `你的正确率为${percentage}%。基础知识掌握得还不够扎实，建议多看相关资料。`;
-    } else if (percentage >= 60) {
-        title = "🤔 需要努力！";
-        message = `你的正确率为${percentage}%。这个领域的知识还需要进一步学习和巩固。`;
+    function onOptionClick(event) {
+        const button = event.currentTarget;
+        const question = button.closest('.question');
+        if (!question) return;
+
+        const questionIndex = Number(question.dataset.index);
+        const optionIndex = Number(button.dataset.option);
+
+        question.querySelectorAll('.option').forEach(option => {
+            const selected = option === button;
+            option.classList.toggle('selected', selected);
+            option.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+
+        question.classList.remove('is-unanswered');
+        state.answers[questionIndex] = optionIndex;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        if (!state.quiz) return;
+        const total = state.quiz.questions.length;
+        const answered = Object.keys(state.answers).length;
+        const percentage = total ? Math.round((answered / total) * 100) : 0;
+
+        if (progressBar) progressBar.style.width = `${percentage}%`;
+        if (progressWrap) progressWrap.setAttribute('aria-valuenow', String(percentage));
+
+        const answeredEl = document.getElementById('quizAnsweredCount');
+        if (answeredEl) answeredEl.textContent = `${answered} / ${total} 已作答`;
+    }
+
+    function buildAnswerData(quiz, completedAt) {
+        const answers = quiz.questions.map((question, index) => {
+            const selectedIndex = state.answers[index] === undefined ? null : Number(state.answers[index]);
+            const selectedOption = selectedIndex === null ? null : getOption(question, selectedIndex);
+            const correctIndex = Number.isInteger(question.answer) ? question.answer : null;
+            const correctOption = correctIndex === null ? null : getOption(question, correctIndex);
+
+            return {
+                index: index + 1,
+                question: question.question,
+                options: Array.isArray(question.options) ? question.options.map(optionLabel) : [],
+                selectedIndex,
+                selected: selectedOption ? optionLabel(selectedOption) : null,
+                selectedCategory: selectedOption && selectedOption.category ? selectedOption.category : null,
+                correctIndex,
+                correct: correctOption ? optionLabel(correctOption) : null,
+                isCorrect: correctIndex === null ? null : selectedIndex === correctIndex,
+                explanation: question.explanation || null
+            };
+        });
+
+        const total = answers.length;
+        const answered = answers.filter(answer => answer.selectedIndex !== null).length;
+        const isPersonality = quiz.type === 'personality';
+        const score = isPersonality
+            ? null
+            : answers.filter(answer => answer.isCorrect === true).length;
+        const percentage = isPersonality ? null : Math.round((score / total) * 100);
+
+        const personalityScores = {};
+        if (isPersonality) {
+            answers.forEach(answer => {
+                if (!answer.selectedCategory) return;
+                personalityScores[answer.selectedCategory] =
+                    (personalityScores[answer.selectedCategory] || 0) + 1;
+            });
+        }
+
+        return {
+            quiz: {
+                id: state.category,
+                title: quiz.title,
+                type: quiz.type || 'quiz'
+            },
+            startedAt: new Date(state.startedAt).toISOString(),
+            completedAt: completedAt.toISOString(),
+            durationSeconds: Math.max(1, Math.round((completedAt.getTime() - state.startedAt) / 1000)),
+            total,
+            answered,
+            score,
+            percentage,
+            personalityScores: isPersonality ? personalityScores : null,
+            answers
+        };
+    }
+
+    function submitQuiz() {
+        if (!state.quiz) return;
+
+        const total = state.quiz.questions.length;
+        const answered = Object.keys(state.answers).length;
+
+        if (answered < total) {
+            const proceed = window.confirm(
+                `还有 ${total - answered} 题没有作答，未作答将计为错误。仍要提交吗？`
+            );
+            if (!proceed) {
+                const firstUnanswered = state.quiz.questions.findIndex(
+                    (_, index) => state.answers[index] === undefined
+                );
+                const questionEl = document.getElementById(`question-${firstUnanswered}`);
+                if (questionEl) {
+                    questionEl.classList.add('is-unanswered');
+                    scrollToElement(questionEl);
+                }
+                return;
+            }
+        }
+
+        const data = buildAnswerData(state.quiz, new Date());
+        state.answerData = data;
+        showResult(state.quiz, data);
+    }
+
+    function topPersonalityType(scores) {
+        const order = ['分析型', '社交型', '创意型', '稳定型'];
+        return order.reduce((best, type) =>
+            (scores[type] || 0) > (scores[best] || 0) ? type : best
+        , order[0]);
+    }
+
+    function formatDuration(seconds) {
+        if (seconds < 60) return `${seconds} 秒`;
+        return `${Math.floor(seconds / 60)} 分 ${seconds % 60} 秒`;
+    }
+
+    function showResult(quiz, data) {
+        quizContainer.classList.add('hidden');
+        result.classList.remove('hidden');
+
+        const isPersonality = data.quiz.type === 'personality';
+        result.classList.toggle('is-personality', isPersonality);
+
+        const scoreCircle = document.getElementById('scoreCircle');
+        const scoreText = document.getElementById('scoreText');
+        const titleEl = document.getElementById('resultTitle');
+        const messageEl = document.getElementById('resultMessage');
+        const statsEl = document.getElementById('resultStats');
+
+        if (isPersonality) {
+            if (scoreCircle) scoreCircle.style.display = 'none';
+            const top = topPersonalityType(data.personalityScores || {});
+            const meta = PERSONALITY_META[top] || { description: '' };
+            if (titleEl) titleEl.textContent = `你的主导倾向：${top}`;
+            if (messageEl) {
+                messageEl.textContent = `${meta.description} 你在「${top}」上选择了 ${data.personalityScores[top] || 0} 次。`;
+            }
+        } else {
+            if (scoreCircle) scoreCircle.style.display = '';
+            if (scoreText) scoreText.textContent = `${data.score}/${data.total}`;
+            if (scoreCircle) {
+                scoreCircle.style.setProperty('--score-angle', `${data.percentage * 3.6}deg`);
+            }
+
+            let title;
+            let message;
+            if (data.percentage >= 90) {
+                title = '🎉 优秀！你表现得很棒！';
+                message = `你的正确率为 ${data.percentage}%。你对这个领域的知识掌握得非常扎实，继续保持。`;
+            } else if (data.percentage >= 80) {
+                title = '👍 很好！再接再厉！';
+                message = `你的正确率为 ${data.percentage}%。你的知识基础不错，还有一些可以继续加强的地方。`;
+            } else if (data.percentage >= 70) {
+                title = '🙂 及格！还可以更好！';
+                message = `你的正确率为 ${data.percentage}%。基础知识已经掌握了一部分，建议再看一眼错题。`;
+            } else if (data.percentage >= 60) {
+                title = '🤔 需要努力！';
+                message = `你的正确率为 ${data.percentage}%。这个领域还有不少知识需要进一步学习和巩固。`;
+            } else {
+                title = '😅 加油吧！';
+                message = `你的正确率为 ${data.percentage}%。建议从基础知识开始系统学习，下次会更好。`;
+            }
+            if (titleEl) titleEl.textContent = title;
+            if (messageEl) messageEl.textContent = message;
+        }
+
+        if (statsEl) {
+            const stats = isPersonality
+                ? [
+                    ['完成题目', `${data.answered}/${data.total}`],
+                    ['用时', formatDuration(data.durationSeconds)],
+                    ['主导类型', topPersonalityType(data.personalityScores || {})]
+                ]
+                : [
+                    ['正确', `${data.score} 题`],
+                    ['错误', `${data.total - data.score} 题`],
+                    ['正确率', `${data.percentage}%`],
+                    ['用时', formatDuration(data.durationSeconds)]
+                ];
+            statsEl.innerHTML = stats.map(([label, value]) => `
+                <div class="result-stat">
+                    <strong>${escapeHtml(value)}</strong>
+                    <span>${escapeHtml(label)}</span>
+                </div>
+            `).join('');
+        }
+
+        renderReview(data);
+
+        const preview = document.getElementById('answerDataPreview');
+        if (preview) preview.textContent = JSON.stringify(data, null, 2);
+
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => scrollToElement(result));
+        });
+    }
+
+    function renderReview(data) {
+        const isPersonality = data.quiz.type === 'personality';
+        const reviewEl = document.getElementById('answerReview');
+        if (!reviewEl) return;
+
+        const summary = isPersonality ? renderPersonalitySummary(data) : '';
+        const items = data.answers.map(answer => {
+            const statusClass = isPersonality
+                ? 'is-neutral'
+                : answer.selectedIndex === null
+                    ? 'is-unanswered'
+                    : answer.isCorrect
+                        ? 'is-correct'
+                        : 'is-wrong';
+            const statusLabel = isPersonality
+                ? '已选择'
+                : answer.selectedIndex === null
+                    ? '未作答'
+                    : answer.isCorrect
+                        ? '正确'
+                        : '错误';
+            const selected = answer.selected || '未作答';
+            const selectedDetail = answer.selectedCategory
+                ? `${selected} · ${answer.selectedCategory}`
+                : selected;
+
+            return `
+                <article class="review-item ${statusClass}">
+                    <div class="review-head">
+                        <span class="review-index">${String(answer.index).padStart(2, '0')}</span>
+                        <p class="review-question">${escapeHtml(answer.question)}</p>
+                        <span class="review-status">${statusLabel}</span>
+                    </div>
+                    <div class="review-answers">
+                        <span class="review-chip">你的答案 <strong>${escapeHtml(selectedDetail)}</strong></span>
+                        ${answer.correct ? `<span class="review-chip is-correct">正确答案 <strong>${escapeHtml(answer.correct)}</strong></span>` : ''}
+                    </div>
+                    ${answer.explanation ? `<p class="review-explanation">${escapeHtml(answer.explanation)}</p>` : ''}
+                </article>
+            `;
+        }).join('');
+
+        reviewEl.innerHTML = summary + items;
+    }
+
+    function renderPersonalitySummary(data) {
+        const scores = data.personalityScores || {};
+        const order = ['分析型', '社交型', '创意型', '稳定型'];
+        const rows = order.map(type => {
+            const value = scores[type] || 0;
+            const percentage = data.total ? (value / data.total) * 100 : 0;
+            return `
+                <div class="personality-row">
+                    <span class="personality-label">${type}</span>
+                    <div class="personality-meter"><span style="width: ${percentage}%"></span></div>
+                    <strong>${value}</strong>
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <div class="personality-summary">
+                <div class="personality-summary-head">
+                    <span>倾向分布</span>
+                    <small>共 ${data.total} 题</small>
+                </div>
+                ${rows}
+            </div>
+        `;
+    }
+
+    async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (error) {
+                // 继续使用兼容方案。
+            }
+        }
+
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.top = '-999px';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+
+        let copied = false;
+        try {
+            copied = document.execCommand('copy');
+        } catch (error) {
+            copied = false;
+        }
+        area.remove();
+        return copied;
+    }
+
+    async function copyAnswerData() {
+        if (!state.answerData) return;
+        const text = JSON.stringify(state.answerData, null, 2);
+        const copied = await copyText(text);
+        if (copied) {
+            showToast('答题数据已复制到剪贴板');
+            return;
+        }
+
+        // 浏览器拒绝剪贴板权限时，展开 JSON 并选中内容，方便直接按 Ctrl+C。
+        const details = document.querySelector('.answer-json');
+        if (details) details.open = true;
+        const preview = document.getElementById('answerDataPreview');
+        if (preview && window.getSelection) {
+            const range = document.createRange();
+            range.selectNodeContents(preview);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('复制受限，已选中 JSON，请按 Ctrl+C 复制', 3600);
+        } else {
+            showToast('复制失败，请展开原始 JSON 手动复制', 3600);
+        }
+    }
+
+    function downloadAnswerData() {
+        if (!state.answerData) return;
+        const text = JSON.stringify(state.answerData, null, 2);
+        const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const now = new Date();
+        const stamp = [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, '0'),
+            String(now.getDate()).padStart(2, '0'),
+            '-',
+            String(now.getHours()).padStart(2, '0'),
+            String(now.getMinutes()).padStart(2, '0')
+        ].join('');
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `wza-quiz-${state.category || 'result'}-${stamp}.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('答题数据已开始下载');
+    }
+
+    function backToCategories() {
+        const quizVisible = !quizContainer.classList.contains('hidden');
+        if (quizVisible && Object.keys(state.answers).length) {
+            const proceed = window.confirm('退出后本次作答不会保留，确定返回分类吗？');
+            if (!proceed) return;
+        }
+
+        quizContainer.classList.add('hidden');
+        result.classList.add('hidden');
+        result.classList.remove('is-personality');
+        categorySection.classList.remove('hidden');
+
+        state.category = null;
+        state.quiz = null;
+        state.answers = {};
+        state.answerData = null;
+
+        if (progressBar) progressBar.style.width = '0%';
+        if (progressWrap) progressWrap.setAttribute('aria-valuenow', '0');
+        const answeredEl = document.getElementById('quizAnsweredCount');
+        if (answeredEl) answeredEl.textContent = '0 / 0 已作答';
+        if (warningEl) warningEl.textContent = '';
+
+        window.requestAnimationFrame(() => scrollToElement(categorySection));
+    }
+
+    async function hydrateCategoryCounts() {
+        try {
+            const manifest = await fetchJson('questions/manifest.json');
+            if (!Array.isArray(manifest)) return;
+
+            let total = 0;
+            manifest.forEach(item => {
+                const card = Array.from(document.querySelectorAll('.category-card'))
+                    .find(entry => entry.dataset.category === item.id);
+                if (!card) return;
+
+                const countEl = card.querySelector('.category-count');
+                if (countEl && item.count) countEl.textContent = `${item.count} 道题`;
+
+                const descEl = card.querySelector('.category-copy small');
+                if (descEl && item.description) descEl.textContent = item.description;
+
+                total += Number(item.count) || 0;
+            });
+
+            const totalEl = document.getElementById('quizTotalQuestions');
+            if (totalEl && total) totalEl.textContent = String(total);
+        } catch (error) {
+            // 静态数量和描述已经写在页面里，清单加载失败不影响使用。
+        }
+    }
+
+    function init() {
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => startQuiz(card.dataset.category));
+        });
+
+        const quizBackBtn = document.getElementById('quizBackBtn');
+        if (quizBackBtn) quizBackBtn.addEventListener('click', backToCategories);
+
+        if (submitBtn) submitBtn.addEventListener('click', submitQuiz);
+
+        const retryBtn = document.getElementById('retryBtn');
+        if (retryBtn) {
+            retryBtn.addEventListener('click', () => {
+                if (state.category) startQuiz(state.category);
+            });
+        }
+
+        const backToCategoriesBtn = document.getElementById('backToCategoriesBtn');
+        if (backToCategoriesBtn) backToCategoriesBtn.addEventListener('click', backToCategories);
+
+        const copyDataBtn = document.getElementById('copyDataBtn');
+        if (copyDataBtn) copyDataBtn.addEventListener('click', copyAnswerData);
+
+        const downloadDataBtn = document.getElementById('downloadDataBtn');
+        if (downloadDataBtn) downloadDataBtn.addEventListener('click', downloadAnswerData);
+
+        hydrateCategoryCounts();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        title = "😅 加油吧！";
-        message = `你的正确率为${percentage}%。建议从基础知识开始系统学习。`;
+        init();
     }
-    
-    document.getElementById('resultTitle').textContent = title;
-    document.getElementById('resultMessage').textContent = message;
-}
-
-// 显示性格测试结果（简单版本）
-function showPersonalityResult() {
-    document.getElementById('quizContainer').classList.add('hidden');
-    document.getElementById('result').classList.remove('hidden');
-    
-    document.querySelector('.score-circle').style.display = 'none';
-    document.getElementById('resultTitle').textContent = "性格分析完成！";
-    document.getElementById('resultMessage').textContent = "根据你的选择，你是一个独特而有趣的个体。每个人都有自己独特的性格特征，重要的是认识自己、接纳自己。祝你未来一切顺利！";
-}
+})();
