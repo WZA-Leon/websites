@@ -17,18 +17,18 @@
     <section class="page-hero">
         <div class="container">
             <div class="page-hero-copy">
-                <p class="page-kicker"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i> CLOUD SHARE · 云盘分享</p>
-                <h1 class="page-title">把收藏的文件<br><span>放进共享链接</span></h1>
-                <p class="page-lead">这里集中分享我放在云盘上的学习资料、软件工具、摄影素材和电子书。站内自己写的教程和长文已经全部搬到博客，这个页面只保留可以直接转存或下载的内容。</p>
+                <p class="page-kicker"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i> CLOUD LIBRARY · 云盘分享</p>
+                <h1 class="page-title">把好用的资源<br><span>集中放在这里</span></h1>
+                <p class="page-lead">这里会收着我自己的分享，也会转载朋友整理的云盘资源：软件、工具、整合包、学习资料和素材。每条尽量写清楚来源、平台、大小和提取码，找起来更省事。</p>
                 <div class="page-meta">
                     <span id="shareCountMeta"><i class="fas fa-box-open" aria-hidden="true"></i> 0 份分享</span>
-                    <span><i class="fas fa-cloud" aria-hidden="true"></i> 多平台链接</span>
+                    <span><i class="fas fa-share-nodes" aria-hidden="true"></i> 原创 / 转载</span>
                     <span><i class="fas fa-key" aria-hidden="true"></i> 提取码标注</span>
-                    <span><i class="fas fa-circle-check" aria-hidden="true"></i> 发布前校验</span>
+                    <span><i class="fas fa-circle-check" aria-hidden="true"></i> 来源可追溯</span>
                 </div>
                 <div class="page-actions">
-                    <a href="#share-list" class="btn">浏览分享 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
-                    <a href="blog.html" class="btn btn-accent">去博客看文章</a>
+                    <a href="#share-list" class="btn">浏览资源 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                    <a href="contact.html" class="btn btn-accent">提交资源</a>
                 </div>
             </div>
             <aside class="page-hero-panel">
@@ -39,7 +39,7 @@
                     <div class="hero-stat"><strong id="statCategories">0</strong><span>个分类</span></div>
                     <div class="hero-stat"><strong id="statUpdated">—</strong><span>最近更新</span></div>
                 </div>
-                <div class="hero-code"><b>share</b> cloud link + code<br><b>check</b> before publish<br><b>note</b> 失效请留言</div>
+                <div class="hero-code"><b>format</b> cloud link + code<br><b>source</b> 原创 / 转载<br><b>note</b> 失效请留言</div>
             </aside>
         </div>
     </section>
@@ -49,18 +49,29 @@
             <div class="section-head">
                 <div>
                     <p class="section-kicker">SHARE LIST</p>
-                    <h2>云盘分享清单</h2>
-                    <p>按用途筛选，打开链接后输入提取码即可。每一条都写清楚平台、大小和更新时间，避免点进去才发现不是自己要找的东西。</p>
+                    <h2>云盘资源清单</h2>
+                    <p>按分类和来源筛选；转载资源会标注来源。打开链接后输入提取码即可。</p>
                 </div>
                 <a href="contact.html" class="btn btn-small">反馈失效 <i class="fas fa-flag" aria-hidden="true"></i></a>
             </div>
 
             <div class="share-toolbar" id="shareToolbar" hidden>
                 <div class="share-filters" id="shareCategories" role="group" aria-label="按分类筛选"></div>
-                <label class="share-search">
-                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
-                    <input type="search" id="shareSearch" aria-label="搜索分享" placeholder="搜索标题、标签或文件名…" autocomplete="off">
-                </label>
+                <div class="share-toolbar-right">
+                    <label class="share-search">
+                        <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                        <input type="search" id="shareSearch" aria-label="搜索分享" placeholder="搜索标题、标签、来源或文件名…" autocomplete="off">
+                    </label>
+                    <label class="share-source-select">
+                        <span>来源</span>
+                        <select id="shareSource" aria-label="按来源筛选">
+                            <option value="all">全部</option>
+                            <option value="原创">原创</option>
+                            <option value="转载">转载</option>
+                        </select>
+                    </label>
+                    <span class="share-result-count" id="shareResultCount" aria-live="polite">0 条</span>
+                </div>
             </div>
 
             <div class="share-grid" id="shareGrid" aria-live="polite"></div>
@@ -101,8 +112,8 @@
             <div class="share-info-grid">
                 <div class="share-info-card">
                     <i class="fas fa-shield-halved" aria-hidden="true"></i>
-                    <h3>版权说明</h3>
-                    <p>只分享个人整理或允许公开传播的资料。如果某份文件侵犯了你的权益，请通过联系页告诉我，我会尽快删除。</p>
+                    <h3>版权与来源</h3>
+                    <p>只分享个人整理、已获授权或允许公开传播的资源。转载会尽量标注来源；如果原作者不希望被分享，请通过联系页告诉我，我会尽快删除。</p>
                 </div>
                 <div class="share-info-card">
                     <i class="fas fa-link-slash" aria-hidden="true"></i>
@@ -122,7 +133,7 @@
         <div class="container">
             <div class="cta-band">
                 <div>
-                    <h2>有想找的文件？</h2>
+                    <h2>有想找的资源？</h2>
                     <p>告诉我你需要什么，或者哪条分享已经失效。能补的链接，我都会补上。</p>
                 </div>
                 <a href="contact.html" class="btn">联系 WZA</a>

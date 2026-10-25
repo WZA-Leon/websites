@@ -49,7 +49,6 @@
 - **博客文章**：正文放在 `blog-data/<id>.md`，列表信息写在 `js/blog-list.js`。
 - **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
 - **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
-- **旧资源链接**：`resource.html?id=<id>` 会自动跳转到对应的博客文章，原来的 4 份指南已经迁入博客。
 
 云盘分享的常用字段：
 
@@ -57,12 +56,16 @@
 | --- | --- |
 | `title` / `description` | 分享标题和一句说明 |
 | `platform` | `baidu`、`aliyun`、`quark`、`pan123`、`lanzou`、`onedrive`、`gdrive`、`mega`、`other` |
-| `category` | 分类，例如“学习资料”“软件工具” |
+| `category` | 分类，例如“学习资料”“软件工具”“游戏与整合包” |
+| `type` | 资源类型，例如“软件”“整合包”“模板”“课程”“素材” |
+| `source` | `原创` 或 `转载`；转载时填写 `credit` / `sourceUrl` 标注来源 |
 | `url` / `code` | 网盘链接与提取码 |
-| `size` / `date` | 文件大小与更新日期 |
+| `version` / `size` / `updated` | 版本号、文件大小与最近更新日期 |
 | `files` / `tags` | 文件清单与标签 |
 | `note` | 解压密码等补充说明 |
 | `status` | `active`（可用）、`expired`（已失效）、`planned`（整理中） |
+
+转载或整合他人资源时，请确认授权并标注来源；不确定版权的内容不要公开分享。
 
 ## 免责声明
 

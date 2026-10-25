@@ -11,5 +11,5 @@
         <path d="M330 260l50-55 40 40 30-30 50 45"/>
         <circle cx="350" cy="190" r="14" fill="#ffffff" fill-opacity="0.72" stroke="none"/>
     </g>
-    <text x="400" y="345" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="28" letter-spacing="4" fill="#ffffff" fill-opacity="0.75">PROJECT</text>
+    <text x="400" y="345" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="28" letter-spacing="4" fill="#ffffff" fill-opacity="0.75">WZA - PROJECT</text>
 </svg>

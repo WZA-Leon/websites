@@ -107,6 +107,7 @@ function buildFooterHTML() {
                         <li><a href="${sitePath('about.html')}">关于WZA</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
                         <li><a href="${sitePath('friends.html')}">友链</a></li>
+                        <li><a href="${sitePath('site-map.html')}">全部导航</a></li>
                         <li><a href="${sitePath('contact.html')}">联系我们</a></li>
                     </ul>
                 </div>

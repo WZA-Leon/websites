@@ -9,6 +9,7 @@
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="css/site-refresh.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/friends.css">
     <link rel="stylesheet" href="css/audio-player.css">
 </head>
@@ -26,8 +27,8 @@
                     <h3>用影像定格瞬间 · 用代码构建逻辑 · 用游戏创造故事</h3>
                     <br>
                     <div class="hero-buttons">
-                        <a href="site-map.html" class="btn">开始探索</a>
-                        <a href="friends.html" class="btn">友链</a>
+                        <a href="#quick-access" class="btn">快速找入口</a>
+                        <a href="resources.html" class="btn">云盘分享</a>
                         <a href="about.html" class="btn btn-accent">了解更多</a>
                     </div>
                     <div class="audio-player-mount"
@@ -36,6 +37,149 @@
                          data-title="Colors"
                          data-artist="WZA 的私人电台 · 戴上耳机慢慢逛"></div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 快速入口 -->
+    <section class="section quick-access" id="quick-access">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">QUICK ACCESS</p>
+                    <h2>想找什么？从这里开始</h2>
+                    <p>全站入口集中在这里。输入关键词，或者按类型筛选，不用再一层层翻页面。</p>
+                </div>
+                <a href="site-map.html" class="btn btn-small">完整站点地图</a>
+            </div>
+
+            <div class="quick-toolbar">
+                <label class="quick-search">
+                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                    <input type="search" id="quickSearch" aria-label="搜索站内入口" placeholder="搜索：云盘、博客、项目、摄影、测验…" autocomplete="off">
+                </label>
+                <div class="quick-filters" id="quickFilters" role="group" aria-label="按类型筛选">
+                    <button type="button" class="quick-filter is-active" data-filter="all">全部</button>
+                    <button type="button" class="quick-filter" data-filter="content">内容</button>
+                    <button type="button" class="quick-filter" data-filter="create">创作</button>
+                    <button type="button" class="quick-filter" data-filter="about">关于</button>
+                </div>
+                <span class="quick-count" id="quickCount" aria-live="polite">12 个入口</span>
+            </div>
+
+            <div class="quick-grid" id="quickGrid">
+                <a class="quick-card" href="resources.html" data-type="content" data-keywords="云盘 网盘 资源 分享 软件 工具 整合包 素材 下载">
+                    <span class="quick-icon"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>云盘分享</strong>
+                        <small>软件、工具、整合包与素材</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="blog.html" data-type="content" data-keywords="博客 文章 教程 写作 笔记 阅读 日志">
+                    <span class="quick-icon"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>博客文章</strong>
+                        <small>技术、摄影、游戏与写作</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="projects.html" data-type="create" data-keywords="项目 作品 代码 开发 工具 实验 网站">
+                    <span class="quick-icon"><i class="fas fa-code" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>项目与作品</strong>
+                        <small>网站、小工具与实验</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="gallery.html" data-type="content" data-keywords="摄影 照片 图库 作品 图片 相册">
+                    <span class="quick-icon"><i class="fas fa-camera" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>摄影作品</strong>
+                        <small>图库与拍摄记录</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="quiz.html" data-type="content" data-keywords="测验 题库 测试 答题 知识 题目">
+                    <span class="quick-icon"><i class="fas fa-circle-question" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>知识测验</strong>
+                        <small>6 类题库，答完有回顾</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="friends.html" data-type="content" data-keywords="友链 朋友 主页 伙伴 个人网站">
+                    <span class="quick-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>友链</strong>
+                        <small>朋友们的个人主页</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="links.html" data-type="content" data-keywords="外部 导航 网站 工具 学习 灵感 资源">
+                    <span class="quick-icon"><i class="fas fa-globe" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>外部资源导航</strong>
+                        <small>学习站点、工具与灵感</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="idcard.html" data-type="about" data-keywords="个人 简介 关于 资料 名片 魏子昂">
+                    <span class="quick-icon"><i class="fas fa-id-card" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>个人简介</strong>
+                        <small>关于 WZA 的资料页</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="about.html" data-type="about" data-keywords="关于 WZA 介绍 故事 个人 网站 主人">
+                    <span class="quick-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>关于 WZA</strong>
+                        <small>这个站和它的主人</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="services.html" data-type="about" data-keywords="合作 服务 项目 联系 能做什么">
+                    <span class="quick-icon"><i class="fas fa-handshake" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>合作方式</strong>
+                        <small>能一起做什么</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="features.html" data-type="about" data-keywords="能力 技能 兴趣 图谱 方向">
+                    <span class="quick-icon"><i class="fas fa-chart-simple" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>能力图谱</strong>
+                        <small>兴趣、技能与方向</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="contact.html" data-type="about" data-keywords="联系 邮箱 电话 留言 微信 地址">
+                    <span class="quick-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                    <span class="quick-copy">
+                        <strong>联系 WZA</strong>
+                        <small>邮箱、电话与留言</small>
+                    </span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+            </div>
+
+            <div class="quick-empty" id="quickEmpty" hidden>
+                <p>没有找到匹配的入口，换个关键词试试。</p>
+                <button type="button" class="btn btn-small" id="quickReset">清除筛选</button>
             </div>
         </div>
     </section>
@@ -70,36 +214,42 @@
             </div>
             
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-feather-pointed"></i></div>
+                <a class="feature-card" href="blog.html">
+                    <div class="feature-icon"><i class="fas fa-feather-pointed" aria-hidden="true"></i></div>
                     <h3>文学</h3>
                     <p>小说、诗歌、创作手记。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <span class="feature-go">去博客看看 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+                <a class="feature-card" href="quiz.html">
+                    <div class="feature-icon"><i class="fas fa-bolt" aria-hidden="true"></i></div>
                     <h3>数理化</h3>
                     <p>理科热爱者的解题与探索。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                    <span class="feature-go">去做科学题 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+                <a class="feature-card" href="gallery.html">
+                    <div class="feature-icon"><i class="fas fa-palette" aria-hidden="true"></i></div>
                     <h3>艺术</h3>
                     <p>音乐、绘画、设计。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-microchip"></i></div>
-                    <h3><a href="projects.html" class="feature-link">计算机</a></h3>
+                    <span class="feature-go">去看摄影 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+                <a class="feature-card" href="projects.html">
+                    <div class="feature-icon"><i class="fas fa-microchip" aria-hidden="true"></i></div>
+                    <h3>计算机</h3>
                     <p>Web开发、小工具、算法。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-camera"></i></div>
-                    <h3><a href="gallery.html" class="feature-link">摄影</a></h3>
+                    <span class="feature-go">去看项目 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+                <a class="feature-card" href="gallery.html">
+                    <div class="feature-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
+                    <h3>摄影</h3>
                     <p>记录美好瞬间，分享视觉故事。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
+                    <span class="feature-go">进入图库 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
+                <a class="feature-card" href="blog.html">
+                    <div class="feature-icon"><i class="fas fa-headset" aria-hidden="true"></i></div>
                     <h3>游戏</h3>
                     <p>游戏杂谈与独立游戏推荐。</p>
-                </div>
+                    <span class="feature-go">读游戏文章 <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </a>
             </div>
         </div>
     </section>
@@ -154,7 +304,7 @@
                     <p>代码、星空与日常。去看看朋友们正在认真做的事，也欢迎来交换友链。</p>
                 </div>
                 <div class="home-friends-avatars" aria-hidden="true">
-                    <img src="images/friends/origin.svg" alt="" width="56" height="56" loading="lazy" decoding="async">
+                    <img src="images/friends/origin.png" alt="" width="56" height="56" loading="lazy" decoding="async">
                     <img src="images/friends/fyy.jpg" alt="" width="56" height="56" loading="lazy" decoding="async">
                     <img src="images/friends/hyz.jpg" alt="" width="56" height="56" loading="lazy" decoding="async">
                 </div>
@@ -166,5 +316,6 @@
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
     <script src="js/audio-player.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

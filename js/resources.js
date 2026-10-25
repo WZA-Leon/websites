@@ -5,19 +5,21 @@
     const grid = document.getElementById('shareGrid');
     const filterBar = document.getElementById('shareCategories');
     const searchInput = document.getElementById('shareSearch');
+    const sourceSelect = document.getElementById('shareSource');
     const toolbar = document.getElementById('shareToolbar');
     const toast = document.getElementById('shareToast');
     if (!grid) return;
 
     const shares = (Array.isArray(window.SHARES_LIST) ? window.SHARES_LIST.slice() : [])
         .filter(item => item && item.title)
-        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+        .sort((a, b) => String(b.updated || b.date || '').localeCompare(String(a.updated || a.date || '')));
 
     const categories = ['全部', ...Array.from(new Set(
         shares.map(item => item.category).filter(Boolean)
     ))];
 
     let currentCategory = '全部';
+    let currentSource = 'all';
     let query = '';
 
     const PLATFORM_META = {
@@ -36,6 +38,11 @@
         active: { label: '可用', className: 'is-active' },
         expired: { label: '已失效', className: 'is-expired' },
         planned: { label: '整理中', className: 'is-planned' }
+    };
+
+    const SOURCE_META = {
+        '原创': { className: 'is-original' },
+        '转载': { className: 'is-repost' }
     };
 
     function escapeHtml(value) {
@@ -85,6 +92,12 @@
         return { key, label: meta.label, className: meta.className };
     }
 
+    function sourceOf(item) {
+        const explicit = String(item.source || '').trim();
+        if (explicit === '原创' || explicit === '转载') return explicit;
+        return item.credit || item.sourceUrl ? '转载' : '原创';
+    }
+
     function matchesQuery(item) {
         if (!query) return true;
         const platform = platformOf(item);
@@ -92,6 +105,10 @@
             item.title,
             item.description,
             item.category,
+            item.type,
+            item.source,
+            item.credit,
+            item.version,
             item.note,
             platform.name,
             ...(Array.isArray(item.tags) ? item.tags : []),
@@ -135,6 +152,16 @@
         const canOpen = Boolean(url) && status.key === 'active';
         const code = item.code ? String(item.code) : '';
         const tags = Array.isArray(item.tags) ? item.tags.filter(Boolean) : [];
+        const source = sourceOf(item);
+        const sourceClass = (SOURCE_META[source] || SOURCE_META['原创']).className;
+        const type = item.type || item.category || '资源';
+        const version = item.version ? String(item.version) : '';
+        const sourceUrl = safeUrl(item.sourceUrl);
+        const creditLine = source === '转载'
+            ? `<p class="share-credit"><i class="fas fa-link" aria-hidden="true"></i> 来源：${sourceUrl
+                ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener">${escapeHtml(item.credit || '原始分享')}</a>`
+                : escapeHtml(item.credit || '来源未标注')}</p>`
+            : '';
 
         const openAction = canOpen
             ? `<a class="btn btn-small share-open" href="${escapeHtml(url)}" target="_blank" rel="noopener">打开网盘 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`
@@ -152,14 +179,20 @@
                     <span class="share-status ${status.className}">${status.label}</span>
                 </div>
                 <h3>${escapeHtml(item.title)}</h3>
+                <div class="share-badges">
+                    <span class="share-badge share-type">${escapeHtml(type)}</span>
+                    <span class="share-badge share-source ${sourceClass}">${source}</span>
+                    ${version ? `<span class="share-badge share-version">${escapeHtml(version)}</span>` : ''}
+                </div>
                 <p class="share-desc">${escapeHtml(item.description || '')}</p>
                 ${renderFiles(item)}
                 ${tags.length ? `<div class="share-tags">${tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
                 <div class="share-meta">
                     ${item.size ? `<span><i class="fas fa-database" aria-hidden="true"></i> ${escapeHtml(item.size)}</span>` : ''}
                     ${item.category ? `<span><i class="fas fa-folder" aria-hidden="true"></i> ${escapeHtml(item.category)}</span>` : ''}
-                    ${item.date ? `<span><i class="fas fa-calendar" aria-hidden="true"></i> ${formatDate(item.date)}</span>` : ''}
+                    ${(item.updated || item.date) ? `<span><i class="fas fa-calendar" aria-hidden="true"></i> ${formatDate(item.updated || item.date)}</span>` : ''}
                 </div>
+                ${creditLine}
                 ${code ? `
                     <div class="share-code">
                         <span class="share-code-label"><i class="fas fa-key" aria-hidden="true"></i> 提取码</span>
@@ -177,18 +210,18 @@
     }
 
     function emptyState() {
-        const filtered = currentCategory !== '全部' || Boolean(query);
+        const filtered = currentCategory !== '全部' || currentSource !== 'all' || Boolean(query);
         if (!shares.length) {
             return `
                 <div class="share-empty">
                     <span class="share-empty-icon"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i></span>
-                    <h3>第一批分享还在整理</h3>
-                    <p>正在把学习资料、软件工具和摄影素材整理上网盘。链接准备好后会出现在这里；也可以先去博客看看已经写好的文章。</p>
+                    <h3>第一批资源还在整理</h3>
+                    <p>正在整理软件工具、整合包、学习资料和素材。链接准备好后会出现在这里；也可以先去博客看看已经写好的文章。</p>
                     <div class="share-empty-tags">
-                        <span>学习资料</span>
                         <span>软件工具</span>
-                        <span>摄影素材</span>
-                        <span>电子书</span>
+                        <span>整合包</span>
+                        <span>学习资料</span>
+                        <span>素材</span>
                     </div>
                     <div class="share-empty-actions">
                         <a class="btn btn-small" href="blog.html">去博客看文章</a>
@@ -211,7 +244,7 @@
     function renderStats() {
         const count = shares.length;
         const categoryCount = new Set(shares.map(item => item.category).filter(Boolean)).size;
-        const latest = shares.map(item => formatDate(item.date)).filter(Boolean).sort().pop() || '';
+        const latest = shares.map(item => formatDate(item.updated || item.date)).filter(Boolean).sort().pop() || '';
 
         const setText = (id, value) => {
             const element = document.getElementById(id);
@@ -230,12 +263,16 @@
     function render() {
         const list = shares.filter(item =>
             (currentCategory === '全部' || item.category === currentCategory) &&
+            (currentSource === 'all' || sourceOf(item) === currentSource) &&
             matchesQuery(item)
         );
 
         grid.innerHTML = list.length
             ? list.map(renderCard).join('')
             : emptyState();
+
+        const resultCount = document.getElementById('shareResultCount');
+        if (resultCount) resultCount.textContent = `${list.length} 条`;
 
         renderStats();
 
@@ -299,12 +336,21 @@
         });
     }
 
+    if (sourceSelect) {
+        sourceSelect.addEventListener('change', event => {
+            currentSource = event.target.value || 'all';
+            render();
+        });
+    }
+
     grid.addEventListener('click', async event => {
         const reset = event.target.closest('[data-reset]');
         if (reset) {
             currentCategory = '全部';
+            currentSource = 'all';
             query = '';
             if (searchInput) searchInput.value = '';
+            if (sourceSelect) sourceSelect.value = 'all';
             renderFilters();
             render();
             return;
