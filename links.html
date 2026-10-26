@@ -9,6 +9,7 @@
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/site-refresh.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
@@ -17,8 +18,8 @@
         <div class="container">
             <div class="page-hero-copy">
                 <p class="page-kicker"><i class="fas fa-globe" aria-hidden="true"></i> EXTERNAL DIRECTORY</p>
-                <h1 class="page-title">站外的好东西<br><span>集中放在这里</span></h1>
-                <p class="page-lead">这一页只收录外部站点：学习资料、常用工具、灵感来源和社区。站内自己写的文章和教程请去博客，网盘文件在云盘分享页。</p>
+                <h1 class="page-title">站外的好东西<br><span>按索引来找</span></h1>
+                <p class="page-lead">这一页只收录外部站点：学习资料、常用工具、灵感来源和社区。和首页一样，可以直接搜索关键词，也可以按类型筛选。</p>
                 <div class="page-meta">
                     <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 学习</span>
                     <span><i class="fas fa-wrench" aria-hidden="true"></i> 工具</span>
@@ -26,65 +27,118 @@
                     <span><i class="fas fa-users" aria-hidden="true"></i> 社区</span>
                 </div>
                 <div class="page-actions">
-                    <a href="blog.html" class="btn">去博客看文章</a>
+                    <a href="#external-index" class="btn">开始查找 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
                     <a href="resources.html" class="btn btn-accent">云盘分享</a>
                 </div>
             </div>
             <aside class="page-hero-panel">
-                <h2>导航说明</h2>
-                <p>外部链接会在新标签页打开。</p>
+                <h2>索引说明</h2>
+                <p>所有链接都会在新标签页打开。</p>
                 <div class="hero-stat-list">
-                    <div class="hero-stat"><strong>04</strong><span>分类</span></div>
                     <div class="hero-stat"><strong>12</strong><span>精选站点</span></div>
+                    <div class="hero-stat"><strong>04</strong><span>用途分类</span></div>
                     <div class="hero-stat"><strong>↗</strong><span>站外链接</span></div>
                 </div>
+                <div class="hero-code"><b>search</b> 关键词<br><b>filter</b> 学习 / 工具 / 灵感 / 社区<br><b>scope</b> external only</div>
             </aside>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section quick-access" id="external-index">
         <div class="container">
             <div class="section-head">
                 <div>
-                    <p class="section-kicker">DIRECTORY</p>
-                    <h2>外部资源导航</h2>
-                    <p>按用途分组，不做无意义的堆砌。每个链接都尽量保留一句说明。</p>
+                    <p class="section-kicker">INDEX</p>
+                    <h2>外部资源索引</h2>
+                    <p>输入关键词，或者点一下分类。找不到的时候，清除筛选即可。</p>
                 </div>
+                <a href="site-map.html" class="btn btn-small">完整站点地图</a>
             </div>
 
-            <div class="directory-grid">
-                <section class="directory-card">
-                    <h3><i class="fas fa-graduation-cap" aria-hidden="true"></i> 学习资料</h3>
-                    <div class="directory-links">
-                        <a href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN Web Docs <small>Web 标准</small></a>
-                        <a href="https://www.freecodecamp.org/" target="_blank" rel="noopener">freeCodeCamp <small>练习</small></a>
-                        <a href="https://www.runoob.com/" target="_blank" rel="noopener">菜鸟教程 <small>入门参考</small></a>
-                    </div>
-                </section>
-                <section class="directory-card">
-                    <h3><i class="fas fa-wrench" aria-hidden="true"></i> 常用工具</h3>
-                    <div class="directory-links">
-                        <a href="https://github.com/" target="_blank" rel="noopener">GitHub <small>代码托管</small></a>
-                        <a href="https://www.figma.com/" target="_blank" rel="noopener">Figma <small>界面设计</small></a>
-                        <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code <small>编辑器</small></a>
-                    </div>
-                </section>
-                <section class="directory-card">
-                    <h3><i class="fas fa-lightbulb" aria-hidden="true"></i> 灵感与审美</h3>
-                    <div class="directory-links">
-                        <a href="https://www.behance.net/" target="_blank" rel="noopener">Behance <small>设计作品</small></a>
-                        <a href="https://www.pinterest.com/" target="_blank" rel="noopener">Pinterest <small>视觉收集</small></a>
-                        <a href="https://www.bilibili.com/" target="_blank" rel="noopener">Bilibili <small>视频灵感</small></a>
-                    </div>
-                </section>
-                <section class="directory-card">
-                    <h3><i class="fas fa-users" aria-hidden="true"></i> 社区与讨论</h3>
-                    <div class="directory-links">
-                        <a href="https://stackoverflow.com/" target="_blank" rel="noopener">Stack Overflow <small>问题搜索</small></a>
-                        <a href="https://www.zhihu.com/" target="_blank" rel="noopener">知乎 <small>中文讨论</small></a>
-                        <a href="https://www.v2ex.com/" target="_blank" rel="noopener">V2EX <small>技术社区</small></a>
-                    </div>
-                </section>
+            <div class="quick-toolbar">
+                <label class="quick-search">
+                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                    <input type="search" id="quickSearch" aria-label="搜索外部资源" placeholder="搜索：MDN、GitHub、灵感、社区…" autocomplete="off">
+                </label>
+                <div class="quick-filters" id="quickFilters" role="group" aria-label="按类型筛选">
+                    <button type="button" class="quick-filter is-active" data-filter="all">全部</button>
+                    <button type="button" class="quick-filter" data-filter="learning">学习</button>
+                    <button type="button" class="quick-filter" data-filter="tools">工具</button>
+                    <button type="button" class="quick-filter" data-filter="inspiration">灵感</button>
+                    <button type="button" class="quick-filter" data-filter="community">社区</button>
+                </div>
+                <span class="quick-count" id="quickCount" aria-live="polite">12 个入口</span>
+            </div>
+
+            <div class="quick-grid" id="quickGrid">
+                <a class="quick-card" href="https://developer.mozilla.org/" target="_blank" rel="noopener" data-type="learning" data-keywords="MDN Web 标准 HTML CSS JavaScript 文档 学习">
+                    <span class="quick-icon"><i class="fas fa-book-open" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>MDN Web Docs</strong><small>Web 标准与前端文档</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.freecodecamp.org/" target="_blank" rel="noopener" data-type="learning" data-keywords="freeCodeCamp 编程 练习 前端 课程 学习">
+                    <span class="quick-icon"><i class="fas fa-fire" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>freeCodeCamp</strong><small>边做边学的编程练习</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.runoob.com/" target="_blank" rel="noopener" data-type="learning" data-keywords="菜鸟教程 入门 参考 HTML CSS Python 学习">
+                    <span class="quick-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>菜鸟教程</strong><small>快速查阅入门语法</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="https://github.com/" target="_blank" rel="noopener" data-type="tools" data-keywords="GitHub 代码 托管 仓库 开源 工具">
+                    <span class="quick-icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>GitHub</strong><small>代码托管与开源项目</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://code.visualstudio.com/" target="_blank" rel="noopener" data-type="tools" data-keywords="VS Code 编辑器 代码 开发 工具">
+                    <span class="quick-icon"><i class="fas fa-code" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>VS Code</strong><small>轻量但能扩展的编辑器</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.figma.com/" target="_blank" rel="noopener" data-type="tools" data-keywords="Figma 设计 界面 原型 工具">
+                    <span class="quick-icon"><i class="fab fa-figma" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>Figma</strong><small>界面设计与协作原型</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="https://www.behance.net/" target="_blank" rel="noopener" data-type="inspiration" data-keywords="Behance 设计 作品 灵感 审美">
+                    <span class="quick-icon"><i class="fab fa-behance" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>Behance</strong><small>设计作品与视觉趋势</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.pinterest.com/" target="_blank" rel="noopener" data-type="inspiration" data-keywords="Pinterest 图片 收集 灵感 视觉">
+                    <span class="quick-icon"><i class="fab fa-pinterest" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>Pinterest</strong><small>图片收集与视觉灵感</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.bilibili.com/" target="_blank" rel="noopener" data-type="inspiration" data-keywords="Bilibili 视频 灵感 学习 创作">
+                    <span class="quick-icon"><i class="fab fa-bilibili" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>Bilibili</strong><small>视频教程与创作灵感</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+
+                <a class="quick-card" href="https://stackoverflow.com/" target="_blank" rel="noopener" data-type="community" data-keywords="Stack Overflow 编程 问答 社区 问题">
+                    <span class="quick-icon"><i class="fab fa-stack-overflow" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>Stack Overflow</strong><small>程序员的问答社区</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.zhihu.com/" target="_blank" rel="noopener" data-type="community" data-keywords="知乎 中文 讨论 问答 社区">
+                    <span class="quick-icon"><i class="fas fa-comments" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>知乎</strong><small>中文讨论与经验分享</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+                <a class="quick-card" href="https://www.v2ex.com/" target="_blank" rel="noopener" data-type="community" data-keywords="V2EX 技术 社区 讨论 开发者">
+                    <span class="quick-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
+                    <span class="quick-copy"><strong>V2EX</strong><small>技术、生活与开发者社区</small></span>
+                    <span class="quick-arrow"><i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+                </a>
+            </div>
+
+            <div class="quick-empty" id="quickEmpty" hidden>
+                <p>没有找到匹配的外部资源，换个关键词试试。</p>
+                <button type="button" class="btn btn-small" id="quickReset">清除筛选</button>
             </div>
         </div>
     </section>
@@ -94,7 +148,7 @@
             <div class="cta-band">
                 <div>
                     <h2>想交换友链？</h2>
-                    <p>如果是个人站点或创作主页，欢迎从友链页面看看目前的伙伴。</p>
+                    <p>外部资源放在这里；个人站点和创作主页请在友链页面查看。</p>
                 </div>
                 <a href="friends.html" class="btn">去友链页面</a>
             </div>
@@ -103,5 +157,6 @@
 
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
+    <script src="js/home.js"></script>
 </body>
 </html>

@@ -3,49 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于我们 - SiveNioo Studios</title>
+    <title>关于 WZA - WZA Leon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/site-refresh.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- 关于 WZA -->
-    <section class="hero">
+    <section class="page-hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>关于 <span>WZA · Leon</span></h1>
-                    <p>你好，我是 WZA（Leon），一名热爱编程与摄影的高中生。我用代码、影像与创意做实验，分享学习与创作的过程。</p>
-                    <div class="hero-buttons">
-                        <a href="contact.html" class="btn">联系我</a>
-                        <a href="idcard.html" class="btn btn-accent">个人简介</a>
-                    </div>
+            <div class="page-hero-copy">
+                <p class="page-kicker"><i class="fas fa-user" aria-hidden="true"></i> ABOUT WZA</p>
+                <h1 class="page-title">把好奇心<br><span>变成作品</span></h1>
+                <p class="page-lead">我是魏子昂，网名 WZA / Leon，一名在大连读高中的 10 后。写代码、拍照片、写一点东西，偶尔研究游戏和地理。这个网站是我的数字实验室。</p>
+                <div class="page-meta">
+                    <span><i class="fas fa-location-dot" aria-hidden="true"></i> 大连 · 甘井子</span>
+                    <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 高中在读</span>
+                    <span><i class="fas fa-code" aria-hidden="true"></i> 编程 / 摄影 / 写作</span>
+                </div>
+                <div class="page-actions">
+                    <a href="contact.html" class="btn">联系我</a>
+                    <a href="idcard.html" class="btn btn-accent">个人资料页</a>
+                </div>
+            </div>
+            <aside class="page-hero-panel">
+                <h2>几个关键词</h2>
+                <p>不是“什么都会”，只是愿意一直学。</p>
+                <div class="hero-stat-list">
+                    <div class="hero-stat"><strong>2010</strong><span>出生</span></div>
+                    <div class="hero-stat"><strong>2026</strong><span>网站上线</span></div>
+                    <div class="hero-stat"><strong>03</strong><span>长期方向</span></div>
+                </div>
+                <div class="hero-code"><b>name</b> 魏子昂<br><b>alias</b> WZA / Leon<br><b>state</b> learning in public</div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">WHO I AM</p>
+                    <h2>关于我</h2>
+                    <p>一个还在长大、也还在学习如何把想法做出来的普通高中生。</p>
+                </div>
+            </div>
+            <div class="spotlight-grid">
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+                    <h3>从代码开始</h3>
+                    <p>喜欢 Web 开发和小工具，习惯先把东西做出来，再一点点修。项目不一定要大，但最好能真的被用起来。</p>
+                    <a class="spotlight-link" href="projects.html">去看项目 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-camera" aria-hidden="true"></i></div>
+                    <h3>用影像记录</h3>
+                    <p>拍风景、人像和日常光线。喜欢观察颜色和构图，也在慢慢整理属于自己的图库和拍摄流程。</p>
+                    <a class="spotlight-link" href="gallery.html">进入摄影页 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-feather-pointed" aria-hidden="true"></i></div>
+                    <h3>写作与整理</h3>
+                    <p>把学到的东西写成文章、清单或文档。写下来之后，知识才更容易被下一次的自己找到。</p>
+                    <a class="spotlight-link" href="blog.html">读博客 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-flask" aria-hidden="true"></i></div>
+                    <h3>保持实验</h3>
+                    <p>偶尔做点没有明确用途的小实验：页面动画、照片整理脚本、游戏机制笔记。好奇心本身就是理由。</p>
+                    <a class="spotlight-link" href="resources.html">看云盘分享 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">HOW I WORK</p>
+                    <h2>我比较在意的几件事</h2>
+                    <p>这些原则比具体技术更稳定，也决定了我怎么做项目、写文章和与人合作。</p>
+                </div>
+            </div>
+            <div class="capability-grid">
+                <article class="capability-card">
+                    <div class="capability-top"><i class="fas fa-hammer" aria-hidden="true"></i><h3>先做出来</h3></div>
+                    <p>不等到完美才开始。先跑通最小版本，再根据真实使用情况调整。</p>
+                </article>
+                <article class="capability-card">
+                    <div class="capability-top"><i class="fas fa-file-lines" aria-hidden="true"></i><h3>留下文档</h3></div>
+                    <p>把决策、用法和坑写下来。文档是给未来的自己省时间，不是交差。</p>
+                </article>
+                <article class="capability-card">
+                    <div class="capability-top"><i class="fas fa-scale-balanced" aria-hidden="true"></i><h3>尊重来源</h3></div>
+                    <p>转载注明出处，引用说明来源。互联网上的东西不是凭空长出来的。</p>
+                </article>
+                <article class="capability-card">
+                    <div class="capability-top"><i class="fas fa-seedling" aria-hidden="true"></i><h3>持续学习</h3></div>
+                    <p>允许自己不会，也允许慢慢会。比起“已经会了”，更在意“还在学”。</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">TIMELINE</p>
+                    <h2>一条简单的时间线</h2>
+                    <p>没有传奇故事，只是一些逐渐连起来的节点。</p>
+                </div>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <span class="process-number">2010</span>
+                    <h3>出生在大连</h3>
+                    <p>开始认识世界，也慢慢发现自己对很多东西都好奇。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">2025</span>
+                    <h3>进入高中</h3>
+                    <p>开始把更多时间放在编程、摄影和写作上，也第一次认真做长期项目。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">2026</span>
+                    <h3>网站上线</h3>
+                    <p>WZA 创想日志上线，博客、项目、摄影和分享逐渐收进同一个地方。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">现在</span>
+                    <h3>继续更新</h3>
+                    <p>持续补内容、修细节、学新东西。更新不固定，但不会停。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 使命区域 -->
-    <section class="section about">
+    <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>我们的使命</h2>
-                <p>我们相信优秀的整活可以改变业务，创造价值。</p>
-            </div>
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <p>自成立以来，我们已经开发了上百个项目。我们致力于提供创新的解决方案，帮助客户在数字化时代取得成功。</p>
-                    <p>我们的工作室涵盖文学创作、计算机开发、艺术设计等多个领域，为客户提供全方位服务。</p>
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">TOOLKIT</p>
+                    <h2>常用工具与关键词</h2>
+                    <p>工具会变，解决问题的方式会留下来。</p>
                 </div>
+            </div>
+            <div class="chip-row">
+                <span class="chip">HTML / CSS</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">Python</span>
+                <span class="chip">Git</span>
+                <span class="chip">VS Code</span>
+                <span class="chip">Figma</span>
+                <span class="chip">Markdown</span>
+                <span class="chip">Lightroom</span>
+                <span class="chip">摄影</span>
+                <span class="chip">写作</span>
+                <span class="chip">游戏设计</span>
+                <span class="chip">持续学习</span>
             </div>
         </div>
     </section>
 
-    <!-- 页脚占位（由 script.js 注入） -->
+    <section class="section">
+        <div class="container">
+            <div class="cta-band">
+                <div>
+                    <h2>想认识一下？</h2>
+                    <p>不管是项目、摄影、网站，还是单纯想聊两句，都可以从联系页开始。</p>
+                </div>
+                <a href="contact.html" class="btn">联系 WZA</a>
+            </div>
+        </div>
+    </section>
+
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
 </body>

@@ -8,67 +8,190 @@
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/site-refresh.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
 
-    <section class="hero">
+    <section class="page-hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>全部导航<span>一目了然</span></h1>
-                    <p>按内容分区浏览，快速进入作品、分享、题库和关于页面。</p>
-                    <div class="hero-buttons">
-                        <a href="quiz.html" class="btn">进入测验</a>
-                        <a href="gallery.html" class="btn btn-accent">查看摄影</a>
+            <div class="page-hero-copy">
+                <p class="page-kicker"><i class="fas fa-sitemap" aria-hidden="true"></i> SITE INDEX</p>
+                <h1 class="page-title">整站地图<br><span>从这里开始逛</span></h1>
+                <p class="page-lead">站点内容按「内容阅读」「创作项目」「资源连接」和「互动」分区。找不到入口时，可以先看推荐，再按目录逐层进入。</p>
+                <div class="page-meta">
+                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> 6 个分区</span>
+                    <span><i class="fas fa-file-lines" aria-hidden="true"></i> 17+ 页面</span>
+                    <span><i class="fas fa-users" aria-hidden="true"></i> 3 位好友主页</span>
+                </div>
+                <div class="page-actions">
+                    <a href="#recommended" class="btn">推荐入口 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                    <a href="index.html" class="btn btn-accent">回到首页</a>
+                </div>
+            </div>
+            <aside class="page-hero-panel">
+                <h2>站点状态</h2>
+                <p>内容持续更新，结构保持清楚。</p>
+                <div class="hero-stat-list">
+                    <div class="hero-stat"><strong>06</strong><span>内容分区</span></div>
+                    <div class="hero-stat"><strong>17+</strong><span>可访问页面</span></div>
+                    <div class="hero-stat"><strong>2026</strong><span>持续更新</span></div>
+                </div>
+                <div class="hero-code"><b>updated</b> 2026 · 10<br><b>theme</b> colorful / dark / light<br><b>scope</b> wza-leon.top</div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section" id="recommended">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">START HERE</p>
+                    <h2>推荐入口</h2>
+                    <p>第一次来，或者只想快速看看最近的内容，可以从这四个入口开始。</p>
+                </div>
+            </div>
+
+            <div class="spotlight-grid">
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-book-open" aria-hidden="true"></i></div>
+                    <h3>博客文章</h3>
+                    <p>技术、摄影、游戏与写作。长文和可复用指南都在这里，按分类筛选即可。</p>
+                    <a class="spotlight-link" href="blog.html">去读博客 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+                    <h3>项目与作品</h3>
+                    <p>个人网站、小工具和实验项目。每个项目都有 Markdown 文档，能看到设计与实现思路。</p>
+                    <a class="spotlight-link" href="projects.html">查看项目 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i></div>
+                    <h3>云盘分享</h3>
+                    <p>软件、工具、整合包与学习资料。标注来源、平台、提取码和失效状态。</p>
+                    <a class="spotlight-link" href="resources.html">打开云盘页 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-globe" aria-hidden="true"></i></div>
+                    <h3>外部资源索引</h3>
+                    <p>学习站点、工具、灵感和社区。支持搜索和按类型筛选，和首页的快速入口一样好用。</p>
+                    <a class="spotlight-link" href="links.html">打开外部索引 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">FULL DIRECTORY</p>
+                    <h2>完整目录</h2>
+                    <p>按用途分组；每个入口都附了一句简短说明，避免只看到一串链接。</p>
+                </div>
+            </div>
+
+            <div class="directory-grid site-map-directory">
+                <section class="directory-card">
+                    <h3><i class="fas fa-house" aria-hidden="true"></i> 首页与个人</h3>
+                    <div class="directory-links">
+                        <a href="index.html">首页 <small>快速入口与最新内容</small></a>
+                        <a href="about.html">关于 WZA <small>经历、方向与工作方式</small></a>
+                        <a href="idcard.html">个人资料页 <small>基础信息与联系方式</small></a>
+                        <a href="contact.html">联系 WZA <small>邮箱、电话与常见问题</small></a>
                     </div>
+                </section>
+
+                <section class="directory-card">
+                    <h3><i class="fas fa-book-open" aria-hidden="true"></i> 阅读与内容</h3>
+                    <div class="directory-links">
+                        <a href="blog.html">博客文章 <small>技术、摄影、文学与游戏</small></a>
+                        <a href="gallery.html">摄影作品 <small>分类图库与作品查看</small></a>
+                        <a href="resources.html">云盘分享 <small>软件、工具与学习资料</small></a>
+                        <a href="links.html">外部资源索引 <small>站外学习、工具与社区</small></a>
+                    </div>
+                </section>
+
+                <section class="directory-card">
+                    <h3><i class="fas fa-code" aria-hidden="true"></i> 创作与能力</h3>
+                    <div class="directory-links">
+                        <a href="projects.html">项目目录 <small>网站、小工具与实验</small></a>
+                        <a href="features.html">能力图谱 <small>正在学习与使用的技能</small></a>
+                        <a href="friends.html">友链 <small>朋友们的个人站点</small></a>
+                        <a href="quiz.html">知识测验 <small>6 类题库与答题回顾</small></a>
+                    </div>
+                </section>
+
+                <section class="directory-card">
+                    <h3><i class="fas fa-user-group" aria-hidden="true"></i> 朋友的主页</h3>
+                    <div class="directory-links">
+                        <a href="friends/friend-reori.html">Reori <small>开放 BBS、云存储与 P2P</small></a>
+                        <a href="friends/friend-fyy.html">冯猷悠 <small>钢琴、动漫、星空与海</small></a>
+                        <a href="friends/friend-hyz.html">贺煜之 <small>高二日常与偶尔踢球</small></a>
+                        <a href="friends.html">友链总览 <small>查看全部朋友主页</small></a>
+                    </div>
+                </section>
+
+                <section class="directory-card">
+                    <h3><i class="fas fa-compass" aria-hidden="true"></i> 站点与互动</h3>
+                    <div class="directory-links">
+                        <a href="site-map.html">整站地图 <small>你正在看的这一页</small></a>
+                        <a href="contact.html">反馈与建议 <small>链接失效、内容纠错、合作</small></a>
+                        <a href="index.html#friends">友链预览 <small>回到首页的友链板块</small></a>
+                        <a href="index.html#quick-access">快速入口 <small>按关键词搜索全站</small></a>
+                    </div>
+                </section>
+
+                <section class="directory-card">
+                    <h3><i class="fas fa-flask" aria-hidden="true"></i> 首页锚点与示例</h3>
+                    <div class="directory-links">
+                        <a href="post.html?id=readme">文章示例 <small>查看 Markdown 文章详情</small></a>
+                        <a href="index.html#about">首页关于区 <small>快速了解 WZA</small></a>
+                        <a href="index.html#features">兴趣领域 <small>文学、理科、艺术与计算机</small></a>
+                        <a href="index.html#friends">友链预览 <small>回到首页的友链板块</small></a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">HOW TO USE</p>
+                    <h2>怎么使用这张地图</h2>
+                    <p>不需要记住所有页面，按当前目的找就够了。</p>
+                </div>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <span class="process-number">01</span>
+                    <h3>先看推荐</h3>
+                    <p>博客、项目、云盘和外部索引是最常去的四个地方。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">02</span>
+                    <h3>再按分类找</h3>
+                    <p>内容、创作、朋友和互动分开排列，每一组只放相关页面。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">03</span>
+                    <h3>找不到就搜</h3>
+                    <p>回到首页使用快速搜索，或者直接到联系页说明你想找什么。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section site-map">
+    <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>大导航界面</h2>
-                <p>按功能、兴趣与分享分区展示站点内容。</p>
-            </div>
-
-            <div class="site-map-grid">
-                <div class="site-map-card">
-                    <h3><i class="fas fa-house"></i> 首页与介绍</h3>
-                    <ul>
-                        <li><a href="index.html">首页</a></li>
-                        <li><a href="about.html">关于WZA</a></li>
-                        <li><a href="idcard.html">个人简介</a></li>
-                        <li><a href="contact.html">联系页面</a></li>
-                    </ul>
+            <div class="cta-band">
+                <div>
+                    <h2>还是没找到？</h2>
+                    <p>告诉我你想找的内容，或者反馈一个失效入口，我会补上。</p>
                 </div>
-                <div class="site-map-card">
-                    <h3><i class="fas fa-camera"></i> 作品展示</h3>
-                    <ul>
-                        <li><a href="gallery.html">摄影作品</a></li>
-                        <li><a href="projects.html">编程作品</a></li>
-                        <li><a href="services.html">合作方式</a></li>
-                        <li><a href="blog.html">博客文章</a></li>
-                    </ul>
-                </div>
-                <div class="site-map-card">
-                    <h3><i class="fas fa-link"></i> 分享与功能</h3>
-                    <ul>
-                        <li><a href="resources.html">云盘分享</a></li>
-                        <li><a href="links.html">外部资源导航</a></li>
-                        <li><a href="friends.html">友链</a></li>
-                        <li><a href="features.html">能力图谱</a></li>
-                        <li><a href="site-map.html">本页导航</a></li>
-                    </ul>
-                </div>
-                <div class="site-map-card">
-                    <h3><i class="fas fa-vial"></i> 测验专区</h3>
-                    <ul>
-                        <li><a href="quiz.html">进入 WZA 测验</a></li>
-                    </ul>
-                </div>
+                <a href="contact.html" class="btn">联系 WZA</a>
             </div>
         </div>
     </section>

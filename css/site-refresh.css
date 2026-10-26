@@ -496,6 +496,10 @@
     gap: 20px;
 }
 
+.site-map-directory {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
 .directory-card {
     padding: 22px;
     background: var(--card-bg);
