@@ -17,25 +17,28 @@ function sitePath(path) {
 
 function buildNavHTML() {
     return `
-    <nav id="main-nav" class="site-nav">
+    <nav id="main-nav" class="site-nav" aria-label="主导航">
         <div class="container nav-container">
-            <a class="brand" href="${sitePath('index.html')}">
-                <img src="${sitePath('images/photo.png')}" alt="avatar" class="nav-avatar">
+            <a class="brand" href="${sitePath('index.html')}" aria-label="WZA Leon 首页">
+                <img src="${sitePath('images/photo.png')}" alt="WZA Leon 头像" class="nav-avatar">
                 <span>WZA · Leon</span>
             </a>
             <div id="navLinks" class="nav-links">
                 <a href="${sitePath('index.html')}">首页</a>
-                <a href="${sitePath('resources.html')}">云盘</a>
                 <a href="${sitePath('projects.html')}">项目</a>
-                <a href="${sitePath('gallery.html')}">摄影</a>
                 <a href="${sitePath('blog.html')}">博客</a>
+                <a href="${sitePath('gallery.html')}">摄影</a>
+                <a href="${sitePath('resources.html')}">云盘</a>
                 <a href="${sitePath('friends.html')}">友链</a>
                 <a href="${sitePath('about.html')}">关于</a>
                 <a href="${sitePath('contact.html')}">联系</a>
                 <a href="${sitePath('quiz.html')}">测验</a>
             </div>
-            <div style="display:flex;align-items:center;gap:12px;">
-                <button id="themeToggle" class="theme-btn" title="切换主题">🌈</button>
+            <div class="nav-actions">
+                <a class="nav-icon-link" href="https://github.com/WZA-Leon" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+                    <i class="fab fa-github" aria-hidden="true"></i>
+                </a>
+                <button id="themeToggle" class="theme-btn" title="切换主题" aria-label="切换主题">🌈</button>
                 <button id="mobileMenuBtn" class="mobile-menu" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -88,55 +91,54 @@ function buildFooterHTML() {
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
+                <div class="footer-column footer-brand">
                     <h3>WZA Leon · 创想日志</h3>
-                    <p style="margin-top: 8px; color: #ccc;">中学生 · 跨学科创作者</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-bilibili"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    <p class="footer-tagline">中学生 · 跨学科创作者<br>用代码和影像记录想法。</p>
+                    <p class="footer-status"><span aria-hidden="true"></span>每周日 19:30 更新</p>
+                    <div class="social-icons" role="group" aria-label="社交与联系方式">
+                        <a href="https://github.com/WZA-Leon" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+                        <a href="mailto:wza-dl@outlook.com" aria-label="邮箱" title="邮箱"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                        <a href="https://wza-leon.top" target="_blank" rel="noopener" aria-label="个人网站" title="个人网站"><i class="fas fa-globe" aria-hidden="true"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-column">
-                    <h3>快速链接</h3>
+                    <h3>浏览</h3>
                     <ul class="footer-links">
                         <li><a href="${sitePath('index.html')}">首页</a></li>
-                        <li><a href="${sitePath('resources.html')}">云盘</a></li>
-                        <li><a href="${sitePath('about.html')}">关于WZA</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
-                        <li><a href="${sitePath('friends.html')}">友链</a></li>
-                        <li><a href="${sitePath('site-map.html')}">全部导航</a></li>
-                        <li><a href="${sitePath('contact.html')}">联系我们</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>兴趣领域</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">阅读</a></li>
-                        <li><a href="#">旅游</a></li>
-                        <li><a href="#">音乐</a></li>
-                        <li><a href="${sitePath('projects.html')}">编程</a></li>
+                        <li><a href="${sitePath('blog.html')}">博客</a></li>
                         <li><a href="${sitePath('gallery.html')}">摄影</a></li>
-                        <li><a href="#">游戏</a></li>
+                        <li><a href="${sitePath('resources.html')}">云盘</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
-                    <h3>联系 WZA</h3>
+                    <h3>探索</h3>
                     <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> 大连市 · 甘井子区</li>
-                        <li><i class="fas fa-phone"></i> +86 138 4092 6806</li>
-                        <li><i class="fas fa-envelope"></i> wza-dl@outlook.com</li>
-                        <li><i class="fas fa-clock"></i> 每周日 19:30 更新</li>
+                        <li><a href="${sitePath('about.html')}">关于 WZA</a></li>
+                        <li><a href="${sitePath('links.html')}">外部资源</a></li>
+                        <li><a href="${sitePath('friends.html')}">友链</a></li>
+                        <li><a href="${sitePath('features.html')}">能力图谱</a></li>
+                        <li><a href="${sitePath('quiz.html')}">知识测验</a></li>
+                        <li><a href="${sitePath('site-map.html')}">全部导航</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>联系</h3>
+                    <ul class="footer-links footer-contact">
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>大连市 · 甘井子区</span></li>
+                        <li><a href="mailto:wza-dl@outlook.com"><i class="fas fa-envelope" aria-hidden="true"></i><span>wza-dl@outlook.com</span></a></li>
+                        <li><a href="tel:+8613840926806"><i class="fas fa-phone" aria-hidden="true"></i><span>+86 138 4092 6806</span></a></li>
+                        <li><a href="${sitePath('contact.html')}"><i class="fas fa-comments" aria-hidden="true"></i><span>留言 / 反馈</span></a></li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="copyright">
-                <p>© 2026 WZA Leon · 创想日志 | 保持好奇，保持创作 | wza-leon.top</p>
+                <p>© 2026 WZA Leon · 创想日志</p>
+                <p>保持好奇，保持创作 · <a href="${sitePath('site-map.html')}">整站地图</a></p>
             </div>
         </div>
     </footer>
