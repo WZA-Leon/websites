@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="想做个人主页？先回答 30 个问题，把资料一次性攒齐，支持导出和复制 JSON。">
+    <title>主页信息问卷 - WZA Leon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/inquiry.css">
+</head>
+<body class="inquiry-page">
+    <div id="nav-placeholder"></div>
+
+    <section class="hero inquiry-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text inquiry-hero-text">
+                    <p class="inquiry-kicker">HOMEPAGE PROFILE · 30 QUESTIONS</p>
+                    <h1>做主页之前，<span>先聊聊你自己</span></h1>
+                    <p class="inquiry-lead">
+                        30 个问题，把个人主页要用的资料一次性攒齐。填完可以复制或导出 JSON 发给 WZA，
+                        也可以先存成草稿，想到什么再回来补。
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#profileForm" class="btn">开始填写</a>
+                        <a href="friends.html" class="btn btn-accent">看看好友主页</a>
+                    </div>
+                    <p class="inquiry-privacy">
+                        <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                        不会上传任何内容；草稿只保存在这台设备的浏览器里。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section inquiry-section">
+        <div class="container">
+            <div class="inquiry-toolbar" id="inquiryToolbar">
+                <div class="inquiry-progress">
+                    <div class="inquiry-progress-head">
+                        <span class="inquiry-progress-label">填写进度</span>
+                        <strong><span id="filledCount">0</span> / 30</strong>
+                        <span class="inquiry-required-count" id="requiredCount">必填 0 / 11</span>
+                    </div>
+                    <div class="inquiry-progress-bar" id="progressBar" role="progressbar"
+                         aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" aria-label="已填写字段数">
+                        <span class="inquiry-progress-fill" id="progressFill"></span>
+                    </div>
+                    <p class="inquiry-save" id="saveStatus">草稿会自动保存在本机浏览器</p>
+                </div>
+                <div class="inquiry-toolbar-actions">
+                    <button type="button" class="btn btn-outline" data-action="check">检查完整性</button>
+                    <button type="button" class="btn btn-outline" data-action="copy">复制 JSON</button>
+                    <button type="button" class="btn" data-action="download">导出 JSON</button>
+                </div>
+            </div>
+
+            <div class="inquiry-layout">
+                <form id="profileForm" class="inquiry-form" novalidate>
+                    <div id="formFields" class="inquiry-fields">
+                        <noscript>
+                            <p class="inquiry-noscript">问卷需要启用 JavaScript 才能填写，请在浏览器设置中开启后刷新。</p>
+                        </noscript>
+                    </div>
+
+                    <div class="inquiry-actions-bottom">
+                        <p class="inquiry-actions-note">只填一部分也可以先导出草稿；标「必填」的项目会决定主页能不能开工。</p>
+                        <div class="inquiry-toolbar-actions">
+                            <button type="button" class="btn btn-outline" data-action="check">检查完整性</button>
+                            <button type="button" class="btn btn-outline" data-action="copy">复制 JSON</button>
+                            <button type="button" class="btn" data-action="download">导出 JSON</button>
+                            <button type="button" class="inquiry-clear" data-action="clear">清空问卷</button>
+                        </div>
+                    </div>
+                </form>
+
+                <aside class="inquiry-aside" aria-label="问卷辅助信息">
+                    <section class="inquiry-card">
+                        <h2><i class="fas fa-lightbulb" aria-hidden="true"></i> 填写提示</h2>
+                        <ul class="inquiry-tips">
+                            <li>标「必填」的 11 项是主页骨架，其余可以留空，之后再补。</li>
+                            <li>作品和时间线每行一条，用 <code>|</code> 分隔，例如 <code>2024 | 上高中 | 开始做主页</code>。</li>
+                            <li>联系方式会写进 JSON，分享给谁之前先确认一下。</li>
+                            <li>草稿只存在当前浏览器，换设备或清缓存后不会保留。</li>
+                        </ul>
+                        <p class="inquiry-links">
+                            没有头绪？看看现有主页：
+                            <a href="friends/friend-fyy.html">冯猷悠</a> ·
+                            <a href="friends/friend-hyz.html">贺煜之</a> ·
+                            <a href="friends/friend-reori.html">Reori</a>
+                        </p>
+                    </section>
+
+                    <section class="inquiry-card">
+                        <div class="inquiry-card-head">
+                            <h2><i class="fas fa-code" aria-hidden="true"></i> JSON 预览</h2>
+                            <button type="button" class="inquiry-mini-btn" data-action="copy">复制</button>
+                        </div>
+                        <pre class="inquiry-json" id="jsonPreview" tabindex="0" aria-label="根据当前填写内容生成的 JSON 预览"></pre>
+                        <p class="inquiry-json-note">导出时会自动补上 <code>exportedAt</code> 时间戳。</p>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <div class="inquiry-toast" id="inquiryToast" role="status" aria-live="polite"></div>
+
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+    <script src="js/inquiry.js"></script>
+</body>
+</html>

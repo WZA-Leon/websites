@@ -206,8 +206,45 @@
 }
 
 .friends-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
     margin-top: 30px;
     text-align: center;
+}
+
+.friends-cta-text {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+.friends-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.friends-cta-actions .btn i {
+    margin-left: 8px;
+    font-size: 0.78rem;
+}
+
+/* 次要按钮改成描边，突出问卷入口 */
+body.friends-page .friends-cta-actions .btn-accent {
+    background: transparent !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color);
+    box-shadow: none !important;
+}
+
+body.friends-page .friends-cta-actions .btn-accent:hover {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(77, 107, 254, 0.25) !important;
 }
 
 /* 首页友链预览 */

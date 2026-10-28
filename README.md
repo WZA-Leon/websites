@@ -50,6 +50,7 @@
 - **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
 - **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
 - **摄影作品**：`images/photograph/` 下的 `index.json` 决定分类与作品，图片文件与对应索引放在同一目录。
+- **主页信息问卷**：`inquiry.html` 收集做个人主页所需的 30 项资料，支持本机草稿、JSON 预览、复制与下载；入口在 `friends.html` 底部。导出结构见 `js/inquiry.js` 的 `buildProfile()`。
 
 云盘分享的常用字段：
 

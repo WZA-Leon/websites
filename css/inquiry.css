@@ -1,0 +1,785 @@
+/* =======================================================
+   主页信息问卷
+   ======================================================= */
+
+.inquiry-page {
+    background: var(--bg-primary);
+}
+
+.inquiry-hero {
+    padding: 150px 0 64px;
+    background:
+        radial-gradient(circle at 12% 18%, var(--theme-soft-strong, rgba(0, 212, 255, 0.08)), transparent 42%),
+        radial-gradient(circle at 88% 0%, var(--theme-soft, rgba(0, 212, 255, 0.05)), transparent 38%),
+        var(--bg-primary);
+}
+
+body.theme-light .inquiry-hero {
+    background: var(--bg-primary);
+}
+
+.inquiry-hero-text {
+    max-width: 780px;
+}
+
+.inquiry-kicker {
+    margin-bottom: 14px;
+    color: var(--primary-color);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
+
+.inquiry-hero h1 {
+    margin-bottom: 18px;
+    font-size: clamp(2.1rem, 4.4vw, 3.3rem);
+    line-height: 1.2;
+}
+
+.inquiry-hero h1 span {
+    color: var(--primary-color);
+}
+
+.inquiry-lead {
+    max-width: 660px;
+    margin-bottom: 26px;
+    color: var(--text-secondary);
+    font-size: 1.04rem;
+    line-height: 1.9;
+}
+
+.inquiry-privacy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 22px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
+
+.inquiry-privacy i {
+    color: var(--primary-color);
+}
+
+/* ---------- 顶部进度与操作条 ---------- */
+
+.inquiry-toolbar {
+    position: sticky;
+    top: calc(var(--nav-height) + 10px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.inquiry-progress {
+    flex: 1 1 360px;
+    max-width: 520px;
+    min-width: 240px;
+}
+
+.inquiry-progress-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+}
+
+.inquiry-progress-label {
+    color: var(--text-secondary);
+}
+
+.inquiry-progress-head strong {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.inquiry-required-count {
+    padding: 2px 9px;
+    color: var(--primary-color);
+    background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.inquiry-progress-bar {
+    height: 8px;
+    overflow: hidden;
+    background: var(--theme-soft-strong, rgba(127, 127, 127, 0.16));
+    border-radius: 999px;
+}
+
+.inquiry-progress-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: inherit;
+    transition: width 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.inquiry-save {
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    transition: color 0.2s ease;
+}
+
+.inquiry-save.is-saved {
+    color: var(--primary-color);
+}
+
+.inquiry-toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ---------- 按钮 ---------- */
+
+.inquiry-page .btn {
+    padding: 11px 20px;
+    border: 0;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+body.inquiry-page .btn-outline {
+    background: transparent !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color);
+    box-shadow: none !important;
+}
+
+body.inquiry-page .btn-outline:hover {
+    background: var(--primary-color) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 20px var(--theme-shadow, rgba(0, 0, 0, 0.16)) !important;
+}
+
+body.inquiry-page .btn-outline::before {
+    display: none;
+}
+
+.inquiry-clear {
+    padding: 10px 16px;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px dashed var(--border-light);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.84rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.inquiry-clear:hover {
+    color: #d64545;
+    border-color: #d64545;
+}
+
+.inquiry-clear.is-armed {
+    color: #fff;
+    background: #d64545;
+    border-color: #d64545;
+    border-style: solid;
+}
+
+/* ---------- 布局 ---------- */
+
+.inquiry-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
+    align-items: start;
+}
+
+#profileForm {
+    scroll-margin-top: calc(var(--nav-height) + 24px);
+}
+
+.inquiry-fields {
+    min-width: 0;
+}
+
+.inquiry-block {
+    margin-bottom: 22px;
+    padding: 26px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.05);
+    scroll-margin-top: calc(var(--nav-height) + 120px);
+}
+
+.inquiry-block-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--border-light);
+}
+
+.inquiry-block-no {
+    display: grid;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    color: #fff;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.inquiry-block-head h2 {
+    margin: 0 0 4px;
+    color: var(--text-primary);
+    font-size: 1.12rem;
+}
+
+.inquiry-block-head p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+    line-height: 1.6;
+}
+
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 22px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.field--wide {
+    grid-column: 1 / -1;
+}
+
+.field-label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.field-no {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.field-req {
+    padding: 1px 7px;
+    color: #fff;
+    background: var(--accent-color, #ff6b6b);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    font-weight: 600;
+}
+
+.field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ---------- 输入控件 ---------- */
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="date"],
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 11px 14px;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.field textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.field select {
+    cursor: pointer;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.65;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--theme-soft-strong, rgba(0, 212, 255, 0.15));
+}
+
+.field input[type="date"] {
+    color-scheme: light;
+}
+
+body.theme-dark .field input[type="date"] {
+    color-scheme: dark;
+}
+
+.field-hint {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    line-height: 1.6;
+}
+
+.field-error {
+    margin: 0;
+    color: #d64545;
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.field.is-invalid input,
+.field.is-invalid textarea,
+.field.is-invalid select,
+.field.is-invalid .tag-editor {
+    border-color: #d64545;
+    box-shadow: 0 0 0 3px rgba(214, 69, 69, 0.12);
+}
+
+/* ---------- 单选 / 多选 ---------- */
+
+.choice-row,
+.choice-grid {
+    display: grid;
+    gap: 8px;
+}
+
+.choice-row {
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+}
+
+.choice-grid {
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+}
+
+.choice {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.choice:hover {
+    border-color: var(--primary-color);
+}
+
+.choice input {
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.choice:has(input:checked) {
+    color: var(--primary-color);
+    background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.choice input:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* ---------- 标签输入 ---------- */
+
+.tag-editor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    min-height: 48px;
+    padding: 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tag-editor:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--theme-soft-strong, rgba(0, 212, 255, 0.15));
+}
+
+.tag-list {
+    display: contents;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 6px 5px 12px;
+    color: var(--primary-color);
+    background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
+    border-radius: 999px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.tag-remove {
+    display: grid;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+    padding: 0;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.65;
+}
+
+.tag-remove:hover,
+.tag-remove:focus-visible {
+    background: rgba(0, 0, 0, 0.08);
+    opacity: 1;
+    outline: none;
+}
+
+.tag-input {
+    flex: 1 1 150px;
+    min-width: 130px;
+    padding: 5px 6px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 6px;
+    box-shadow: none !important;
+    font-size: 0.88rem !important;
+}
+
+/* ---------- 侧栏 ---------- */
+
+.inquiry-aside {
+    position: sticky;
+    top: calc(var(--nav-height) + 120px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+}
+
+.inquiry-card {
+    padding: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.05);
+}
+
+.inquiry-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.inquiry-card h2 i {
+    color: var(--primary-color);
+}
+
+.inquiry-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.inquiry-card-head h2 {
+    margin: 0;
+}
+
+.inquiry-mini-btn {
+    padding: 4px 10px;
+    color: var(--primary-color);
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.74rem;
+    cursor: pointer;
+}
+
+.inquiry-mini-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
+}
+
+.inquiry-tips {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    line-height: 1.8;
+}
+
+.inquiry-tips li + li {
+    margin-top: 6px;
+}
+
+.inquiry-tips code,
+.inquiry-json-note code {
+    padding: 1px 5px;
+    background: rgba(127, 127, 127, 0.12);
+    border-radius: 4px;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 0.76rem;
+}
+
+.inquiry-links {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    color: var(--text-secondary);
+    border-top: 1px dashed var(--border-light);
+    font-size: 0.78rem;
+    line-height: 1.8;
+}
+
+.inquiry-links a {
+    font-weight: 600;
+}
+
+.inquiry-json {
+    max-height: 340px;
+    margin: 0;
+    padding: 14px;
+    overflow: auto;
+    color: #cdd6e4;
+    background: #10141d;
+    border-radius: 10px;
+    font-family: Consolas, 'SFMono-Regular', 'Courier New', monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    white-space: pre;
+    tab-size: 2;
+}
+
+.inquiry-json:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.inquiry-json-note {
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+}
+
+/* ---------- 底部操作 ---------- */
+
+.inquiry-actions-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 6px 0 40px;
+    border-top: 1px dashed var(--border-light);
+}
+
+.inquiry-actions-note {
+    max-width: 520px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.7;
+}
+
+/* ---------- 提示条 ---------- */
+
+.inquiry-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 3000;
+    max-width: min(92vw, 560px);
+    padding: 12px 22px;
+    color: #fff;
+    background: #1f2430;
+    border-radius: 999px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 14px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.inquiry-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.inquiry-noscript {
+    grid-column: 1 / -1;
+    padding: 20px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* ---------- 响应式 ---------- */
+
+@media (max-width: 1080px) {
+    .inquiry-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .inquiry-aside {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+}
+
+@media (max-width: 760px) {
+    .inquiry-hero {
+        padding: 128px 0 48px;
+    }
+
+    .inquiry-toolbar {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .inquiry-progress {
+        max-width: none;
+    }
+
+    .inquiry-toolbar-actions {
+        justify-content: stretch;
+    }
+
+    .inquiry-toolbar-actions .btn {
+        flex: 1 1 140px;
+        text-align: center;
+    }
+
+    .inquiry-aside {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 620px) {
+    .inquiry-block {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .field-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .inquiry-actions-bottom {
+        align-items: stretch;
+    }
+
+    .inquiry-actions-bottom .inquiry-toolbar-actions {
+        justify-content: stretch;
+    }
+
+    .inquiry-actions-bottom .btn,
+    .inquiry-clear {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .choice-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* iOS 会在输入框字号小于 16px 时自动放大页面 */
+    .field input,
+    .field textarea,
+    .field select {
+        font-size: 16px;
+    }
+
+    .field .tag-input {
+        font-size: 16px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .inquiry-progress-fill,
+    .inquiry-toast,
+    .inquiry-block,
+    .tag-editor,
+    .choice {
+        transition-duration: 0.01ms;
+    }
+}
