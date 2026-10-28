@@ -49,6 +49,7 @@
 - **博客文章**：正文放在 `blog-data/<id>.md`，列表信息写在 `js/blog-list.js`。
 - **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
 - **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
+- **摄影作品**：`images/photograph/` 下的 `index.json` 决定分类与作品，图片文件与对应索引放在同一目录。
 
 云盘分享的常用字段：
 
@@ -66,6 +67,51 @@
 | `status` | `active`（可用）、`expired`（已失效）、`planned`（整理中） |
 
 转载或整合他人资源时，请确认授权并标注来源；不确定版权的内容不要公开分享。
+
+### 摄影作品的数据结构
+
+每个目录一层 `index.json`，新增作品不需要改 JavaScript：
+
+```text
+images/photograph/
+├── index.json                  # { "categories": ["landscape", "street"] }
+└── landscape/
+    ├── index.json              # 分类名、简介、封面与作品列表
+    ├── cover.jpg               # 分类封面（可选）
+    └── work1/
+        ├── index.json          # 作品标题、简介、日期与图片列表
+        └── DSC_0001.JPG
+```
+
+分类索引示例：
+
+```json
+{
+  "name": "城市风景",
+  "description": "城市与海岸线的光影记录。",
+  "cover": "cover.jpg",
+  "works": ["work1"]
+}
+```
+
+作品索引示例：
+
+```json
+{
+  "title": "晨曦海岸",
+  "description": "一次早晨的海边拍摄，长曝光。",
+  "date": "2026-06-01",
+  "cover": "DSC_0001.JPG",
+  "images": [
+    { "filename": "DSC_0001.JPG", "caption": "主图" },
+    { "filename": "DSC_0002.JPG", "caption": "细节" }
+  ]
+}
+```
+
+- `cover` 可省略：会自动取 `images` 的第一张，再退回分类封面；都没有时显示占位图与“图片待补充”。
+- `images` 支持 `{ "filename": "...", "caption": "..." }` 或直接写文件名。
+- 图片文件缺失不会中断页面，卡片会回退到占位图；查看器支持左右方向键切换、Esc 关闭。
 
 ## 免责声明
 

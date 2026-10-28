@@ -33,22 +33,33 @@
     <section class="gallery-category-section">
         <div class="container">
             <h2>选择分类</h2>
-            <div class="category-filter" id="galleryCategories"></div>
+            <div class="category-filter" id="galleryCategories" role="group" aria-label="作品分类"></div>
         </div>
     </section>
 
     <!-- 作品展示 -->
     <section class="section gallery">
         <div class="container">
-            <div id="photograph-root" class="gallery-grid"></div>
+            <p class="gallery-status" id="galleryStatus" role="status" aria-live="polite"></p>
+            <div id="photograph-root" class="gallery-grid">
+                <noscript><p class="gallery-empty">摄影作品需要启用 JavaScript 才能显示，请在浏览器设置中开启后刷新。</p></noscript>
+            </div>
         </div>
     </section>
 
     <!-- 图片预览模态框 -->
-    <div id="photoModal" class="photo-modal">
-        <span class="photo-close">&times;</span>
+    <div id="photoModal" class="photo-modal" role="dialog" aria-modal="true"
+         aria-labelledby="photoTitle" aria-describedby="photoDesc" aria-hidden="true">
+        <button class="photo-close" type="button" aria-label="关闭预览">&times;</button>
+        <button class="photo-nav photo-prev" type="button" aria-label="上一张" hidden>&#10094;</button>
         <img class="photo-modal-content" id="photoModalImg" src="" alt="">
-        <div class="photo-caption" id="photoCaption"></div>
+        <button class="photo-nav photo-next" type="button" aria-label="下一张" hidden>&#10095;</button>
+        <div class="photo-caption" id="photoCaption">
+            <h3 id="photoTitle"></h3>
+            <p id="photoDesc"></p>
+            <p class="photo-shot-caption" id="photoShotCaption" hidden></p>
+            <p class="photo-counter" id="photoCounter" hidden></p>
+        </div>
     </div>
 
     <!-- 页脚 -->

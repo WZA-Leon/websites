@@ -597,27 +597,6 @@ footer {
     font-size: 0.9rem;
 }
 
-/* 摄影画廊 */
-.photo-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-}
-.photo-card {
-    background: var(--card-bg);
-    padding: 16px;
-    border-radius: 14px;
-    text-align: center;
-    border: 1px solid var(--border-light);
-}
-.photo-card img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 12px;
-}
-.photo-meta { color: var(--text-secondary); }
-
 /* 项目卡片 */
 .projects-grid {
     display: grid;
@@ -1151,106 +1130,6 @@ body.theme-light .hero h1 {
 body.theme-light .section-title h2::after {
     background: #000;
 }
-
-/* ------------------ 摄影画廊与查看器样式 ------------------ */
-/* 下面的样式用于自动生成的摄影作品预览、卡片与查看器模态框 */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-}
-.photo-category { margin-bottom: 28px; }
-.photo-category-header {
-    display: grid;
-    grid-template-columns: minmax(220px, 260px) 1fr;
-    gap: 18px;
-    align-items: center;
-    margin-bottom: 22px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-.category-cover {
-    overflow: hidden;
-    border-radius: 16px;
-    height: 180px;
-    background: rgba(255,255,255,0.05);
-}
-.category-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.category-text h3 {
-    margin: 0;
-    color: var(--primary-color);
-    font-size: 1.6rem;
-}
-.category-text p {
-    margin: 8px 0 0;
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
-}
-.photo-category h3 { color: var(--primary-color); margin-bottom: 10px; }
-.work-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-light);
-    border-radius: 14px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.work-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
-.work-cover { position: relative; width: 100%; height: 180px; overflow: hidden; }
-.work-cover img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; transition: box-shadow 0.2s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1); }
-.work-info { padding: 12px 14px; color: var(--text-secondary); }
-.work-info h4 { margin: 0 0 6px 0; color: var(--text-primary); }
-.work-info p { margin: 0; font-size: 0.95rem; }
-
-/* 查看器模态框 */
-.photo-viewer {
-    position: fixed;
-    left: 0; top: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2200;
-    padding: 30px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s;
-}
-.photo-viewer.show { opacity: 1; visibility: visible; }
-.photo-viewer .viewer-inner {
-    max-width: 1200px;
-    width: 100%;
-    max-height: 90vh;
-    background: var(--bg-primary);
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    gap: 12px;
-}
-.viewer-image-wrap { flex: 1 1 70%; display:flex; align-items:center; justify-content:center; padding:18px; }
-.viewer-image { max-width: 100%; max-height: 86vh; border-radius: 10px; object-fit: contain; transition: transform 0.35s ease; }
-.viewer-image.zoomed { transform: scale(1.6); }
-.viewer-meta { width: 340px; padding: 18px; background: var(--card-bg); border-left: 1px solid var(--border-light); overflow:auto; }
-.viewer-meta h3 { margin-top: 0; color: var(--text-primary); }
-.viewer-meta p { color: var(--text-secondary); }
-.viewer-close { position: absolute; right: 28px; top: 22px; background: transparent; border: none; color: #fff; font-size: 22px; cursor: pointer; }
-
-@media (max-width: 768px) {
-    .viewer-meta { display: none; }
-    .viewer-image-wrap { padding: 8px; }
-    .photo-viewer { padding: 8px; }
-}
-
-/* 注：以上样式适配不同主题变量，圆角、自动缩放与信息面板都在这里定义 */
 
 /* ======================
    资源展示网格（博客内容）
