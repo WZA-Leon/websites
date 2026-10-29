@@ -311,39 +311,38 @@ def render_about(profile: dict) -> str:
 
 def render_achievements(profile: dict) -> str:
     body = "\n".join(f"<p>{esc(paragraph)}</p>" for paragraph in as_paragraphs(profile["achievements"]))
-    if profile["recent"]:
-        body += f'\n<h3 class="fg-subhead">最近在干嘛</h3>\n<p>{multiline(profile["recent"])}</p>'
     return card("成就与近况", "fas fa-trophy", body)
 
 
-def render_like_list(profile: dict, key: str) -> str:
-    items = []
+def render_recent(profile: dict) -> str:
+    items = as_paragraphs(profile["recent"])
+    if not items:
+        return ""
+    body = '<ul class="friend-home-recent">' + "".join(f"<li>{esc(item)}</li>" for item in items) + "</ul>"
+    return card("最近", "fas fa-book-open", body)
+
+
+def render_like_card(profile: dict, key: str, heading: str) -> str:
+    rows = []
     for label, field in LIKE_LABELS:
         value = profile[key].get(field)
         if value:
-            items.append(
-                f'<li class="fg-like-item"><span class="fg-like-label">{esc(label)}</span>'
-                f'<p class="fg-like-text">{esc(value)}</p></li>'
-            )
-    if not items:
+            rows.append(f"<p><strong>{esc(label)}</strong>：{esc(value)}</p>")
+    if not rows:
         return ""
-    return '<ul class="fg-like-list">' + "".join(items) + "</ul>"
+    return f'<article class="friend-home-project"><h3>{esc(heading)}</h3>' + "".join(rows) + "</article>"
 
 
 def render_likes(profile: dict) -> str:
-    likes = render_like_list(profile, "likes")
-    dislikes = render_like_list(profile, "dislikes")
+    likes = render_like_card(profile, "likes", "喜欢")
+    dislikes = render_like_card(profile, "dislikes", "不喜欢")
     if not likes and not dislikes:
         return ""
 
-    columns = []
-    if likes:
-        columns.append(f'<div class="fg-likes-col"><h3>喜欢</h3>{likes}</div>')
-    if dislikes:
-        columns.append(f'<div class="fg-likes-col"><h3>不喜欢</h3>{dislikes}</div>')
-
-    single = " is-single" if len(columns) == 1 else ""
-    body = f'<div class="fg-likes-grid{single}">' + "".join(columns) + "</div>"
+    if likes and dislikes:
+        body = '<div class="friend-home-project-grid">' + likes + dislikes + "</div>"
+    else:
+        body = likes or dislikes
     return card("喜欢与不喜欢", "fas fa-heart", body)
 
 
@@ -374,10 +373,10 @@ def render_projects(profile: dict) -> str:
         if project["link"]:
             if project["link"].startswith(("http://", "https://")):
                 inner.append(
-                    f'<a class="fg-project-link" href="{esc(project["link"])}" target="_blank" rel="noopener">查看链接 →</a>'
+                    f'<p><a href="{esc(project["link"])}" target="_blank" rel="noopener">查看链接 →</a></p>'
                 )
             else:
-                inner.append(f'<span class="fg-project-link is-plain">{esc(project["link"])}</span>')
+                inner.append(f'<p>{esc(project["link"])}</p>')
         items.append('<article class="friend-home-project">' + "".join(inner) + "</article>")
 
     if not items:
@@ -389,13 +388,18 @@ def render_projects(profile: dict) -> str:
 def render_words(profile: dict) -> str:
     blocks = []
     if profile["message"]:
-        blocks.append(f'<div><h3>想对别人说的话</h3><blockquote>{multiline(profile["message"])}</blockquote></div>')
+        blocks.append(
+            f'<p><strong>想对别人说的话</strong></p>'
+            f'<p class="friend-home-quote">{multiline(profile["message"])}</p>'
+        )
     if profile["rant"]:
-        blocks.append(f'<div><h3>想吐槽的</h3><blockquote>{multiline(profile["rant"])}</blockquote></div>')
+        blocks.append(
+            f'<p><strong>想吐槽的</strong></p>'
+            f'<p class="friend-home-quote">{multiline(profile["rant"])}</p>'
+        )
     if not blocks:
         return ""
-    body = '<div class="fg-words">' + "".join(blocks) + "</div>"
-    return card("想说的话", "fas fa-comment-dots", body)
+    return card("想说的话", "fas fa-comment-dots", "".join(blocks))
 
 
 def render_basic(profile: dict) -> str:
@@ -429,24 +433,19 @@ def render_basic(profile: dict) -> str:
 
 
 def render_tags(profile: dict) -> str:
-    groups = []
+    tags = []
+    for values in (profile["personality"], profile["hobbies"], profile["skills"]):
+        for value in values:
+            if value not in tags:
+                tags.append(value)
 
-    def add_group(label: str, values: list[str]) -> None:
-        if not values:
-            return
-        chips = "".join(f'<span class="skill">{esc(value)}</span>' for value in values)
-        groups.append(
-            f'<div class="fg-tag-group"><strong>{esc(label)}</strong>'
-            f'<div class="skills-container">{chips}</div></div>'
-        )
-
-    add_group("性格", profile["personality"])
-    add_group("爱好", profile["hobbies"])
-    add_group("技能", profile["skills"])
-
-    body = "".join(groups)
+    body = ""
     if profile["strengths"]:
-        body += f'<p class="fg-strengths">{esc(profile["strengths"])}</p>'
+        body += f'<p><strong>擅长：</strong>{esc(profile["strengths"])}</p>'
+
+    if tags:
+        chips = "".join(f'<span>{esc(value)}</span>' for value in tags)
+        body += f'<div class="friend-home-project-tags">{chips}</div>'
 
     return card("性格 · 爱好 · 技能", "fas fa-tags", body)
 
@@ -469,7 +468,10 @@ def render_contacts(profile: dict) -> str:
                 f'title="{esc(label)}：{esc(value)}">{inner}</a></li>'
             )
         else:
-            items.append(f'<li><div class="fg-contact-static">{inner}</div></li>')
+            items.append(
+                f'<li><a class="friend-home-contact-static" aria-disabled="true" tabindex="-1" '
+                f'title="{esc(label)}：{esc(value)}">{inner}</a></li>'
+            )
 
     add("微信", contacts["wechat"], "fab fa-weixin")
     add("QQ", contacts["qq"], "fab fa-qq")
@@ -518,6 +520,7 @@ def build_page(profile: dict, source_name: str) -> str:
             render_timeline(profile),
             render_projects(profile),
             render_words(profile),
+            render_recent(profile),
         ) if section
     )
     side_sections = "\n".join(
@@ -543,7 +546,6 @@ def build_page(profile: dict, source_name: str) -> str:
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/friends.css">
-    <link rel="stylesheet" href="../css/friend-generated.css">
 </head>
 <body class="friend-home friend-home--xinghe theme-{profile['theme']}" data-friend-theme-key="friend-page-theme">
     <script src="../js/friend-theme.js"></script>

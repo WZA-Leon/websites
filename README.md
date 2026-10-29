@@ -56,7 +56,7 @@
   python tools/build_friend.py path/to/profile.json
   python tools/build_friend.py path/to/profile.json --slug 4ta --force
   ```
-  生成页使用 `css/friend-generated.css`，不会动态请求 JSON；生成后如需出现在友链列表，手动在 `friends.html` 的 `.friends-grid` 中添加卡片即可。
+  生成页直接复用 `css/friends.css` 和 `style.css`，不会动态请求 JSON；生成后如需出现在友链列表，手动在 `friends.html` 的 `.friends-grid` 中添加卡片即可。
 
 云盘分享的常用字段：
 
