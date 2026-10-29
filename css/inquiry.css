@@ -586,8 +586,6 @@ body.theme-dark .field input[type="date"] {
 /* ---------- 侧栏 ---------- */
 
 .inquiry-aside {
-    position: sticky;
-    top: calc(var(--nav-height) + 120px);
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -679,6 +677,102 @@ body.theme-dark .field input[type="date"] {
 
 .inquiry-links a {
     font-weight: 600;
+}
+
+/* ---------- 填写记忆 ---------- */
+
+.inquiry-memory-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 260px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.inquiry-memory-item {
+    padding: 10px 12px;
+    background: var(--theme-soft, rgba(127, 127, 127, 0.04));
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+}
+
+.inquiry-memory-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.inquiry-memory-name {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--text-primary);
+    font-size: 0.84rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.inquiry-memory-time {
+    flex: 0 0 auto;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.inquiry-memory-meta {
+    margin: 4px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.6;
+}
+
+.inquiry-memory-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.inquiry-memory-btn {
+    padding: 3px 10px;
+    color: var(--primary-color);
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+}
+
+.inquiry-memory-btn:hover {
+    border-color: var(--primary-color);
+    background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
+}
+
+.inquiry-memory-delete {
+    color: var(--text-secondary);
+}
+
+.inquiry-memory-delete.is-armed {
+    color: #fff;
+    background: #d64545;
+    border-color: #d64545;
+}
+
+.inquiry-memory-empty {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+.inquiry-memory-note {
+    margin: 10px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    line-height: 1.6;
 }
 
 .inquiry-json {

@@ -1,5 +1,5 @@
 // 好友个人主页的主题切换
-// 与全站 script.js 共用 site-theme 存储键，默认使用彩色主题。
+// 默认与全站共用 site-theme；生成的页面可用 data-friend-theme-key 使用独立键。
 (function () {
     'use strict';
 
@@ -7,12 +7,19 @@
     const ICONS = { colorful: '🌈', dark: '🌙', light: '☀️' };
     const TITLES = { colorful: '彩色主题', dark: '暗色主题', light: '亮色主题' };
 
+    // 生成的友链主页可以带 data-friend-theme-key，
+    // 用它自己的键保存偏好，避免覆盖访客的全站主题。
+    const STORAGE_KEY = (document.body && document.body.dataset.friendThemeKey) || 'site-theme';
+
     function getSavedTheme() {
-        let theme = 'colorful';
+        let theme = '';
         try {
-            theme = localStorage.getItem('site-theme') || 'colorful';
+            theme = localStorage.getItem(STORAGE_KEY) || '';
         } catch (e) {}
-        return THEMES.includes(theme) ? theme : 'colorful';
+        if (THEMES.includes(theme)) return theme;
+
+        const bodyTheme = THEMES.find(name => document.body.classList.contains(`theme-${name}`));
+        return bodyTheme || 'colorful';
     }
 
     function currentTheme() {
@@ -27,7 +34,7 @@
         });
     }
 
-    function applyTheme(theme) {
+    function applyTheme(theme, persist) {
         if (!THEMES.includes(theme)) theme = 'colorful';
 
         const root = document.documentElement;
@@ -38,7 +45,9 @@
         document.body.classList.add(`theme-${theme}`);
         root.classList.add(`theme-${theme}`);
 
-        try { localStorage.setItem('site-theme', theme); } catch (e) {}
+        if (persist !== false) {
+            try { localStorage.setItem(STORAGE_KEY, theme); } catch (e) {}
+        }
         updateButton(theme);
     }
 
@@ -54,8 +63,8 @@
         });
     }
 
-    // 在页面内容解析前先应用主题，避免先闪一下暗色/白色。
-    applyTheme(getSavedTheme());
+    // 在页面内容解析前先应用主题；首屏不写入站点偏好，只有手动切换才保存。
+    applyTheme(getSavedTheme(), false);
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initToggle, { once: true });

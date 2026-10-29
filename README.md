@@ -50,7 +50,13 @@
 - **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
 - **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
 - **摄影作品**：`images/photograph/` 下的 `index.json` 决定分类与作品，图片文件与对应索引放在同一目录。
-- **主页信息问卷**：`inquiry.html` 收集做个人主页所需的完整资料（简介、成就、联系方式、喜好、时间线、项目作品等），支持本机草稿、JSON 预览、复制与下载；必填项全部完成后才允许导出。入口在 `friends.html` 底部，导出结构见 `js/inquiry.js` 的 `buildProfile()`。
+- **主页信息问卷**：`inquiry.html` 收集做个人主页所需的完整资料（简介、成就、联系方式、喜好、时间线、项目作品等），支持本机草稿、填写记忆（最多 8 份，可恢复/删除）、JSON 预览、复制与下载；必填项全部完成后才允许导出。入口在 `friends.html` 底部，导出结构见 `js/inquiry.js` 的 `buildProfile()`。
+- **生成好友主页**：`tools/build_friend.py` 把问卷导出的 JSON 编译成静态 HTML，默认输出到 `friends/friend-<名字>.html`。用法：
+  ```bash
+  python tools/build_friend.py path/to/profile.json
+  python tools/build_friend.py path/to/profile.json --slug 4ta --force
+  ```
+  生成页使用 `css/friend-generated.css`，不会动态请求 JSON；生成后如需出现在友链列表，手动在 `friends.html` 的 `.friends-grid` 中添加卡片即可。
 
 云盘分享的常用字段：
 

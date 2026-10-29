@@ -4,6 +4,8 @@
     'use strict';
 
     const STORAGE_KEY = 'wza-profile-inquiry-v2';
+    const MEMORY_KEY = 'wza-profile-inquiry-memory-v1';
+    const MEMORY_LIMIT = 8;
 
     const HOBBY_OPTIONS = [
         '钢琴', '音乐', '动漫', '游戏', '阅读', '写作', '摄影',
@@ -298,6 +300,8 @@
     let saveTimer = 0;
     let toastTimer = 0;
     let clearTimer = 0;
+    let memoryDeleteTimer = 0;
+    let armedMemoryId = '';
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -314,6 +318,8 @@
         dom.progressFill = document.getElementById('progressFill');
         dom.saveStatus = document.getElementById('saveStatus');
         dom.toast = document.getElementById('inquiryToast');
+        dom.memoryList = document.getElementById('memoryList');
+        dom.memoryEmpty = document.getElementById('memoryEmpty');
 
         if (!dom.form || !dom.fieldsRoot) return;
 
@@ -324,11 +330,26 @@
 
         renderGroups();
         bindEvents();
+        bindMemoryEvents();
 
         const restored = restoreDraft();
         if (!restored) {
             refresh({ save: false });
         }
+
+        renderMemories();
+    }
+
+    function bindMemoryEvents() {
+        window.addEventListener('pagehide', () => {
+            remember('离开页面', { silent: true });
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                remember('离开页面', { silent: true });
+            }
+        });
     }
 
     /* ---------- 渲染字段 ---------- */
@@ -696,6 +717,10 @@
         return !String(value == null ? '' : value).trim();
     }
 
+    function hasAnyValue(values) {
+        return FIELDS.some((field) => !isEmpty(values[field.id]));
+    }
+
     function formatProblem(field, value) {
         if (isEmpty(value)) return '';
 
@@ -888,6 +913,56 @@
         }
     }
 
+    function applyValues(values) {
+        FIELDS.forEach((field) => {
+            const value = values[field.id];
+
+            if (field.type === 'tags') {
+                state.tags[field.id] = Array.isArray(value) ? value.slice(0, 12) : [];
+                return;
+            }
+
+            if (field.type === 'checks') {
+                const selected = Array.isArray(value) ? value.slice() : [];
+                const options = field.options || [];
+                const optionValues = options.map(optionValue);
+
+                options.forEach((option) => {
+                    const optionValueText = optionValue(option);
+                    const input = dom.form.querySelector(
+                        `input[name="${field.id}"][value="${cssEscape(optionValueText)}"]`
+                    );
+                    if (input) input.checked = selected.includes(optionValueText);
+                });
+
+                state.tags[field.id] = selected.filter((item) => !optionValues.includes(item));
+                return;
+            }
+
+            if (field.type === 'radio') {
+                dom.form.querySelectorAll(`input[name="${field.id}"]`).forEach((input) => {
+                    input.checked = false;
+                });
+
+                if (value) {
+                    const input = dom.form.querySelector(
+                        `input[name="${field.id}"][value="${cssEscape(value)}"]`
+                    );
+                    if (input) input.checked = true;
+                }
+                return;
+            }
+
+            const element = fieldElement(field);
+            if (element) {
+                element.value = value === undefined || value === null ? '' : value;
+            }
+        });
+
+        Object.keys(tagEditors).forEach((id) => tagEditors[id].render());
+        FIELDS.forEach((field) => clearFieldError(field));
+    }
+
     function restoreDraft() {
         let snapshot = null;
 
@@ -898,56 +973,215 @@
         }
 
         if (!snapshot || typeof snapshot.values !== 'object' || !snapshot.values) return false;
+        if (!hasAnyValue(snapshot.values)) return false;
 
-        const hasContent = FIELDS.some((field) => {
-            const value = snapshot.values[field.id];
-            return Array.isArray(value)
-                ? value.length > 0
-                : typeof value === 'string' && value.trim() !== '';
-        });
-
-        if (!hasContent) return false;
-
-        FIELDS.forEach((field) => {
-            const value = snapshot.values[field.id];
-            if (value === undefined || value === null) return;
-
-            if (field.type === 'tags') {
-                state.tags[field.id] = Array.isArray(value) ? value.slice(0, 12) : [];
-                return;
-            }
-
-            if (field.type === 'checks') {
-                const selected = Array.isArray(value) ? value.slice() : [];
-                const options = field.options || [];
-                options.forEach((option) => {
-                    const optionValueText = optionValue(option);
-                    const input = dom.form.querySelector(
-                        `input[name="${field.id}"][value="${cssEscape(optionValueText)}"]`
-                    );
-                    if (input) input.checked = selected.includes(optionValueText);
-                });
-                state.tags[field.id] = selected.filter((item) => !options.includes(item));
-                return;
-            }
-
-            if (field.type === 'radio') {
-                const input = dom.form.querySelector(
-                    `input[name="${field.id}"][value="${cssEscape(value)}"]`
-                );
-                if (input) input.checked = true;
-                return;
-            }
-
-            const element = fieldElement(field);
-            if (element) element.value = value;
-        });
-
-        Object.keys(tagEditors).forEach((id) => tagEditors[id].render());
+        applyValues(snapshot.values);
         state.savedAt = snapshot.savedAt;
         refresh({ save: false });
         setSavedStatus(`已恢复 ${formatDateTime(snapshot.savedAt)} 的草稿`, true);
         return true;
+    }
+
+    /* ---------- 填写记忆 ---------- */
+
+    function loadMemories() {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(MEMORY_KEY) || '[]');
+            if (!Array.isArray(parsed)) return [];
+            return parsed.filter((item) => item && item.id && item.values);
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveMemories(memories) {
+        try {
+            localStorage.setItem(MEMORY_KEY, JSON.stringify(memories));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function remember(reason, options) {
+        if (!dom.form || !dom.memoryList) return false;
+
+        const settings = options || {};
+        const values = collectValues();
+
+        if (!hasAnyValue(values)) {
+            if (!settings.silent) toast('至少填一项才能记住');
+            return false;
+        }
+
+        const memories = loadMemories();
+        const fingerprint = JSON.stringify(values);
+
+        if (memories.some((item) => JSON.stringify(item.values) === fingerprint)) {
+            if (!settings.silent) toast('这次填写已经在记忆里了');
+            return false;
+        }
+
+        const entry = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            savedAt: new Date().toISOString(),
+            reason: reason || '手动记住',
+            values
+        };
+
+        memories.unshift(entry);
+
+        if (!saveMemories(trimMemories(memories))) {
+            if (!settings.silent) toast('浏览器禁止本地存储，这份记忆没有保存');
+            return false;
+        }
+
+        renderMemories();
+        if (!settings.silent) toast(`已记住这次填写（${entry.reason}）`);
+        return true;
+    }
+
+    function trimMemories(memories) {
+        const result = memories.slice();
+
+        while (result.length > MEMORY_LIMIT) {
+            let index = -1;
+
+            for (let cursor = result.length - 1; cursor >= 0; cursor -= 1) {
+                if (result[cursor].reason === '离开页面') {
+                    index = cursor;
+                    break;
+                }
+            }
+
+            if (index < 0) index = result.length - 1;
+            result.splice(index, 1);
+        }
+
+        return result;
+    }
+
+    function renderMemories() {
+        if (!dom.memoryList || !dom.memoryEmpty) return;
+
+        window.clearTimeout(memoryDeleteTimer);
+        armedMemoryId = '';
+
+        const memories = loadMemories();
+        dom.memoryList.textContent = '';
+        dom.memoryEmpty.hidden = memories.length > 0;
+
+        memories.forEach((memory) => {
+            const filled = FIELDS.filter((field) => !isEmpty(memory.values[field.id])).length;
+            const requiredFilled = FIELDS.filter(
+                (field) => field.required && !isEmpty(memory.values[field.id])
+            ).length;
+
+            const item = document.createElement('li');
+            item.className = 'inquiry-memory-item';
+
+            const head = document.createElement('div');
+            head.className = 'inquiry-memory-head';
+
+            const name = document.createElement('strong');
+            name.className = 'inquiry-memory-name';
+            name.textContent = memory.values.name || '未命名';
+
+            const time = document.createElement('span');
+            time.className = 'inquiry-memory-time';
+            time.textContent = formatDateTime(memory.savedAt);
+
+            head.append(name, time);
+
+            const meta = document.createElement('p');
+            meta.className = 'inquiry-memory-meta';
+            meta.textContent = `${memory.reason || '记忆'} · 已填 ${filled}/${FIELDS.length} · 必填 ${requiredFilled}/${REQUIRED_TOTAL}`;
+
+            const actions = document.createElement('div');
+            actions.className = 'inquiry-memory-actions';
+
+            const restore = document.createElement('button');
+            restore.type = 'button';
+            restore.className = 'inquiry-memory-btn';
+            restore.dataset.action = 'restore-memory';
+            restore.dataset.memoryId = memory.id;
+            restore.textContent = '恢复';
+
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'inquiry-memory-btn inquiry-memory-delete';
+            remove.dataset.action = 'delete-memory';
+            remove.dataset.memoryId = memory.id;
+            remove.textContent = '删除';
+
+            actions.append(restore, remove);
+            item.append(head, meta, actions);
+            dom.memoryList.appendChild(item);
+        });
+    }
+
+    function restoreMemory(id) {
+        const memory = loadMemories().find((item) => item.id === id);
+
+        if (!memory) {
+            renderMemories();
+            toast('这份记忆已经不在了');
+            return;
+        }
+
+        const current = collectValues();
+        if (JSON.stringify(current) === JSON.stringify(memory.values)) {
+            toast('当前填写就是这份记忆');
+            return;
+        }
+
+        window.clearTimeout(saveTimer);
+        saveTimer = 0;
+
+        if (hasAnyValue(current)) {
+            remember('恢复前自动保存', { silent: true });
+        }
+
+        applyValues(memory.values);
+        refresh({ save: false });
+        saveDraft();
+        setSavedStatus(`已恢复 ${formatDateTime(memory.savedAt)} 的记忆`, true);
+        toast('已恢复这份填写记忆');
+    }
+
+    function handleDeleteMemory(button) {
+        const id = button.dataset.memoryId;
+        if (!id) return;
+
+        if (armedMemoryId === id) {
+            window.clearTimeout(memoryDeleteTimer);
+            armedMemoryId = '';
+
+            const memories = loadMemories().filter((item) => item.id !== id);
+            saveMemories(memories);
+            renderMemories();
+            toast('已删除这份记忆');
+            return;
+        }
+
+        armedMemoryId = id;
+        window.clearTimeout(memoryDeleteTimer);
+
+        document.querySelectorAll('[data-action="delete-memory"]').forEach((item) => {
+            if (item !== button) {
+                item.textContent = '删除';
+                item.classList.remove('is-armed');
+            }
+        });
+
+        button.textContent = '确认删除';
+        button.classList.add('is-armed');
+
+        memoryDeleteTimer = window.setTimeout(() => {
+            armedMemoryId = '';
+            button.textContent = '删除';
+            button.classList.remove('is-armed');
+        }, 3000);
     }
 
     /* ---------- 生成 JSON ---------- */
@@ -1181,6 +1415,18 @@
                 handleClear();
                 return;
             }
+            if (action === 'remember') {
+                remember('手动记住');
+                return;
+            }
+            if (action === 'restore-memory') {
+                restoreMemory(button.dataset.memoryId);
+                return;
+            }
+            if (action === 'delete-memory') {
+                handleDeleteMemory(button);
+                return;
+            }
             handleAction(action);
         });
     }
@@ -1224,12 +1470,14 @@
                     return;
                 }
                 saveDraft();
+                remember('已导出', { silent: true });
                 toast('JSON 已复制到剪贴板');
                 return;
             }
 
             downloadText(text);
             saveDraft();
+            remember('已导出', { silent: true });
             toast('JSON 已开始下载');
         }
     }
@@ -1266,6 +1514,9 @@
         window.clearTimeout(saveTimer);
         saveTimer = 0;
 
+        const hadContent = hasAnyValue(collectValues());
+        const remembered = hadContent ? remember('清空前', { silent: true }) : false;
+
         dom.form.reset();
         FIELDS.forEach((field) => {
             if (field.type === 'tags' || field.type === 'checks') {
@@ -1291,8 +1542,12 @@
 
         state.savedAt = '';
         refresh({ save: false });
-        setSavedStatus('问卷已清空，草稿也已删除');
-        toast('问卷已清空');
+        setSavedStatus(remembered
+            ? '问卷已清空；清空前的内容已存入填写记忆'
+            : '问卷已清空，草稿也已删除');
+        toast(remembered
+            ? '问卷已清空，清空前的内容已存入填写记忆'
+            : '问卷已清空');
     }
 
     async function copyText(text) {
