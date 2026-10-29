@@ -1,9 +1,9 @@
 // 主页信息问卷
-// 30 个字段 → 校验 → 自动保存草稿 → 生成 / 复制 / 导出 JSON
+// 一份完整的个人档案 → 校验 → 自动保存草稿 → 必填完成后生成 / 复制 / 导出 JSON
 (function () {
     'use strict';
 
-    const STORAGE_KEY = 'wza-profile-inquiry-v1';
+    const STORAGE_KEY = 'wza-profile-inquiry-v2';
 
     const HOBBY_OPTIONS = [
         '钢琴', '音乐', '动漫', '游戏', '阅读', '写作', '摄影',
@@ -15,43 +15,51 @@
             id: 'basic',
             no: 'A',
             title: '基本资料',
-            desc: '主页顶部、友链卡片和基本信息卡都会用到。',
+            desc: '主页顶部、基本信息卡和第一印象都会用到。',
             fields: [
                 {
                     id: 'name', label: '显示名称', type: 'text', required: true, maxlength: 40,
-                    placeholder: '冯猷悠 / Reori', hint: '主页大标题、友链卡片都会用这个名字。'
+                    placeholder: '示例：林见夏 / Jax', hint: '我会把它放在主页大标题、友链卡片和浏览器标签上。'
                 },
                 {
-                    id: 'alias', label: '英文名 / 别名', type: 'text', maxlength: 30,
-                    placeholder: 'FYY / reori', hint: '用在主页顶部的小标题，可留空。'
+                    id: 'alias', label: '英文名 / 别名', type: 'text', required: true, maxlength: 30,
+                    placeholder: '示例：Jax / 小夏', hint: '没有英文名的话，用拼音或常用昵称也行，我会放在主页顶部的小标题。'
                 },
                 {
                     id: 'gender', label: '性别', type: 'radio', required: true,
-                    options: ['女', '男', '其他', '不公开'], hint: '只用于基本信息卡。'
+                    options: ['女', '男', '其他', '不公开'], hint: '只出现在基本信息卡里。'
                 },
                 {
                     id: 'birthDate', label: '出生日期', type: 'date', required: true,
-                    hint: '会用来算年龄和星座；主页上可以只显示月日。'
+                    hint: '我会用它算年龄和星座；主页上只显示月日也可以。'
                 },
                 {
                     id: 'city', label: '所在城市', type: 'text', required: true, maxlength: 40,
-                    placeholder: '辽宁大连 · 沙河口区'
+                    placeholder: '示例：浙江杭州 · 西湖区'
                 },
                 {
-                    id: 'school', label: '学校 / 单位', type: 'text', maxlength: 40,
-                    placeholder: '辽宁师大附中'
+                    id: 'school', label: '学校 / 单位', type: 'text', required: true, maxlength: 60,
+                    placeholder: '示例：杭州第七中学'
                 },
                 {
                     id: 'identity', label: '年级 / 身份', type: 'text', required: true, maxlength: 40,
-                    placeholder: '高二学生 / 独立开发者'
+                    placeholder: '示例：高三学生 / 摄影社成员'
                 },
                 {
-                    id: 'height', label: '身高', type: 'text', maxlength: 20,
-                    placeholder: '159 cm', hint: '不想公开就留空。'
+                    id: 'height', label: '身高', type: 'text', required: true, maxlength: 20,
+                    placeholder: '示例：172 cm', hint: '不想公开就写「保密」，但这一项我会留着。'
                 },
                 {
                     id: 'website', label: '个人网站 / 域名', type: 'text', maxlength: 120,
-                    placeholder: 'https://example.com', hint: '还没有就留空，之后再加。'
+                    placeholder: '示例：https://example.com', hint: '选填；还没有个人网站就留空。'
+                },
+                {
+                    id: 'avatar', label: '头像链接', type: 'text', maxlength: 200,
+                    placeholder: '示例：images/profile/me.jpg', hint: '选填；之后把图片发给我也行。'
+                },
+                {
+                    id: 'about', label: '个人简介 / 关于我', type: 'textarea', rows: 6, required: true, maxlength: 1200,
+                    placeholder: '示例：我是林见夏，平时喜欢拍照和散步……', hint: '我会把这几段放在「关于我」里，3–5 段最像聊天。'
                 }
             ]
         },
@@ -59,122 +67,212 @@
             id: 'contact',
             no: 'B',
             title: '联系方式',
-            desc: '只会写进 JSON，不会自动公开到任何地方。',
+            desc: '常用的都填上；没有的社媒可以留空，微信、QQ、电话必填。',
             fields: [
                 {
-                    id: 'contactType', label: '主要联系方式', type: 'select', required: true,
-                    options: ['微信', 'QQ', '邮箱', '抖音', '其他']
+                    id: 'wechat', label: '微信', type: 'text', required: true, maxlength: 60,
+                    placeholder: '示例：jianxia_2026'
                 },
                 {
-                    id: 'contactValue', label: '联系方式账号', type: 'text', required: true, maxlength: 80,
-                    placeholder: '微信号 / QQ 号 / 邮箱地址', hint: '分享 JSON 前请确认是否愿意公开。'
+                    id: 'qq', label: 'QQ', type: 'text', required: true, maxlength: 20,
+                    placeholder: '示例：100200300', hint: '5–12 位数字；我会把它放在联系方式里。'
+                },
+                {
+                    id: 'phone', label: '电话', type: 'tel', required: true, maxlength: 30,
+                    placeholder: '示例：+86 139 0000 0000'
                 },
                 {
                     id: 'email', label: '邮箱', type: 'email', maxlength: 120,
-                    placeholder: 'name@example.com', hint: '用于接收主页草稿和上线通知。'
+                    placeholder: '示例：hello@example.com', hint: '选填；没有邮箱就留空。'
                 },
                 {
-                    id: 'social', label: '其他社交账号', type: 'textarea', rows: 3, maxlength: 300,
-                    placeholder: '每行一个，例如：\n抖音：78747JDQS\nGitHub：yourname', hint: '没有就留空。'
+                    id: 'github', label: 'GitHub', type: 'text', maxlength: 120,
+                    placeholder: '示例：jianxia', hint: '选填；没有就留空。'
+                },
+                {
+                    id: 'facebook', label: 'Facebook', type: 'text', maxlength: 120,
+                    placeholder: '示例：jianxia.lin', hint: '选填；没有就留空。'
+                },
+                {
+                    id: 'otherContact', label: '其他联系方式', type: 'textarea', rows: 3, maxlength: 300,
+                    placeholder: '示例：\n微博：@见夏\nB站：UID 100200300\n小红书：见夏的日常',
+                    hint: '选填；微博、B站、小红书、抖音都可以写在这里。'
                 }
             ]
         },
         {
-            id: 'about',
+            id: 'achievements',
             no: 'C',
-            title: '关于你',
-            desc: '这一组决定主页读起来像不像你本人。',
+            title: '成就与近况',
+            desc: '让你被记住的部分：做成过什么，最近在忙什么。',
             fields: [
                 {
-                    id: 'tagline', label: '一句话简介', type: 'text', required: true, maxlength: 60,
-                    placeholder: '弹琴、追番、听歌，也追星空和海。', hint: '会显示在主页标题下面。'
+                    id: 'achievements', label: '成就 / 奖项 / 里程碑', type: 'textarea', rows: 4, required: true, maxlength: 800,
+                    placeholder: '示例：校摄影社社长；拿过一次市级比赛二等奖。',
+                    hint: '我会把它放在「成就」或「正在做的事」里，不用只写官方奖项。'
                 },
                 {
-                    id: 'avatar', label: '头像链接', type: 'text', maxlength: 200,
-                    placeholder: 'images/friends/xxx.jpg 或 https://…', hint: '可以先留空，之后把图片发给 WZA。'
-                },
-                {
-                    id: 'about', label: '关于我', type: 'textarea', rows: 6, required: true, maxlength: 1200,
-                    placeholder: '写写性格、日常、在意的事，或者最近的状态……', hint: '3–5 段最好，像跟新朋友聊天。'
-                },
-                {
-                    id: 'quote', label: '座右铭 / 个人签名', type: 'text', maxlength: 80,
-                    placeholder: '喜欢明媚，也喜欢忧郁。'
-                },
+                    id: 'recent', label: '最近在干嘛', type: 'textarea', rows: 3, required: true, maxlength: 400,
+                    placeholder: '示例：最近在学手冲咖啡，也在整理暑假拍的照片。'
+                }
+            ]
+        },
+        {
+            id: 'personality',
+            no: 'D',
+            title: '性格与爱好',
+            desc: '性格、爱好和擅长的事，决定主页读起来像不像你。',
+            fields: [
                 {
                     id: 'personality', label: '性格关键词', type: 'tags', required: true,
-                    placeholder: '输入后按回车，例如：开朗幽默', hint: '3–6 个词，会显示成标签。'
+                    placeholder: '示例：慢热、爱笑、做事认真', hint: '3–6 个词，我会把它们做成主页上的标签。'
                 },
                 {
                     id: 'hobbies', label: '兴趣爱好', type: 'checks', required: true,
-                    options: HOBBY_OPTIONS, customTags: true, hint: '可多选，也能自己补。'
+                    options: HOBBY_OPTIONS, customTags: true, hint: '多选或自己补都行，我会挑几个放进「喜欢的事」。'
                 },
                 {
-                    id: 'strengths', label: '擅长的事', type: 'text', maxlength: 80,
-                    placeholder: '钢琴 / 文科 / C++'
-                },
-                {
-                    id: 'recent', label: '最近在做的事', type: 'textarea', rows: 3, maxlength: 400,
-                    placeholder: '最近在补《全职猎人》，也在练一首新曲子……'
+                    id: 'strengths', label: '擅长的事', type: 'text', required: true, maxlength: 120,
+                    placeholder: '示例：拍照 / 修图 / 整理资料'
                 }
             ]
         },
         {
-            id: 'favorites',
-            no: 'D',
-            title: '喜好清单',
-            desc: '帮主页补上那些「一看就是你」的细节。',
-            fields: [
-                {
-                    id: 'music', label: '喜欢的音乐', type: 'text', maxlength: 120,
-                    placeholder: '华语、日语、纯音乐；最近单曲循环……'
-                },
-                {
-                    id: 'anime', label: '喜欢的动漫 / 书影', type: 'text', maxlength: 120,
-                    placeholder: '《全职猎人》《石纪元》……'
-                },
-                {
-                    id: 'colors', label: '喜欢的颜色', type: 'text', maxlength: 60,
-                    placeholder: '蓝色、绿色'
-                },
-                {
-                    id: 'food', label: '喜欢的美食', type: 'text', maxlength: 80,
-                    placeholder: '葱多多益善，秋葵不行'
-                }
-            ]
-        },
-        {
-            id: 'homepage',
+            id: 'likes',
             no: 'E',
-            title: '主页内容',
-            desc: '作品、时间线和主题，决定主页长什么样。',
+            title: '喜欢与不喜欢',
+            desc: '越具体越像你：歌、影视、食物、人，都可以写。',
             fields: [
                 {
-                    id: 'skills', label: '技能关键词', type: 'tags',
-                    placeholder: '输入后按回车，例如：钢琴 / C++ / 剪辑', hint: '会显示成主页上的技能标签。'
+                    id: 'likeMusic', label: '喜欢的歌曲 / 音乐', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：城市民谣和轻电子；最近循环《晚风》'
                 },
                 {
-                    id: 'projects', label: '代表作品 / 正在做的事', type: 'textarea', rows: 4, maxlength: 800,
-                    placeholder: '每行一个，格式：标题 | 一句话说明 | 标签1,标签2\n例如：晨曦海岸 | 长曝光拍的海边清晨 | 摄影,长曝光',
-                    hint: '一行一个作品；没有作品也可以写「正在学的事」。'
+                    id: 'dislikeMusic', label: '不喜欢的歌曲 / 音乐', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：太吵的重低音'
                 },
                 {
-                    id: 'timeline', label: '成长时间线', type: 'textarea', rows: 4, maxlength: 800,
-                    placeholder: '每行一个，格式：年份 | 标题 | 一句话说明\n例如：2024 | 上高中 | 开始认真做主页',
-                    hint: '3–5 条就够，不用写成简历。'
+                    id: 'likeScreen', label: '喜欢的影视 / 动漫', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：《海街日记》《小森林》'
                 },
                 {
-                    id: 'theme', label: '主页主题', type: 'select',
+                    id: 'dislikeScreen', label: '不喜欢的影视 / 动漫', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：强行煽情的综艺'
+                },
+                {
+                    id: 'likeFood', label: '喜欢的食物', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：番茄牛腩、冰美式'
+                },
+                {
+                    id: 'dislikeFood', label: '不喜欢的食物', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：肥肉、苦瓜'
+                },
+                {
+                    id: 'likePeople', label: '喜欢的人 / 偶像 / 角色', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：认真生活、说话算数的人'
+                },
+                {
+                    id: 'dislikePeople', label: '不喜欢的人 / 类型', type: 'text', required: true, maxlength: 160,
+                    placeholder: '示例：爱打断别人说话的人'
+                }
+            ]
+        },
+        {
+            id: 'words',
+            no: 'F',
+            title: '想说的话',
+            desc: '可以正经，也可以不正经；这些话会单独成块。',
+            fields: [
+                {
+                    id: 'message', label: '想对别人说的话', type: 'textarea', rows: 4, required: true, maxlength: 600,
+                    placeholder: '示例：谢谢你点进来。这里没有标准答案，只有一些认真记录过的日子。'
+                },
+                {
+                    id: 'rant', label: '想吐槽的', type: 'textarea', rows: 4, required: true, maxlength: 600,
+                    placeholder: '示例：为什么周一总是来得这么快，快递却总是那么慢。'
+                },
+                {
+                    id: 'quote', label: '格言 / 座右铭', type: 'text', required: true, maxlength: 100,
+                    placeholder: '示例：把普通的日子过得具体一点。'
+                }
+            ]
+        },
+        {
+            id: 'timeline',
+            no: 'G',
+            title: '人生时间线',
+            desc: '挑几件真正重要的事，按时间顺序写。',
+            fields: [
+                {
+                    id: 'timeline', label: '重要时间点', type: 'textarea', rows: 5, required: true, maxlength: 800,
+                    placeholder: '示例：\n2018 年，第一次拿起相机\n2021 年，开始写博客\n2025 年，做出第一个自己满意的小工具',
+                    hint: '一行一件，我会按顺序排成时间线，不用写得很正式。'
+                }
+            ]
+        },
+        {
+            id: 'projects',
+            no: 'H',
+            title: '项目作品',
+            desc: '一个项目一组，名称、说明、链接分开填；没有可以留空。',
+            fields: [
+                {
+                    id: 'project1Name', label: '名称', type: 'text', maxlength: 60,
+                    placeholder: '示例：旧城散步'
+                },
+                {
+                    id: 'project1Desc', label: '一句话说明', type: 'text', maxlength: 120,
+                    placeholder: '示例：一组关于老城区的照片'
+                },
+                {
+                    id: 'project1Link', label: '链接', type: 'text', maxlength: 200,
+                    placeholder: '示例：https://example.com/old-town'
+                },
+                {
+                    id: 'project2Name', label: '名称', type: 'text', maxlength: 60,
+                    placeholder: '示例：晚风电台'
+                },
+                {
+                    id: 'project2Desc', label: '一句话说明', type: 'text', maxlength: 120,
+                    placeholder: '示例：一个只播独立音乐的小站'
+                },
+                {
+                    id: 'project2Link', label: '链接', type: 'text', maxlength: 200,
+                    placeholder: '示例：https://example.com/radio'
+                },
+                {
+                    id: 'project3Name', label: '名称', type: 'text', maxlength: 60,
+                    placeholder: '示例：桌面收纳盒'
+                },
+                {
+                    id: 'project3Desc', label: '一句话说明', type: 'text', maxlength: 120,
+                    placeholder: '示例：用废纸板做的收纳实验'
+                },
+                {
+                    id: 'project3Link', label: '链接', type: 'text', maxlength: 200,
+                    placeholder: '示例：https://example.com/box'
+                }
+            ]
+        },
+        {
+            id: 'skills',
+            no: 'I',
+            title: '技能与主页',
+            desc: '最后是标签和主页的外观选项。',
+            fields: [
+                {
+                    id: 'skills', label: '技能关键词', type: 'tags', required: true,
+                    placeholder: '示例：拍照 / 修图 / 剪辑',
+                    hint: '不一定是技术，也可以是「做手账」「养植物」。'
+                },
+                {
+                    id: 'theme', label: '主页主题', type: 'select', required: true,
                     options: [
                         { value: 'colorful', label: '彩色（明亮）' },
                         { value: 'dark', label: '暗色（炫酷）' },
                         { value: 'light', label: '黑白极简' }
                     ],
-                    hint: '之后也可以换。'
-                },
-                {
-                    id: 'notes', label: '备注 / 期望', type: 'textarea', rows: 3, maxlength: 600,
-                    placeholder: '想让主页强调什么、什么时候上线、有什么顾虑……'
+                    hint: '之后也可以换，我会先按这个主题做。'
                 }
             ]
         }
@@ -208,13 +306,21 @@
         dom.fieldsRoot = document.getElementById('formFields');
         dom.preview = document.getElementById('jsonPreview');
         dom.filled = document.getElementById('filledCount');
+        dom.total = document.getElementById('totalCount');
         dom.required = document.getElementById('requiredCount');
+        dom.requiredTip = document.getElementById('requiredTipCount');
+        dom.gate = document.getElementById('exportGate');
         dom.progressBar = document.getElementById('progressBar');
         dom.progressFill = document.getElementById('progressFill');
         dom.saveStatus = document.getElementById('saveStatus');
         dom.toast = document.getElementById('inquiryToast');
 
         if (!dom.form || !dom.fieldsRoot) return;
+
+        if (dom.total) dom.total.textContent = String(FIELDS.length);
+        if (dom.requiredTip) dom.requiredTip.textContent = String(REQUIRED_TOTAL);
+        if (dom.required) dom.required.textContent = `必填 0 / ${REQUIRED_TOTAL}`;
+        if (dom.progressBar) dom.progressBar.setAttribute('aria-valuemax', String(FIELDS.length));
 
         renderGroups();
         bindEvents();
@@ -252,8 +358,32 @@
             section.appendChild(head);
 
             const grid = document.createElement('div');
-            grid.className = 'field-grid';
-            group.fields.forEach((field) => grid.appendChild(renderField(field)));
+
+            if (group.id === 'projects') {
+                grid.className = 'project-list';
+
+                [1, 2, 3].forEach((index) => {
+                    const slot = document.createElement('section');
+                    slot.className = 'project-slot';
+
+                    const heading = document.createElement('h3');
+                    heading.textContent = `项目 ${index}`;
+                    slot.appendChild(heading);
+
+                    const fields = document.createElement('div');
+                    fields.className = 'field-grid field-grid--project';
+                    group.fields
+                        .filter((field) => field.id.startsWith(`project${index}`))
+                        .forEach((field) => fields.appendChild(renderField(field)));
+
+                    slot.appendChild(fields);
+                    grid.appendChild(slot);
+                });
+            } else {
+                grid.className = 'field-grid';
+                group.fields.forEach((field) => grid.appendChild(renderField(field)));
+            }
+
             section.appendChild(grid);
 
             dom.fieldsRoot.appendChild(section);
@@ -281,6 +411,11 @@
             required.className = 'field-req';
             required.textContent = '必填';
             label.appendChild(required);
+        } else {
+            const optional = document.createElement('span');
+            optional.className = 'field-opt';
+            optional.textContent = '选填';
+            label.appendChild(optional);
         }
         wrapper.appendChild(label);
 
@@ -356,7 +491,7 @@
             stack.className = 'field-stack';
             stack.appendChild(renderChoices(field, 'checkbox'));
             if (field.customTags) {
-                stack.appendChild(createTagEditor(field, '其他爱好，按回车添加'));
+                stack.appendChild(createTagEditor(field, '其他爱好，按回车添加（示例：拼模型）'));
             }
             return stack;
         }
@@ -572,11 +707,19 @@
             return '邮箱格式看起来不太对。';
         }
 
-        if ((field.id === 'website' || field.id === 'avatar') && /\s/.test(value)) {
+        if (field.id === 'qq' && !/^\d{5,12}$/.test(value)) {
+            return 'QQ 号通常是 5–12 位数字。';
+        }
+
+        if (field.id === 'phone' && !/^[+\d][\d\s-]{5,19}$/.test(value)) {
+            return '电话号码格式看起来不太对。';
+        }
+
+        if (isLinkField(field) && /\s/.test(value)) {
             return '链接里不要包含空格。';
         }
 
-        if (/^https?:\/\//i.test(value)) {
+        if (isLinkField(field) && /^https?:\/\//i.test(value)) {
             try {
                 new URL(value);
             } catch (error) {
@@ -585,6 +728,13 @@
         }
 
         return '';
+    }
+
+    function isLinkField(field) {
+        return [
+            'website', 'avatar', 'github', 'facebook',
+            'project1Link', 'project2Link', 'project3Link'
+        ].includes(field.id);
     }
 
     function validateField(field) {
@@ -663,6 +813,7 @@
 
         updateProgress(values);
         updatePreview(values);
+        updateGate(values);
 
         if (settings.save !== false) scheduleSave();
     }
@@ -674,12 +825,35 @@
         ).length;
 
         if (dom.filled) dom.filled.textContent = String(filled);
+        if (dom.total) dom.total.textContent = String(FIELDS.length);
         if (dom.required) dom.required.textContent = `必填 ${requiredFilled} / ${REQUIRED_TOTAL}`;
         if (dom.progressFill) dom.progressFill.style.width = `${(filled / FIELDS.length) * 100}%`;
         if (dom.progressBar) {
             dom.progressBar.setAttribute('aria-valuenow', String(filled));
             dom.progressBar.setAttribute('aria-valuemax', String(FIELDS.length));
         }
+    }
+
+    function updateGate(values) {
+        if (!dom.gate) return;
+
+        const missing = FIELDS.filter(
+            (field) => field.required && isEmpty(values[field.id])
+        ).length;
+        const invalid = FIELDS.filter(
+            (field) => !isEmpty(values[field.id]) && formatProblem(field, values[field.id])
+        ).length;
+        const ready = missing === 0 && invalid === 0;
+
+        dom.gate.classList.toggle('is-ready', ready);
+        dom.gate.textContent = ready
+            ? '必填项已全部完成，可以复制或导出 JSON'
+            : `还差 ${missing} 项必填${invalid ? `、${invalid} 项格式待修正` : ''}，完成后才能导出`;
+
+        document.querySelectorAll('[data-action="copy"], [data-action="download"]').forEach((button) => {
+            button.classList.toggle('is-locked', !ready);
+            button.setAttribute('aria-disabled', String(!ready));
+        });
     }
 
     function updatePreview(values) {
@@ -786,13 +960,15 @@
 
         return {
             schema: 'wza-homepage-profile',
-            version: 1,
+            version: 2,
             status: profileStatus(values),
             completeness: {
                 filled,
                 total: FIELDS.length,
                 requiredFilled,
-                requiredTotal: REQUIRED_TOTAL
+                requiredTotal: REQUIRED_TOTAL,
+                optionalFilled: filled - requiredFilled,
+                optionalTotal: FIELDS.length - REQUIRED_TOTAL
             },
             profile: {
                 name: values.name,
@@ -806,49 +982,52 @@
                 identity: values.identity,
                 height: values.height,
                 website: values.website,
-                contact: {
-                    type: values.contactType,
-                    value: values.contactValue,
-                    email: values.email,
-                    social: parseSocial(values.social)
-                },
-                tagline: values.tagline,
                 avatar: values.avatar,
                 about: values.about,
-                quote: values.quote,
+                achievements: values.achievements,
+                contacts: {
+                    wechat: values.wechat,
+                    qq: values.qq,
+                    phone: values.phone,
+                    email: values.email,
+                    github: values.github,
+                    facebook: values.facebook,
+                    others: parseSocial(values.otherContact)
+                },
                 personality: values.personality,
                 hobbies: values.hobbies,
                 strengths: values.strengths,
                 recent: values.recent,
-                favorites: {
-                    music: values.music,
-                    anime: values.anime,
-                    colors: values.colors,
-                    food: values.food
+                likes: {
+                    music: values.likeMusic,
+                    screen: values.likeScreen,
+                    food: values.likeFood,
+                    people: values.likePeople
                 },
-                skills: values.skills,
-                projects: parseProjects(values.projects),
+                dislikes: {
+                    music: values.dislikeMusic,
+                    screen: values.dislikeScreen,
+                    food: values.dislikeFood,
+                    people: values.dislikePeople
+                },
+                message: values.message,
+                rant: values.rant,
+                quote: values.quote,
                 timeline: parseTimeline(values.timeline),
-                theme: values.theme,
-                notes: values.notes
+                projects: collectProjects(values),
+                skills: values.skills,
+                theme: values.theme
             }
         };
     }
 
     function profileStatus(values) {
-        const hasFormatProblem = FIELDS.some((field) => {
+        const hasProblem = FIELDS.some((field) => {
             const value = values[field.id];
-            return !isEmpty(value) && formatProblem(field, value);
+            if (field.required && isEmpty(value)) return true;
+            return !isEmpty(value) && Boolean(formatProblem(field, value));
         });
-        if (hasFormatProblem) return 'draft';
-
-        const missingRequired = FIELDS.some(
-            (field) => field.required && isEmpty(values[field.id])
-        );
-        if (missingRequired) return 'draft';
-
-        const filled = FIELDS.filter((field) => !isEmpty(values[field.id])).length;
-        return filled === FIELDS.length ? 'complete' : 'ready';
+        return hasProblem ? 'draft' : 'complete';
     }
 
     function exportText() {
@@ -886,25 +1065,14 @@
             });
     }
 
-    function parseProjects(text) {
-        if (!text) return [];
-
-        return String(text)
-            .split(/\r?\n/)
-            .map((line) => line.trim())
-            .filter(Boolean)
-            .map((line) => {
-                const parts = line.split('|').map((part) => part.trim());
-                return {
-                    title: parts[0] || '',
-                    description: parts[1] || '',
-                    tags: (parts[2] || '')
-                        .split(/[,，、;；]/)
-                        .map((tag) => tag.trim())
-                        .filter(Boolean)
-                };
-            })
-            .filter((item) => item.title || item.description);
+    function collectProjects(values) {
+        return [1, 2, 3]
+            .map((index) => ({
+                name: values[`project${index}Name`] || '',
+                description: values[`project${index}Desc`] || '',
+                link: values[`project${index}Link`] || ''
+            }))
+            .filter((project) => project.name || project.description || project.link);
     }
 
     function parseTimeline(text) {
@@ -915,14 +1083,11 @@
             .map((line) => line.trim())
             .filter(Boolean)
             .map((line) => {
-                const parts = line.split('|').map((part) => part.trim());
-                return {
-                    year: parts[0] || '',
-                    title: parts[1] || '',
-                    description: parts[2] || ''
-                };
-            })
-            .filter((item) => item.year || item.title || item.description);
+                const match = line.match(/^([^，,:：、]{1,16})\s*[，,:：、]\s*(.+)$/);
+                return match
+                    ? { time: match[1].trim(), event: match[2].trim() }
+                    : { time: '', event: line };
+            });
     }
 
     function calcAge(dateString) {
@@ -1038,21 +1203,18 @@
         if (action === 'copy' || action === 'download') {
             const result = validateAll();
 
-            if (result.invalid.length) {
+            if (result.missing.length || result.invalid.length) {
                 focusFirstProblem();
-                toast(`有 ${result.invalid.length} 项格式需要修正，暂未${action === 'copy' ? '复制' : '导出'}`);
+
+                const problems = [];
+                if (result.missing.length) problems.push(`还差 ${result.missing.length} 项必填`);
+                if (result.invalid.length) problems.push(`${result.invalid.length} 项格式待修正`);
+
+                toast(`${problems.join('，')}，填完才能${action === 'copy' ? '复制' : '导出'} JSON`);
                 return;
             }
 
             const text = exportText();
-            const values = collectValues();
-            const filled = FIELDS.filter((field) => !isEmpty(values[field.id])).length;
-            const optionalLeft = FIELDS.length - filled;
-            const draftNote = result.missing.length
-                ? `已生成草稿（还差 ${result.missing.length} 项必填）`
-                : (optionalLeft > 0
-                    ? `必填项已齐（还有 ${optionalLeft} 项可选未填）`
-                    : '30 项已填完');
 
             if (action === 'copy') {
                 const copied = await copyText(text);
@@ -1062,13 +1224,13 @@
                     return;
                 }
                 saveDraft();
-                toast(`JSON 已复制到剪贴板，${draftNote}`);
+                toast('JSON 已复制到剪贴板');
                 return;
             }
 
             downloadText(text);
             saveDraft();
-            toast(`JSON 已开始下载，${draftNote}`);
+            toast('JSON 已开始下载');
         }
     }
 

@@ -140,6 +140,29 @@ body.theme-light .inquiry-hero {
     color: var(--primary-color);
 }
 
+.inquiry-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    margin-top: 8px;
+}
+
+.inquiry-meta-line .inquiry-save {
+    margin: 0;
+}
+
+.inquiry-gate {
+    margin: 0;
+    color: #d64545;
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.inquiry-gate.is-ready {
+    color: var(--primary-color);
+}
+
 .inquiry-toolbar-actions {
     display: flex;
     flex-wrap: wrap;
@@ -173,6 +196,17 @@ body.inquiry-page .btn-outline:hover {
 
 body.inquiry-page .btn-outline::before {
     display: none;
+}
+
+/* 必填未完成时仍然可点（点击会定位到缺失项），但视觉上提示还没解锁 */
+.inquiry-page .btn.is-locked {
+    opacity: 0.55;
+    box-shadow: none !important;
+}
+
+.inquiry-page .btn.is-locked:hover {
+    opacity: 0.75;
+    transform: none;
 }
 
 .inquiry-clear {
@@ -268,6 +302,33 @@ body.inquiry-page .btn-outline::before {
     gap: 20px 22px;
 }
 
+/* 项目作品：一个项目一块，每块里名称 / 说明 / 链接分开 */
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.project-slot {
+    padding: 16px;
+    background: var(--theme-soft, rgba(127, 127, 127, 0.03));
+    border: 1px dashed var(--border-light);
+    border-radius: 12px;
+}
+
+.project-slot > h3 {
+    margin: 0 0 12px;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.field-grid--project {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 14px 16px;
+}
+
 .field {
     display: flex;
     flex-direction: column;
@@ -309,6 +370,15 @@ body.inquiry-page .btn-outline::before {
     border-radius: 999px;
     font-size: 0.66rem;
     font-weight: 600;
+}
+
+.field-opt {
+    padding: 1px 7px;
+    color: var(--text-secondary);
+    background: rgba(127, 127, 127, 0.12);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    font-weight: 500;
 }
 
 .field-stack {
@@ -573,6 +643,10 @@ body.theme-dark .field input[type="date"] {
     background: var(--theme-soft-strong, rgba(0, 212, 255, 0.12));
 }
 
+.inquiry-mini-btn.is-locked {
+    opacity: 0.5;
+}
+
 .inquiry-tips {
     margin: 0;
     padding-left: 18px;
@@ -689,6 +763,12 @@ body.theme-dark .field input[type="date"] {
 }
 
 /* ---------- 响应式 ---------- */
+
+@media (max-width: 860px) {
+    .field-grid--project {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
 
 @media (max-width: 1080px) {
     .inquiry-layout {

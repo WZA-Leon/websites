@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="想做个人主页？先回答 30 个问题，把资料一次性攒齐，支持导出和复制 JSON。">
+    <meta name="description" content="一份完整的个人主页档案：简介、成就、联系方式、喜好、时间线、项目作品，必填项完成后导出 JSON。">
     <title>主页信息问卷 - WZA Leon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
@@ -18,11 +18,12 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text inquiry-hero-text">
-                    <p class="inquiry-kicker">HOMEPAGE PROFILE · 30 QUESTIONS</p>
+                    <p class="inquiry-kicker">HOMEPAGE PROFILE · FULL INTAKE</p>
                     <h1>做主页之前，<span>先聊聊你自己</span></h1>
                     <p class="inquiry-lead">
-                        30 个问题，把个人主页要用的资料一次性攒齐。填完可以复制或导出 JSON 发给 WZA，
-                        也可以先存成草稿，想到什么再回来补。
+                        从基本资料、联系方式、成就，到喜欢与不喜欢、想说的话、人生时间线和项目作品，
+                        把做主页要用的信息一次填完。我会按这份档案给你搭主页；必填项全部完成后，
+                        才能复制或导出 JSON。
                     </p>
                     <div class="hero-buttons">
                         <a href="#profileForm" class="btn">开始填写</a>
@@ -43,14 +44,17 @@
                 <div class="inquiry-progress">
                     <div class="inquiry-progress-head">
                         <span class="inquiry-progress-label">填写进度</span>
-                        <strong><span id="filledCount">0</span> / 30</strong>
-                        <span class="inquiry-required-count" id="requiredCount">必填 0 / 11</span>
+                        <strong><span id="filledCount">0</span> / <span id="totalCount">46</span></strong>
+                        <span class="inquiry-required-count" id="requiredCount">必填 0 / --</span>
                     </div>
                     <div class="inquiry-progress-bar" id="progressBar" role="progressbar"
-                         aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" aria-label="已填写字段数">
+                         aria-valuemin="0" aria-valuemax="46" aria-valuenow="0" aria-label="已填写字段数">
                         <span class="inquiry-progress-fill" id="progressFill"></span>
                     </div>
-                    <p class="inquiry-save" id="saveStatus">草稿会自动保存在本机浏览器</p>
+                    <div class="inquiry-meta-line">
+                        <p class="inquiry-save" id="saveStatus">草稿会自动保存在本机浏览器</p>
+                        <p class="inquiry-gate" id="exportGate">还差 31 项必填，完成后才能导出</p>
+                    </div>
                 </div>
                 <div class="inquiry-toolbar-actions">
                     <button type="button" class="btn btn-outline" data-action="check">检查完整性</button>
@@ -68,7 +72,7 @@
                     </div>
 
                     <div class="inquiry-actions-bottom">
-                        <p class="inquiry-actions-note">只填一部分也可以先导出草稿；标「必填」的项目会决定主页能不能开工。</p>
+                        <p class="inquiry-actions-note">必填项全部完成后才能复制或导出 JSON；没填完也可以先存草稿。</p>
                         <div class="inquiry-toolbar-actions">
                             <button type="button" class="btn btn-outline" data-action="check">检查完整性</button>
                             <button type="button" class="btn btn-outline" data-action="copy">复制 JSON</button>
@@ -82,16 +86,14 @@
                     <section class="inquiry-card">
                         <h2><i class="fas fa-lightbulb" aria-hidden="true"></i> 填写提示</h2>
                         <ul class="inquiry-tips">
-                            <li>标「必填」的 11 项是主页骨架，其余可以留空，之后再补。</li>
-                            <li>作品和时间线每行一条，用 <code>|</code> 分隔，例如 <code>2024 | 上高中 | 开始做主页</code>。</li>
+                            <li>标「必填」的 <span id="requiredTipCount">31</span> 项全部完成后，才能复制或导出；标「选填」的可以留空。</li>
+                            <li>时间线每行一件，用逗号分开时间和事情，示例：<code>2024 年 9 月，开始学摄影</code>。</li>
+                            <li>项目作品一个项目一组，名称、说明、链接分开填，没有可以留空。</li>
                             <li>联系方式会写进 JSON，分享给谁之前先确认一下。</li>
                             <li>草稿只存在当前浏览器，换设备或清缓存后不会保留。</li>
                         </ul>
                         <p class="inquiry-links">
-                            没有头绪？看看现有主页：
-                            <a href="friends/friend-fyy.html">冯猷悠</a> ·
-                            <a href="friends/friend-hyz.html">贺煜之</a> ·
-                            <a href="friends/friend-reori.html">Reori</a>
+                            想看看成品长什么样？去 <a href="friends.html">友链页</a> 逛逛朋友的主页。
                         </p>
                     </section>
 
@@ -101,7 +103,7 @@
                             <button type="button" class="inquiry-mini-btn" data-action="copy">复制</button>
                         </div>
                         <pre class="inquiry-json" id="jsonPreview" tabindex="0" aria-label="根据当前填写内容生成的 JSON 预览"></pre>
-                        <p class="inquiry-json-note">导出时会自动补上 <code>exportedAt</code> 时间戳。</p>
+                        <p class="inquiry-json-note">必填项完成后才能导出；导出时会自动补上 <code>exportedAt</code> 时间戳。</p>
                     </section>
                 </aside>
             </div>
