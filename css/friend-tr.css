@@ -1,0 +1,272 @@
+/* =======================================================
+   唐冉个人主页：粉色主题 + 飘落樱花
+   仅作用于 body.friend-home--rrt
+   ======================================================= */
+
+body.friend-home.friend-home--rrt {
+    --friend-accent: #d94f86;
+    --friend-accent-soft: rgba(217, 79, 134, 0.14);
+    --primary-color: #d94f86;
+    --secondary-color: #f2a3c0;
+    --accent-color: #ff6fa5;
+    --text-primary: #3a1a27;
+    --text-secondary: #7a5262;
+    --bg-primary: #fff8fb;
+    --bg-secondary: #ffeef5;
+    --card-bg: rgba(255, 248, 251, 0.92);
+    --border-light: rgba(217, 79, 134, 0.18);
+    --glow: 0 0 20px rgba(217, 79, 134, 0.22);
+    --gradient-primary: linear-gradient(135deg, #d94f86, #f2a3c0);
+    --gradient-accent: linear-gradient(135deg, #ff8fbd, #d94f86);
+    --theme-color: #d94f86;
+    --theme-color-deep: #b83d6d;
+    --theme-color-light: #f2a3c0;
+    --gradient-category: linear-gradient(135deg, #d94f86, #f2a3c0);
+    --theme-soft: rgba(217, 79, 134, 0.05);
+    --theme-soft-strong: rgba(217, 79, 134, 0.1);
+    --theme-border: rgba(217, 79, 134, 0.2);
+    --theme-shadow: rgba(217, 79, 134, 0.16);
+    background:
+        radial-gradient(circle at 10% 2%, rgba(255, 190, 211, 0.7), transparent 32%),
+        radial-gradient(circle at 92% 10%, rgba(255, 158, 196, 0.42), transparent 30%),
+        linear-gradient(180deg, #ffe5ef 0%, #fff4f8 44%, #ffe3ee 100%);
+    background-attachment: fixed;
+}
+
+body.friend-home--rrt .audio-player {
+    box-shadow: 0 12px 34px rgba(217, 79, 134, 0.12);
+}
+
+body.friend-home--rrt .audio-player:hover {
+    box-shadow: 0 18px 44px rgba(217, 79, 134, 0.18), var(--glow);
+}
+
+body.friend-home--rrt ::selection {
+    background: #ffb3cf;
+    color: #3a1a27;
+}
+
+/* 页面没有顶部返回/主题按钮，首屏留白由 hero 自己控制 */
+body.friend-home.friend-home--rrt .friend-home-hero {
+    padding-top: clamp(52px, 7vw, 80px);
+    background:
+        radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.72), transparent 36%),
+        radial-gradient(circle at 88% 26%, rgba(255, 158, 196, 0.3), transparent 34%),
+        linear-gradient(135deg, #ffe1ed 0%, #fff3f8 48%, #ffd7e6 100%);
+    border-bottom-color: rgba(217, 79, 134, 0.2);
+}
+
+body.friend-home--rrt .friend-home-hero::after {
+    background-image:
+        linear-gradient(rgba(217, 79, 134, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(217, 79, 134, 0.06) 1px, transparent 1px);
+}
+
+/* =======================================================
+   整页组件统一粉色，避免局部还是白色/蓝色
+   ======================================================= */
+
+body.friend-home.friend-home--rrt .friend-home-title h1 {
+    color: #3a1a27;
+}
+
+body.friend-home.friend-home--rrt .friend-home-title h1 span {
+    color: #d94f86;
+}
+
+body.friend-home.friend-home--rrt .friend-home-kicker {
+    color: #b83d6d;
+}
+
+body.friend-home.friend-home--rrt .friend-home-tagline {
+    color: #7a5262;
+}
+
+body.friend-home.friend-home--rrt .friend-home-meta span {
+    color: #7a5262;
+    background: rgba(255, 245, 249, 0.92);
+    border-color: rgba(217, 79, 134, 0.2);
+}
+
+body.friend-home.friend-home--rrt .friend-home-meta i {
+    color: #d94f86;
+}
+
+body.friend-home.friend-home--rrt .friend-home-card {
+    background: rgba(255, 248, 251, 0.9);
+    border-color: rgba(217, 79, 134, 0.17);
+    box-shadow: 0 16px 44px rgba(217, 79, 134, 0.1);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.friend-home.friend-home--rrt .friend-home-card:hover {
+    border-color: rgba(217, 79, 134, 0.34);
+    box-shadow: 0 20px 48px rgba(217, 79, 134, 0.16);
+}
+
+body.friend-home.friend-home--rrt .friend-home-card h2 {
+    color: #3a1a27;
+}
+
+body.friend-home.friend-home--rrt .friend-home-card h2 i {
+    color: #d94f86;
+}
+
+body.friend-home.friend-home--rrt .friend-home-card p,
+body.friend-home.friend-home--rrt .friend-home-project p {
+    color: #7a5262;
+}
+
+body.friend-home.friend-home--rrt .friend-home-project {
+    background: rgba(255, 240, 246, 0.78);
+    border-color: rgba(217, 79, 134, 0.18);
+    transition: transform 0.25s ease, background 0.25s ease,
+                border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.friend-home.friend-home--rrt .friend-home-project:hover {
+    background: rgba(255, 226, 238, 0.95);
+    border-color: rgba(217, 79, 134, 0.4);
+    box-shadow: 0 10px 24px rgba(217, 79, 134, 0.14);
+}
+
+body.friend-home.friend-home--rrt .friend-home-project h3 {
+    color: #3a1a27;
+}
+
+body.friend-home.friend-home--rrt .friend-home-project-tags span {
+    color: #b83d6d;
+    background: rgba(217, 79, 134, 0.12);
+}
+
+body.friend-home.friend-home--rrt .skill {
+    color: #a8325d;
+    background: rgba(217, 79, 134, 0.12);
+    border-color: rgba(217, 79, 134, 0.24);
+}
+
+body.friend-home.friend-home--rrt .skill:hover {
+    color: #fff;
+    background: #c2416f;
+    border-color: #a8325d;
+    box-shadow: 0 10px 22px rgba(194, 65, 111, 0.3);
+    transform: translateY(-3px);
+}
+
+body.friend-home.friend-home--rrt .friend-home-quote {
+    color: #6b3a4c !important;
+    background: rgba(217, 79, 134, 0.08);
+    border-left-color: #d94f86;
+}
+
+body.friend-home.friend-home--rrt .friend-home-recent li {
+    color: #7a5262;
+}
+
+body.friend-home.friend-home--rrt .friend-home-recent li::before {
+    color: #d94f86;
+}
+
+body.friend-home.friend-home--rrt .friend-home-info-list li {
+    border-bottom-color: rgba(217, 79, 134, 0.16);
+}
+
+body.friend-home.friend-home--rrt .friend-home-info-list span {
+    color: #7a5262;
+}
+
+body.friend-home.friend-home--rrt .friend-home-info-list strong {
+    color: #3a1a27;
+}
+
+body.friend-home.friend-home--rrt .friend-home-contact-list a:hover {
+    background: rgba(217, 79, 134, 0.1);
+}
+
+body.friend-home.friend-home--rrt .friend-home-contact-icon {
+    color: #b83d6d;
+    background: rgba(217, 79, 134, 0.12);
+}
+
+body.friend-home.friend-home--rrt .friend-home-contact-text small {
+    color: #7a5262;
+}
+
+body.friend-home.friend-home--rrt .friend-home-contact-text strong {
+    color: #3a1a27;
+}
+
+body.friend-home.friend-home--rrt .friend-home-note {
+    color: #7a5262;
+    border-top-color: rgba(217, 79, 134, 0.22);
+}
+
+body.friend-home.friend-home--rrt a {
+    color: #b83d6d;
+}
+
+body.friend-home.friend-home--rrt a:hover {
+    color: #d94f86;
+}
+
+/* =======================================================
+   樱花
+   ======================================================= */
+
+.sakura-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.sakura-petal {
+    position: absolute;
+    top: 0;
+    left: var(--sakura-left, 50%);
+    display: block;
+    width: var(--sakura-size, 10px);
+    height: calc(var(--sakura-size, 10px) * 0.78);
+    background: linear-gradient(135deg, #ffe7f0 0%, #ffb3cf 48%, #ee6f9e 100%);
+    border-radius: 60% 8% 60% 8%;
+    box-shadow: 0 0 6px rgba(255, 158, 196, 0.3);
+    opacity: 0;
+    transform: rotate(var(--sakura-rotate, 0deg));
+    animation: sakura-fall var(--sakura-duration, 12s) linear var(--sakura-delay, 0s) infinite;
+    will-change: transform, opacity;
+}
+
+.sakura-petal::after {
+    content: '';
+    position: absolute;
+    inset: 20% 46%;
+    background: rgba(255, 255, 255, 0.36);
+    border-radius: 50%;
+    transform: rotate(18deg);
+}
+
+@keyframes sakura-fall {
+    0% {
+        transform: translate3d(0, -12vh, 0) rotate(var(--sakura-rotate, 0deg));
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.82;
+    }
+    55% {
+        transform: translate3d(calc(var(--sakura-sway, 40px) * 0.55), 58vh, 0)
+                   rotate(calc(var(--sakura-rotate, 0deg) + 250deg));
+    }
+    100% {
+        transform: translate3d(var(--sakura-sway, 40px), 112vh, 0)
+                   rotate(calc(var(--sakura-rotate, 0deg) + 540deg));
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sakura-layer {
+        display: none;
+    }
+}
