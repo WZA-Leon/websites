@@ -1,0 +1,518 @@
+/* =======================================================
+   饭费管理系统 FeeMan · 项目介绍页
+   ======================================================= */
+
+.fee-page {
+    --fee-green: #2f8f4e;
+    --fee-green-deep: #1f6b3a;
+    --fee-green-soft: rgba(47, 143, 78, 0.12);
+    --fee-green-border: rgba(47, 143, 78, 0.24);
+}
+
+body.theme-dark.fee-page {
+    --fee-green: #4ade80;
+    --fee-green-deep: #86efac;
+    --fee-green-soft: rgba(74, 222, 128, 0.12);
+    --fee-green-border: rgba(74, 222, 128, 0.24);
+}
+
+body.fee-page .fee-hero {
+    background:
+        radial-gradient(circle at 12% 16%, rgba(47, 143, 78, 0.14), transparent 34%),
+        radial-gradient(circle at 88% 20%, rgba(77, 107, 254, 0.08), transparent 30%),
+        var(--bg-secondary);
+}
+
+body.fee-page .page-kicker,
+body.fee-page .section-kicker {
+    color: var(--fee-green);
+}
+
+body.fee-page .page-title span {
+    color: var(--fee-green);
+}
+
+body.fee-page .page-hero-panel {
+    border-color: var(--fee-green-border);
+}
+
+body.fee-page .page-hero-panel::before {
+    background: linear-gradient(90deg, var(--fee-green), #8ed9a8);
+}
+
+.fee-hero-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.fee-hero-icon {
+    width: 96px;
+    height: 96px;
+    padding: 12px;
+    margin-bottom: 16px;
+    background: #fff;
+    border: 1px solid var(--fee-green-border);
+    border-radius: 24px;
+    box-shadow: 0 14px 32px rgba(47, 143, 78, 0.16);
+}
+
+.fee-hero-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.fee-hero-panel h2 {
+    font-size: 1.35rem;
+}
+
+.fee-version {
+    align-self: flex-start;
+    margin: 0 0 16px;
+    padding: 4px 9px;
+    color: var(--fee-green-deep);
+    background: var(--fee-green-soft);
+    border: 1px solid var(--fee-green-border);
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.fee-hero-panel .hero-stat strong {
+    color: var(--fee-green);
+}
+
+.fee-hero-panel .hero-code {
+    margin-top: 18px;
+}
+
+body.fee-page .btn {
+    background: linear-gradient(135deg, var(--fee-green), #6fcf97);
+    box-shadow: 0 6px 16px rgba(47, 143, 78, 0.24);
+}
+
+body.fee-page .btn:hover {
+    box-shadow: 0 10px 30px rgba(47, 143, 78, 0.3);
+}
+
+body.fee-page .btn-accent {
+    background: linear-gradient(135deg, #6fcf97, var(--fee-green));
+}
+
+body.fee-page .spotlight-icon {
+    color: var(--fee-green);
+    background: var(--fee-green-soft);
+    border-color: var(--fee-green-border);
+}
+
+body.fee-page .process-number {
+    color: #fff;
+    background: var(--fee-green);
+}
+
+body.fee-page .process-step:hover {
+    border-color: var(--fee-green-border);
+}
+
+/* 核心功能 */
+.fee-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.fee-feature-card {
+    position: relative;
+    padding: 22px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fee-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--fee-green), transparent);
+    opacity: 0.8;
+}
+
+.fee-feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--fee-green);
+    box-shadow: 0 16px 36px rgba(47, 143, 78, 0.14);
+}
+
+.fee-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+    color: var(--fee-green);
+    background: var(--fee-green-soft);
+    border: 1px solid var(--fee-green-border);
+    border-radius: 13px;
+    font-size: 1.05rem;
+}
+
+.fee-feature-card h3 {
+    margin: 0 0 8px;
+    color: var(--text-primary);
+    font-size: 1.02rem;
+}
+
+.fee-feature-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+    line-height: 1.75;
+}
+
+.fee-feature-card code {
+    padding: 1px 5px;
+    color: var(--fee-green-deep);
+    background: var(--fee-green-soft);
+    border-radius: 5px;
+    font-size: 0.82em;
+}
+
+/* 运行截图 */
+.fee-preview-section {
+    background: var(--bg-secondary);
+}
+
+.fee-shots {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.fee-shot {
+    margin: 0;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(24, 61, 38, 0.12);
+}
+
+.fee-shot-image {
+    display: block;
+    background: #f3f6f4;
+    cursor: zoom-in;
+}
+
+.fee-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.fee-shot figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-light);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.fee-shot-label {
+    color: var(--fee-green);
+    font-weight: 700;
+}
+
+.fee-shot-version {
+    margin-left: auto;
+    padding: 3px 8px;
+    color: var(--fee-green-deep);
+    background: var(--fee-green-soft);
+    border: 1px solid var(--fee-green-border);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.fee-caption {
+    margin: 14px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    text-align: center;
+}
+
+/* 技术 */
+.fee-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.fee-tech-card {
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+}
+
+.fee-tech-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+    color: var(--fee-green);
+    background: var(--fee-green-soft);
+    border: 1px solid var(--fee-green-border);
+    border-radius: 13px;
+}
+
+.fee-tech-card h3 {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: 1.08rem;
+}
+
+.fee-tech-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.8;
+}
+
+.fee-tech-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fee-tech-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    color: var(--text-secondary);
+    border-bottom: 1px dashed var(--border-light);
+    font-size: 0.84rem;
+}
+
+.fee-tech-list li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.fee-tech-list strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.fee-code {
+    margin: 14px 0 0;
+    padding: 14px;
+    overflow: auto;
+    color: #d7f7e1;
+    background: #14221a;
+    border: 1px solid rgba(74, 222, 128, 0.18);
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.76rem;
+    line-height: 1.7;
+}
+
+.fee-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.fee-spec {
+    padding: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+}
+
+.fee-spec span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+}
+
+.fee-spec strong {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.fee-spec a {
+    color: var(--fee-green);
+}
+
+.fee-spec code {
+    padding: 1px 5px;
+    color: var(--fee-green-deep);
+    background: var(--fee-green-soft);
+    border-radius: 5px;
+    font-size: 0.88em;
+}
+
+/* 作者 */
+.fee-team-section {
+    padding-top: 0;
+}
+
+.fee-team-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 32px;
+    background:
+        linear-gradient(135deg, var(--fee-green-soft), transparent 60%),
+        var(--card-bg);
+    border: 1px solid var(--fee-green-border);
+    border-radius: 22px;
+}
+
+.fee-team-copy {
+    max-width: 700px;
+}
+
+.fee-team-copy h2 {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    line-height: 1.35;
+}
+
+.fee-team-copy p:not(.section-kicker) {
+    margin: 0 0 18px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.fee-team-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+}
+
+.fee-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--fee-green);
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+
+.fee-text-link i {
+    font-size: 0.7rem;
+    transition: transform 0.25s ease;
+}
+
+.fee-text-link:hover i {
+    transform: translateX(3px);
+}
+
+.fee-team-icon {
+    flex: 0 0 120px;
+    width: 120px;
+    height: 120px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--fee-green-border);
+    border-radius: 28px;
+    box-shadow: 0 16px 36px rgba(47, 143, 78, 0.14);
+}
+
+.fee-team-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 1000px) {
+    .fee-feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fee-spec-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .fee-tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fee-team-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .fee-team-icon {
+        width: 96px;
+        height: 96px;
+        flex-basis: 96px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 680px) {
+    .fee-feature-grid,
+    .fee-spec-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fee-team-links {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .fee-hero-icon {
+        width: 76px;
+        height: 76px;
+        padding: 9px;
+        border-radius: 19px;
+    }
+
+    .fee-feature-card,
+    .fee-tech-card {
+        padding: 18px;
+    }
+
+    .fee-shot figcaption {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+        padding: 11px 13px;
+    }
+
+    .fee-shot-version {
+        margin-left: 0;
+    }
+}

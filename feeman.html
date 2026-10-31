@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="饭费管理系统 FeeMan：按月统计学生 / 员工订餐费用，支持 Excel 名单导入与核算表导出。由 WZA 与 cxykevin 开发，纯 Python + Tkinter，开源。">
+    <title>饭费管理系统 FeeMan · WZA &amp; cxykevin</title>
+    <link rel="icon" href="images/fee-app.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/site-refresh.css">
+    <link rel="stylesheet" href="css/feeman.css">
+</head>
+<body class="fee-page">
+    <div id="nav-placeholder"></div>
+
+    <section class="page-hero fee-hero">
+        <div class="container">
+            <div class="page-hero-copy">
+                <p class="page-kicker"><i class="fas fa-utensils" aria-hidden="true"></i> OPEN SOURCE · FEE MANAGER</p>
+                <h1 class="page-title">把饭费<br><span>算得明明白白</span></h1>
+                <p class="page-lead">饭费管理系统（FeeMan）是我和 cxykevin 一起写的 Windows 桌面工具。导入 Excel 名单、记录每日不订、自动核算整月费用，再导出可以直接对账的核算表。</p>
+                <div class="page-meta">
+                    <span><i class="fab fa-python" aria-hidden="true"></i> Python + Tkinter</span>
+                    <span><i class="fas fa-file-excel" aria-hidden="true"></i> Excel 导入 / 导出</span>
+                    <span><i class="fas fa-code-branch" aria-hidden="true"></i> 开源</span>
+                    <span><i class="fas fa-desktop" aria-hidden="true"></i> Windows</span>
+                </div>
+                <div class="page-actions">
+                    <a href="https://github.com/dl5z-grade2/feeman" class="btn" target="_blank" rel="noopener">查看源码 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                    <a href="#features" class="btn btn-accent">了解功能</a>
+                </div>
+            </div>
+
+            <aside class="page-hero-panel fee-hero-panel">
+                <div class="fee-hero-icon">
+                    <img src="images/fee-app.png" alt="饭费管理系统图标" width="96" height="96">
+                </div>
+                <h2>FeeMan</h2>
+                <p>按月统计学生 / 员工订餐费用</p>
+                <span class="fee-version">v1.0.0 · Open Source</span>
+                <div class="hero-stat-list">
+                    <div class="hero-stat"><strong>02</strong><span>位开发者</span></div>
+                    <div class="hero-stat"><strong>0</strong><span>额外 UI 依赖</span></div>
+                    <div class="hero-stat"><strong>XLSX</strong><span>名单 / 核算表</span></div>
+                </div>
+                <div class="hero-code"><b>stack</b> Python 3.11 · Tkinter<br><b>repo</b> dl5z-grade2/feeman<br><b>build</b> Windows installer</div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section" id="overview">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">OVERVIEW</p>
+                    <h2>它解决什么问题</h2>
+                    <p>每个月最麻烦的不是收钱，而是把“谁订了、谁没订、哪天没订”对上。FeeMan 把名单、日期和单价收进一个工程文件，月底直接出核算表。</p>
+                </div>
+                <a href="#features" class="btn btn-small">核心功能</a>
+            </div>
+
+            <div class="spotlight-grid">
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-table-list" aria-hidden="true"></i></div>
+                    <h3>不再手工对表</h3>
+                    <p>Excel 名单导入后，每次不订、每个休息日、每天单独的价格都记在工程里。核算时按实际订餐天数自动加总，不用再翻聊天记录和表格。</p>
+                </article>
+                <article class="spotlight-card">
+                    <div class="spotlight-icon"><i class="fas fa-magnifying-glass-chart" aria-hidden="true"></i></div>
+                    <h3>每一笔都有依据</h3>
+                    <p>今日订餐、每日不订、核算汇总三个页面互相对应。谁哪天没订、备注是什么、最后为什么是这个金额，都能顺着记录查回去。</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">FEATURES</p>
+                    <h2>核心功能</h2>
+                    <p>从名单导入到核算表导出，围绕“一个月”这条线把常用动作做完整。</p>
+                </div>
+            </div>
+
+            <div class="fee-feature-grid">
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-utensils" aria-hidden="true"></i></span>
+                    <h3>今日订餐</h3>
+                    <p>打开就是今天订餐人数、订餐与不订两份名单，以及今日单价和预计收入。休息日或不在工程月份时会明确提示。</p>
+                </article>
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-file-excel" aria-hidden="true"></i></span>
+                    <h3>Excel / CSV 名单</h3>
+                    <p>自动识别「学号 / 姓名 / 身份证 / 性别」表头，也支持从文本直接粘贴。名单模板可以一键下载。</p>
+                </article>
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-calendar-check" aria-hidden="true"></i></span>
+                    <h3>每日不订</h3>
+                    <p>按日期勾选，支持“标记今天不订”和“整月都不订”。还可以粘贴一段格式不固定的通知，自动识别人名与餐别。</p>
+                </article>
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-calculator" aria-hidden="true"></i></span>
+                    <h3>自动核算</h3>
+                    <p>应缴金额 = 实际订餐天数 × 对应单价。支持每周休息日、单日加餐价，以及午餐 / 晚餐 / 周六餐的识别。</p>
+                </article>
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-file-export" aria-hidden="true"></i></span>
+                    <h3>核算表导出</h3>
+                    <p>四列 Excel：班级 / 姓名 / 身份证号 / 费用，末行自动写合计公式。可选择导出时剔除 0 元人员。</p>
+                </article>
+                <article class="fee-feature-card">
+                    <span class="fee-feature-icon"><i class="fas fa-database" aria-hidden="true"></i></span>
+                    <h3>工程与数据</h3>
+                    <p><code>.cfee</code> 是 UTF-8 JSON，可保存、另存和迁移。身份证会校验 18 位校验码与出生日期，并自动推导性别。</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="workflow">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">WORKFLOW</p>
+                    <h2>一个月，四步走完</h2>
+                    <p>先把基础信息建好，之后每天只需要记录变化，月底导出。</p>
+                </div>
+            </div>
+
+            <div class="process-grid">
+                <div class="process-step">
+                    <span class="process-number">01</span>
+                    <h3>新建工程</h3>
+                    <p>填好班级、核算年月、全月单价，勾选每周不供餐的星期。需要的话，再给某一天单独设价。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">02</span>
+                    <h3>导入名单</h3>
+                    <p>从 Excel / CSV 或文本导入人员。学号按自然排序，身份证不合法的记录会被跳过并提示。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">03</span>
+                    <h3>记录不订</h3>
+                    <p>每天勾选不订人员，或者直接粘贴通知文本。午餐、晚餐、周六餐都能识别，整月不订也会展开成逐日记录。</p>
+                </div>
+                <div class="process-step">
+                    <span class="process-number">04</span>
+                    <h3>导出核算表</h3>
+                    <p>在核算汇总里检查天数和金额，导出四列 Excel。合计公式和班级列会自动填好，直接拿去对账。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fee-preview-section" id="preview">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">PREVIEW</p>
+                    <h2>运行截图</h2>
+                    <p>下面是 V1.0.0 在本机运行时截的图：从每日不订到今日订餐，界面和实际使用保持一致。</p>
+                </div>
+            </div>
+
+            <div class="fee-shots">
+                <figure class="fee-shot">
+                    <a class="fee-shot-image" href="images/feeman/example1.png" target="_blank" rel="noopener">
+                        <img src="images/feeman/example1.png" alt="饭费管理系统 V1.0.0 每日不订界面"
+                             width="1142" height="812" loading="lazy" decoding="async">
+                    </a>
+                    <figcaption>
+                        <span class="fee-shot-label">每日不订</span>
+                        <span>按日期勾选不订人员，整月不订会展开成逐日记录。</span>
+                        <span class="fee-shot-version">V1.0.0</span>
+                    </figcaption>
+                </figure>
+
+                <figure class="fee-shot">
+                    <a class="fee-shot-image" href="images/feeman/example2.png" target="_blank" rel="noopener">
+                        <img src="images/feeman/example2.png" alt="饭费管理系统 V1.0.0 今日订餐界面"
+                             width="1142" height="812" loading="lazy" decoding="async">
+                    </a>
+                    <figcaption>
+                        <span class="fee-shot-label">今日订餐</span>
+                        <span>打开先看今天：订餐人数、单价与订餐 / 不订名单。</span>
+                        <span class="fee-shot-version">V1.0.0</span>
+                    </figcaption>
+                </figure>
+            </div>
+            <p class="fee-caption">截图中的名单仅用于界面演示；实际界面以当前版本为准。</p>
+        </div>
+    </section>
+
+    <section class="section" id="tech">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">TECH</p>
+                    <h2>技术与运行方式</h2>
+                    <p>纯 Python + Tkinter，不依赖额外的界面库；数据处理用 openpyxl，工程文件是可直接打开的 JSON。</p>
+                </div>
+            </div>
+
+            <div class="fee-tech-grid">
+                <article class="fee-tech-card">
+                    <span class="fee-tech-icon"><i class="fab fa-python" aria-hidden="true"></i></span>
+                    <h3>技术栈</h3>
+                    <ul class="fee-tech-list">
+                        <li><strong>语言</strong>Python 3.11</li>
+                        <li><strong>界面</strong>Tkinter（标准库）</li>
+                        <li><strong>表格</strong>openpyxl</li>
+                        <li><strong>环境</strong>uv 管理依赖</li>
+                    </ul>
+                </article>
+                <article class="fee-tech-card">
+                    <span class="fee-tech-icon"><i class="fas fa-box-open" aria-hidden="true"></i></span>
+                    <h3>安装与运行</h3>
+                    <p>安装版使用 C++ 启动器 + 嵌入式 Python 运行时：首次启动自动下载运行时，之后可离线使用；也可以直接通过 uv 运行源码。</p>
+                    <pre class="fee-code"><code>uv sync
+uv run fee_app.py</code></pre>
+                </article>
+            </div>
+
+            <div class="fee-spec-grid">
+                <div class="fee-spec">
+                    <span>项目类型</span>
+                    <strong>Windows 桌面工具</strong>
+                </div>
+                <div class="fee-spec">
+                    <span>开发者</span>
+                    <strong>WZA &amp; cxykevin</strong>
+                </div>
+                <div class="fee-spec">
+                    <span>工程格式</span>
+                    <strong><code>.cfee</code> / JSON</strong>
+                </div>
+                <div class="fee-spec">
+                    <span>开源地址</span>
+                    <strong><a href="https://github.com/dl5z-grade2/feeman" target="_blank" rel="noopener">GitHub ↗</a></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fee-team-section">
+        <div class="container">
+            <div class="fee-team-card">
+                <div class="fee-team-copy">
+                    <p class="section-kicker">TEAM</p>
+                    <h2>两个人，一起把这个工具做完</h2>
+                    <p>FeeMan 由 WZA 和 cxykevin 一起开发。从界面、数据到安装运行时，两个人一起把细节补齐，最后做成了一个可以真正拿去用的桌面工具。</p>
+                    <div class="fee-team-links">
+                        <a href="https://github.com/dl5z-grade2/feeman" class="btn btn-small" target="_blank" rel="noopener">GitHub 仓库 <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                        <a href="friends/friend-cxykevin.html" class="fee-text-link">cxykevin 的主页 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="contact.html" class="fee-text-link">联系 WZA <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="fee-team-icon">
+                    <img src="images/fee-app.png" alt="" width="120" height="120">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="cta-band">
+                <div>
+                    <h2>想自己跑一遍？</h2>
+                    <p>源码、安装脚本和完整使用说明都在 GitHub 仓库里。也可以先来看看 cxykevin 的其他项目。</p>
+                </div>
+                <a href="https://github.com/dl5z-grade2/feeman" class="btn" target="_blank" rel="noopener">打开仓库</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+</body>
+</html>
