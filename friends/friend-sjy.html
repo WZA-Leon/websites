@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隋佳怡 · 个人主页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/friends.css">
+    <link rel="stylesheet" href="../css/audio-player.css">
+</head>
+<body class="friend-home friend-home--sjy theme-colorful">
+    <script>
+        (function () {
+            var theme = 'colorful';
+            try { theme = localStorage.getItem('site-theme') || 'colorful'; } catch (e) {}
+            if (['dark', 'light', 'colorful'].indexOf(theme) === -1) theme = 'colorful';
+            document.body.classList.remove('theme-dark', 'theme-light', 'theme-colorful');
+            document.body.classList.add('theme-' + theme);
+        })();
+    </script>
+
+    <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        <span>返回友链</span>
+    </a>
+
+    <main class="friend-home-main">
+        <section class="friend-home-hero">
+            <div class="container">
+                <div class="friend-home-profile">
+                    <img class="friend-home-avatar" src="../images/friends/sjy.jpg" alt="隋佳怡的头像" width="150" height="150">
+                    <div class="friend-home-title">
+                        <p class="friend-home-kicker">FRIEND PROFILE · 004</p>
+                        <h1>隋佳怡<span>.</span></h1>
+                        <p class="friend-home-tagline">跳舞、听歌与好好生活。</p>
+                        <div class="friend-home-meta">
+                            <span><i class="fas fa-location-dot" aria-hidden="true"></i> 辽宁大连</span>
+                            <span><i class="fas fa-masks-theater" aria-hidden="true"></i> 跳舞 / 文艺部</span>
+                            <span><i class="fas fa-music" aria-hidden="true"></i> K-pop / R&amp;B</span>
+                            <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 大连五中 · 高二</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container friend-home-content">
+            <div class="audio-player-mount"
+                 data-audio-player
+                 data-src="../media/colors.mp3"
+                 data-title="Colors"
+                 data-artist="隋佳怡 · 边听边逛"></div>
+
+            <div class="friend-home-grid">
+                <div class="friend-home-main-col">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-user" aria-hidden="true"></i> 关于我</h2>
+                        <p>我是 sjy，也可以叫我 Akrio，大连市第五中学的高二学生，wza 的高中同学。</p>
+                        <p>如果用她自己的话形容，那就是——随波逐流、鸡立鹤群、与众相同、众人皆醉我更是喝大了、出淤泥而全染。总之，热情、开朗，还特别会搞笑。</p>
+                        <p>在学校是学生会文艺部副部长，跳舞是拿手好戏，唱歌也还行；平时喜欢钢琴、音乐、旅行、美食和电影，一天里最开心的事情通常和吃有关。</p>
+                        <p class="friend-home-quote">“爱人先爱己。”</p>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> 平时的我</h2>
+                        <div class="friend-home-project-grid">
+                            <article class="friend-home-project">
+                                <h3>跳舞</h3>
+                                <p>学生会文艺部副部长，学校里的演出和活动基本都少不了我，练舞是日常。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>跳舞</span><span>文艺部</span><span>校园</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>听歌</h3>
+                                <p>K-pop、R&amp;B、华语流行轮着放，唯独重金属就先算了。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>K-pop</span><span>R&amp;B</span><span>华语流行</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>看电影</h3>
+                                <p>最近想看《欢迎来龙餐馆》，不过强行煽情、演绎成分太重的综艺敬谢不敏。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>电影</span><span>挑片</span><span>综艺</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>找好吃的</h3>
+                                <p>DQ 和雪媚娘是必点，肥肉、苦瓜、茧蛹请离我远一点。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>甜品</span><span>探店</span><span>吃货</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-star" aria-hidden="true"></i> 技能与爱好</h2>
+                        <div class="skills-container">
+                            <span class="skill">跳舞</span>
+                            <span class="skill">唱歌</span>
+                            <span class="skill">钢琴</span>
+                            <span class="skill">音乐</span>
+                            <span class="skill">旅行</span>
+                            <span class="skill">美食</span>
+                            <span class="skill">电影</span>
+                            <span class="skill">学生会</span>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> 时间线</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2010</div>
+                                <h3>我出生了</h3>
+                                <p>2010 年 4 月 13 日，白羊座，故事从这里开始。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2025</div>
+                                <h3>来到五中</h3>
+                                <p>中考失利，来到大连市第五中学，也遇见了一些很重要的人。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2026</div>
+                                <h3>我搞砸了这一切…</h3>
+                                <p>有些事没能做好，但也学到了很多。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">现在</div>
+                                <h3>要好好生活下去</h3>
+                                <p>好好吃饭，好好睡觉，好好对待这个温暖的世界。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-book-open" aria-hidden="true"></i> 最近</h2>
+                        <ul class="friend-home-recent">
+                            <li>最近在努力地玩耍中…</li>
+                            <li>单休实在是不够休啊，我想睡觉。</li>
+                            <li>在听 K-pop 和 R&amp;B，偶尔循环华语流行。</li>
+                            <li>想约上朋友去看《欢迎来龙餐馆》。</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <aside class="friend-home-side">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-id-card" aria-hidden="true"></i> 基本信息</h2>
+                        <ul class="friend-home-info-list">
+                            <li><span>身份</span><strong>高二学生</strong></li>
+                            <li><span>学校</span><strong>大连市第五中学</strong></li>
+                            <li><span>所在地</span><strong>辽宁大连沙河口区</strong></li>
+                            <li><span>星座</span><strong>白羊座 · 165cm</strong></li>
+                            <li><span>头衔</span><strong>校学生会文艺部副部长</strong></li>
+                            <li><span>状态</span><strong>努力地玩耍中</strong></li>
+                        </ul>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-paper-plane" aria-hidden="true"></i> 联系方式</h2>
+                        <ul class="friend-home-contact-list">
+                            <li>
+                                <a href="https://weixin.qq.com" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-weixin" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>微信</small><strong>sjy20100413</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wpa.qq.com/msgrd?v=3&amp;uin=2180428252&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-qq" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>QQ</small><strong>2180428252</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tel:+8615524602710">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>电话</small><strong>+86 155 2460 2710</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.douyin.com" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-tiktok" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>抖音</small><strong>@雪下许愿</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.douyin.com" target="_blank" rel="noopener">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-id-badge" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>ID</small><strong>Soejy_0413</strong></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                </aside>
+            </div>
+
+            <p class="friend-home-note">这是隋佳怡的好友主页，联系方式已按本人资料填写，仅供朋友联系，切勿骚扰！</p>
+        </div>
+    </main>
+    <script src="../js/audio-player.js"></script>
+</body>
+</html>
