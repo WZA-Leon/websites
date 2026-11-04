@@ -945,7 +945,7 @@ body.theme-light .friend-home-meta span {
     border-color: #e0e0e0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: portrait) {
     .friend-home-hero {
         padding: 112px 0 64px;
     }
@@ -998,7 +998,7 @@ body.theme-light .friend-home-meta span {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .friends-lead {
         margin-bottom: 26px;
         text-align: left;

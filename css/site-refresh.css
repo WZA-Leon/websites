@@ -545,7 +545,7 @@
     opacity: 0.8;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: portrait) {
     .page-hero .container {
         grid-template-columns: 1fr;
     }
@@ -559,7 +559,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .page-hero {
         padding: 108px 0 52px;
     }

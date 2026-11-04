@@ -716,7 +716,7 @@ body.theme-dark .fee-resource-link {
     transform: translate(-50%, 0);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .share-toolbar {
         align-items: stretch;
         flex-direction: column;

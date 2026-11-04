@@ -242,7 +242,7 @@
     text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .doc-page {
         padding: 96px 0 54px;
     }

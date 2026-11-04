@@ -375,7 +375,7 @@ body.theme-colorful .audio-player:hover {
 }
 
 /* 响应式 */
-@media (max-width: 640px) {
+@media (max-width: 640px), (orientation: portrait) {
     .audio-player-mount {
         margin-top: 26px;
     }

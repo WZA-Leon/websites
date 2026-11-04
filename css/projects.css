@@ -162,7 +162,7 @@ body.theme-colorful .category-btn.active {
     color: var(--primary-color);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .projects-grid {
         grid-template-columns: 1fr;
     }

@@ -858,13 +858,13 @@ body.theme-dark .field input[type="date"] {
 
 /* ---------- 响应式 ---------- */
 
-@media (max-width: 860px) {
+@media (max-width: 860px), (orientation: portrait) {
     .field-grid--project {
         grid-template-columns: minmax(0, 1fr);
     }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1080px), (orientation: portrait) {
     .inquiry-layout {
         grid-template-columns: minmax(0, 1fr);
     }
@@ -877,7 +877,7 @@ body.theme-dark .field input[type="date"] {
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (orientation: portrait) {
     .inquiry-hero {
         padding: 128px 0 48px;
     }
@@ -907,7 +907,7 @@ body.theme-dark .field input[type="date"] {
     }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 620px), (orientation: portrait) {
     .inquiry-block {
         padding: 20px 16px;
         border-radius: 14px;

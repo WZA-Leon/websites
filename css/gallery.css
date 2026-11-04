@@ -442,7 +442,7 @@ body.theme-colorful .photo-meta .category-badge {
 }
 
 /* 响应式 */
-@media (max-width: 768px) {
+@media (max-width: 768px), (orientation: portrait) {
     .gallery-hero h1 { font-size: 2.2rem; }
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);

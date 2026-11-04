@@ -184,7 +184,9 @@ function initMobileMenu() {
     });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) setOpen(false);
+        // 与 CSS 保持一致：竖屏或窄屏都算移动布局。
+        const mobileLayout = window.matchMedia('(max-width: 768px), (orientation: portrait)').matches;
+        if (!mobileLayout) setOpen(false);
     }, { passive: true });
 
     window.addEventListener('pageshow', () => setOpen(false));
