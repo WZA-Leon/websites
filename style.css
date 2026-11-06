@@ -8,6 +8,25 @@
    修改日期：2025-03-30
    ======================================================= */
 
+/* 站内自托管字体：Noto Sans SC 子集（SIL OFL 1.1） */
+@font-face {
+    font-family: 'WZA Sans';
+    src: url('fonts/wza-sans-400.woff2') format('woff2'),
+         url('fonts/wza-sans-400.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'WZA Sans';
+    src: url('fonts/wza-sans-700.woff2') format('woff2'),
+         url('fonts/wza-sans-700.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
+
 /* ---------- CSS 全局变量（默认暗色主题，也是后备值） ---------- */
 :root {
     --primary-color: #00d4ff;
@@ -23,8 +42,8 @@
     --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     --gradient-accent: linear-gradient(135deg, var(--accent-color), #ff5252);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --font-ui: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, 'Noto Sans', 'Microsoft YaHei', sans-serif;
+    --font-ui: 'WZA Sans', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont,
+        'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
         'Liberation Mono', 'Courier New', monospace;
 }
@@ -94,7 +113,7 @@ body.theme-colorful {
 }
 
 html {
-    font-family: var(--font-ui);
+    font-family: var(--font-ui) !important;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scroll-behavior: smooth;
@@ -103,7 +122,7 @@ html {
 body {
     background: var(--bg-primary);
     color: var(--text-primary);
-    font-family: inherit;
+    font-family: var(--font-ui) !important;
     line-height: 1.6;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;

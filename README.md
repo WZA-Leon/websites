@@ -46,6 +46,7 @@
 
 站点没有后端，所有内容都通过静态文件维护：
 
+- **字体**：全站使用自托管的 `WZA Sans`（Noto Sans SC 子集），文件在 `fonts/`；新增大量生僻字后需重新生成子集。竖屏（宽 < 高）会启用移动端布局。
 - **博客文章**：正文放在 `blog-data/<id>.md`，列表信息写在 `js/blog-list.js`。
 - **云盘分享**：在 `js/shares-list.js` 的 `SHARES_LIST` 中添加条目，支持百度网盘、阿里云盘、夸克、123 云盘、蓝奏云、OneDrive、Google Drive 等平台。列表为空时页面会显示“整理中”的空状态，添加第一条后筛选栏与统计会自动出现。
 - **项目文档**：`project-data/<id>/README.md` 与 `js/projects-list.js`。
