@@ -9,6 +9,7 @@
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/site-refresh.css">
+    <link rel="stylesheet" href="css/commits.css">
 </head>
 <body>
     <div id="nav-placeholder"></div>
@@ -170,6 +171,35 @@
         </div>
     </section>
 
+    <!-- GitHub 提交记录 -->
+    <section class="section commits" id="commits" data-github-commits data-repo="WZA-Leon/websites">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <p class="section-kicker">BUILD LOG</p>
+                    <h2>最近的提交</h2>
+                    <p>这个站点和它的内容都记录在 GitHub 上，先看最近 20 条，其余可以展开。</p>
+                </div>
+                <a class="btn btn-small" href="https://github.com/WZA-Leon/websites/commits"
+                   target="_blank" rel="noopener">GitHub 提交历史</a>
+            </div>
+
+            <div class="commit-panel" aria-live="polite">
+                <p class="commit-meta" data-commit-meta>正在读取 GitHub 提交…</p>
+                <noscript><p class="commit-meta">需要启用 JavaScript 才能读取 GitHub 提交。</p></noscript>
+                <ol class="commit-list" data-commit-list></ol>
+                <p class="commit-empty" data-commit-empty hidden>暂时没有读取到提交。</p>
+                <div class="commit-footer">
+                    <button type="button" class="btn btn-small commit-toggle"
+                            data-commit-toggle aria-expanded="false" hidden>展开全部</button>
+                    <a class="commit-source" href="https://github.com/WZA-Leon/websites/commits"
+                       target="_blank" rel="noopener">查看完整提交历史
+                        <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section">
         <div class="container">
             <div class="cta-band">
@@ -184,5 +214,6 @@
 
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
+    <script src="js/github-commits.js"></script>
 </body>
 </html>

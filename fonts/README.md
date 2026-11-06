@@ -13,4 +13,4 @@
 - `wza-sans-400.woff2` / `wza-sans-400.woff`：常规字重
 - `wza-sans-700.woff2` / `wza-sans-700.woff`：粗体字重
 
-子集由 `fonttools` 生成，覆盖站内 HTML、JS、CSS、Markdown、JSON 中出现过的字符。新增大量生僻字或新的语言内容时，需要重新生成子集，否则会回退到系统字体。
+子集由 `fonttools` 生成，覆盖站内 HTML、JS、CSS、Markdown、JSON 中出现过的字符，以及生成时读取到的 GitHub 提交信息。新增大量生僻字、新的语言内容或提交信息中出现未收录字符时，需要重新生成子集，否则会回退到系统字体。

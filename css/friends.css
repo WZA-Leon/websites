@@ -1041,6 +1041,15 @@ body.theme-light .friend-home-meta span {
     .friend-home-card {
         padding: 22px;
     }
+
+    /* 手机竖屏：侧栏也改回单列，避免 500px 左右出现“伪桌面”两列 */
+    .friend-home-side {
+        display: block;
+    }
+
+    .friend-home-project-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {

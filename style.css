@@ -11,8 +11,8 @@
 /* 站内自托管字体：Noto Sans SC 子集（SIL OFL 1.1） */
 @font-face {
     font-family: 'WZA Sans';
-    src: url('fonts/wza-sans-400.woff2') format('woff2'),
-         url('fonts/wza-sans-400.woff') format('woff');
+    src: url('fonts/wza-sans-400.woff2?v=2') format('woff2'),
+         url('fonts/wza-sans-400.woff?v=2') format('woff');
     font-weight: 400;
     font-style: normal;
     font-display: block;
@@ -20,8 +20,8 @@
 
 @font-face {
     font-family: 'WZA Sans';
-    src: url('fonts/wza-sans-700.woff2') format('woff2'),
-         url('fonts/wza-sans-700.woff') format('woff');
+    src: url('fonts/wza-sans-700.woff2?v=2') format('woff2'),
+         url('fonts/wza-sans-700.woff?v=2') format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: block;
