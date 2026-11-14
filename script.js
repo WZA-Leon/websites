@@ -230,6 +230,7 @@ function initNavState() {
         /\/post\.html$/.test(current.pathname) ||
         /\/blog-data\//.test(current.pathname);
     const isProjectPage = /\/project\.html$/.test(current.pathname);
+    const isGamePage = /\/match3\.html$/.test(current.pathname);
 
     nav.querySelectorAll('.nav-links a').forEach(link => {
         const target = new URL(link.href, window.location.href);
@@ -237,7 +238,8 @@ function initNavState() {
         const samePage = targetPath === currentPath;
         const isBlogLink = /\/blog\.html$/.test(target.pathname);
         const isProjectLink = /\/projects\.html$/.test(target.pathname);
-        if (samePage || (isBlogPage && isBlogLink) || (isProjectPage && isProjectLink)) {
+        const isGameLink = /\/games\.html$/.test(target.pathname);
+        if (samePage || (isBlogPage && isBlogLink) || (isProjectPage && isProjectLink) || (isGamePage && isGameLink)) {
             link.classList.add('active');
             link.setAttribute('aria-current', 'page');
         }

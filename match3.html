@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Emoji 消消乐：拖动或点击交换相邻 emoji，三个或以上连成一线消除。限步轮次挑战，上一轮得分越高，下一轮步数越多。">
+    <title>Emoji 消消乐 · 步数挑战 · WZA Arcade</title>
+    <link rel="icon" href="images/photo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/match3.css">
+</head>
+<body class="match3-page">
+    <div id="nav-placeholder"></div>
+
+    <main class="match3-main">
+        <div class="container">
+            <div class="match3-topbar">
+                <a class="match3-back" href="games.html">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    <span>游戏大厅</span>
+                </a>
+                <span class="match3-mode"><i class="fas fa-layer-group" aria-hidden="true"></i> 第 <strong id="roundValue">1</strong> 轮 · 限步</span>
+            </div>
+
+            <header class="match3-head">
+                <div>
+                    <p class="match3-kicker">WZA ARCADE · MATCH 3</p>
+                    <h1>Emoji 消消乐</h1>
+                    <p class="match3-lead">拖动或点击交换相邻的 emoji，让三个或以上连成一线。四连会生成 ❓ 万能块，五连会生成 💣 炸弹块；每轮有步数限制，上一轮得分越高，下一轮步数和开局特殊方块越多。</p>
+                </div>
+                <div class="match3-actions">
+                    <button type="button" class="match3-icon-btn" id="soundToggle" aria-pressed="false" aria-label="音效开关" title="音效占位（待接入音频）">🔇</button>
+                    <button type="button" class="match3-restart" id="restartBtn">
+                        <i class="fas fa-rotate-right" aria-hidden="true"></i> 重新开始
+                    </button>
+                </div>
+            </header>
+
+            <div class="match3-layout">
+                <section class="match3-stage">
+                    <div class="match3-hud">
+                        <div class="hud-item">
+                            <span>得分</span>
+                            <strong id="scoreValue">0</strong>
+                        </div>
+                        <div class="hud-item">
+                            <span>最高分</span>
+                            <strong id="bestValue">0</strong>
+                        </div>
+                        <div class="hud-item">
+                            <span>剩余步数</span>
+                            <strong id="movesValue">20</strong>
+                        </div>
+                        <div class="hud-item">
+                            <span>连击</span>
+                            <strong id="comboValue">x1</strong>
+                        </div>
+                    </div>
+
+                    <div class="match3-board-wrap" id="boardWrap">
+                        <div class="match3-board" id="match3Board" role="grid" aria-label="8 乘 8 的消消乐棋盘" aria-rowcount="8" aria-colcount="8"></div>
+                        <div class="match3-fx" id="match3Fx" aria-hidden="true"></div>
+
+                        <div class="match3-round" id="roundOverlay" hidden>
+                            <div class="match3-round-card">
+                                <p class="match3-round-kicker">ROUND COMPLETE</p>
+                                <h2>第 <span id="roundEndNumber">1</span> 轮结束</h2>
+                                <p class="match3-round-copy">上一轮得分越高，下一轮步数和开局特殊方块越多：步数每 250 分 +1，最多 40 步。</p>
+                                <div class="match3-round-stats">
+                                    <div><span>本轮得分</span><strong id="roundEndScore">0</strong></div>
+                                    <div><span>总分</span><strong id="roundEndTotal">0</strong></div>
+                                </div>
+                                <div class="match3-next-moves">
+                                    <span>下一轮</span>
+                                    <strong id="roundNextMoves">20</strong>
+                                    <small>步</small>
+                                </div>
+                                <div class="match3-round-bonus">
+                                    <span>下一轮开局</span>
+                                    <strong id="roundBonusSpecials">❓×1</strong>
+                                </div>
+                                <div class="match3-round-reward">
+                                    <span>WZA 的奖励</span>
+                                    <strong id="roundReward">下一轮也拜托了。</strong>
+                                </div>
+                                <button type="button" class="match3-next-round" id="nextRoundBtn">开始第 2 轮</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="match3-status" aria-live="polite">
+                        <span id="saveStatus">进度自动保存</span>
+                        <span id="liveStatus">点击两个相邻的 emoji 开始消除</span>
+                    </div>
+                </section>
+
+                <aside class="match3-side">
+                    <section class="side-card">
+                        <h2><i class="fas fa-circle-info" aria-hidden="true"></i> 怎么玩</h2>
+                        <ul class="side-list">
+                            <li>拖动一个 emoji 到相邻格，或者点选两个相邻 emoji 交换。</li>
+                            <li>三个或以上同款连成横线或竖线，就会消除。</li>
+                            <li>一次消除后掉下来的新组合会继续连锁，连击越高分越多。</li>
+                            <li>四连生成 ❓ 万能块；它能替代任意元素参与横竖三连。</li>
+                            <li>五连生成 💣 炸弹块；和任意相邻方块交换后炸开 3×3 区域。</li>
+                            <li>新生成的 ❓ 如果没凑成三连，会随机消除旁边一个元素。</li>
+                            <li>每轮步数用完后结算，下一轮步数和开局特殊方块由本轮得分决定。</li>
+                            <li>没有可消除的组合时会自动洗牌，不会卡死。</li>
+                        </ul>
+                    </section>
+
+                    <section class="side-card">
+                        <h2><i class="fas fa-chart-simple" aria-hidden="true"></i> 本次进度</h2>
+                        <div class="side-stats">
+                            <div class="is-wide"><span>本轮得分</span><strong id="roundScoreValue">0</strong></div>
+                            <div><span>已消除</span><strong id="clearedValue">0</strong></div>
+                            <div><span>最高连击</span><strong id="maxComboValue">x1</strong></div>
+                        </div>
+                        <p class="side-note">最高分、轮次和当前棋盘的进度会保存在这台设备的浏览器里，刷新或下次打开可以接着玩。</p>
+                    </section>
+
+                    <section class="side-card side-card--sfx">
+                        <h2><i class="fas fa-volume-low" aria-hidden="true"></i> 音效</h2>
+                        <p>音效接口已经预留，接入音频文件后即可生效。现在可以先玩，声音按钮会记住你的开关偏好。</p>
+                    </section>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <div class="match3-toast" id="match3Toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+    <script src="js/match3-sfx.js"></script>
+    <script src="js/match3.js"></script>
+</body>
+</html>

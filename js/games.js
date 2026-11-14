@@ -9,6 +9,7 @@
     const empty = document.getElementById('gamesEmpty');
     if (!cards.length) return;
 
+    const liveCount = cards.filter(card => card.dataset.live === 'true').length;
     let activeFilter = 'all';
 
     function applyFilter() {
@@ -25,7 +26,7 @@
         });
 
         if (count) {
-            count.textContent = `${visible} 个游戏位 · 0 款上架`;
+            count.textContent = `${visible} 个游戏位 · ${liveCount} 款上架`;
         }
         if (empty) {
             empty.hidden = visible > 0;
