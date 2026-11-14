@@ -1,0 +1,629 @@
+/* =======================================================
+   游戏大厅 · WZA ARCADE
+   仿 Poki 的轻量游戏入口页，页面独立样式
+   ======================================================= */
+
+body.games-page {
+    --arcade-purple: #7c3aed;
+    --arcade-pink: #ec4899;
+    --arcade-blue: #3b82f6;
+    --arcade-bg: #f7f4ff;
+    --arcade-card: #ffffff;
+    --arcade-ink: #211b36;
+    --arcade-muted: #6f6a86;
+    --arcade-border: rgba(33, 27, 54, 0.1);
+    background:
+        radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.16), transparent 32%),
+        radial-gradient(circle at 92% 8%, rgba(236, 72, 153, 0.12), transparent 28%),
+        var(--arcade-bg);
+}
+
+body.theme-light.games-page {
+    --arcade-bg: #faf9ff;
+    --arcade-card: #ffffff;
+    --arcade-ink: #211b36;
+    --arcade-muted: #6f6a86;
+    --arcade-border: rgba(33, 27, 54, 0.1);
+}
+
+body.theme-dark.games-page {
+    --arcade-purple: #a78bfa;
+    --arcade-pink: #f472b6;
+    --arcade-blue: #60a5fa;
+    --arcade-bg: #0d0b17;
+    --arcade-card: #181426;
+    --arcade-ink: #f5f1ff;
+    --arcade-muted: #a7a0c2;
+    --arcade-border: rgba(255, 255, 255, 0.1);
+    background:
+        radial-gradient(circle at 8% 0%, rgba(124, 58, 237, 0.24), transparent 34%),
+        radial-gradient(circle at 92% 8%, rgba(236, 72, 153, 0.16), transparent 30%),
+        var(--arcade-bg);
+}
+
+/* ---------- 英雄区 ---------- */
+.games-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 140px 0 64px;
+}
+
+.games-hero::before,
+.games-hero::after {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(10px);
+}
+
+.games-hero::before {
+    width: 420px;
+    height: 420px;
+    top: 40px;
+    right: -120px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.16), transparent 68%);
+}
+
+.games-hero::after {
+    width: 360px;
+    height: 360px;
+    bottom: -180px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 68%);
+}
+
+.games-hero .container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    align-items: center;
+    gap: 44px;
+}
+
+.games-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    color: var(--arcade-purple);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.games-kicker i {
+    font-size: 0.8rem;
+}
+
+.games-hero h1 {
+    margin: 0;
+    color: var(--arcade-ink);
+    font-size: clamp(2.8rem, 5.4vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+}
+
+.games-hero h1 span {
+    background: linear-gradient(100deg, var(--arcade-purple), var(--arcade-pink) 58%, var(--arcade-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.games-lead {
+    max-width: 620px;
+    margin: 18px 0 0;
+    color: var(--arcade-muted);
+    font-size: clamp(0.92rem, 1.4vw, 1.02rem);
+    line-height: 1.85;
+}
+
+.games-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(560px, 100%);
+    margin-top: 26px;
+    padding: 7px 8px 7px 18px;
+    background: var(--arcade-card);
+    border: 1px solid var(--arcade-border);
+    border-radius: 999px;
+    box-shadow: 0 14px 34px rgba(124, 58, 237, 0.1);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.games-search:focus-within {
+    border-color: var(--arcade-purple);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+}
+
+.games-search > i {
+    color: var(--arcade-purple);
+    font-size: 0.92rem;
+}
+
+.games-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 0;
+    color: var(--arcade-ink);
+    background: transparent;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+.games-search input::placeholder {
+    color: var(--arcade-muted);
+}
+
+.games-search-tag {
+    flex: 0 0 auto;
+    padding: 5px 9px;
+    color: var(--arcade-purple);
+    background: rgba(124, 58, 237, 0.1);
+    border-radius: 999px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.games-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.games-chip {
+    padding: 8px 15px;
+    color: var(--arcade-muted);
+    background: var(--arcade-card);
+    border: 1px solid var(--arcade-border);
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.games-chip:hover {
+    color: var(--arcade-purple);
+    border-color: var(--arcade-purple);
+    transform: translateY(-1px);
+}
+
+.games-chip.is-active {
+    color: #fff;
+    background: var(--arcade-purple);
+    border-color: var(--arcade-purple);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.25);
+}
+
+.games-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 20px;
+    color: var(--arcade-muted);
+    font-size: 0.76rem;
+}
+
+.games-meta strong {
+    color: var(--arcade-ink);
+    font-size: 0.9rem;
+}
+
+.games-meta i {
+    margin-right: 4px;
+    color: var(--arcade-purple);
+}
+
+/* ---------- 右侧装饰 ---------- */
+.games-hero-art {
+    position: relative;
+    min-height: 380px;
+}
+
+.games-art-card {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 30px;
+    box-shadow: 0 26px 60px rgba(33, 27, 54, 0.2);
+    font-size: 3.8rem;
+    user-select: none;
+}
+
+.games-art-card--purple {
+    top: 22px;
+    right: 10%;
+    z-index: 2;
+    width: 220px;
+    height: 258px;
+    background: linear-gradient(160deg, #7c3aed, #a855f7 52%, #ec4899);
+    transform: rotate(7deg);
+}
+
+.games-art-card--pink {
+    top: 176px;
+    left: 2%;
+    width: 132px;
+    height: 132px;
+    background: linear-gradient(145deg, #f472b6, #ec4899);
+    transform: rotate(-11deg);
+    border-radius: 26px;
+    font-size: 2.7rem;
+}
+
+.games-art-card--blue {
+    right: 0;
+    bottom: 18px;
+    width: 116px;
+    height: 116px;
+    background: linear-gradient(145deg, #60a5fa, #6366f1);
+    transform: rotate(9deg);
+    border-radius: 24px;
+    font-size: 2.3rem;
+}
+
+.games-art-badge {
+    position: absolute;
+    bottom: 34px;
+    left: 20%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    color: #fff;
+    background: #1b1430;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    box-shadow: 0 14px 30px rgba(27, 20, 48, 0.25);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.games-art-badge strong {
+    color: #fbbf24;
+    font-size: 1rem;
+}
+
+/* ---------- 游戏库 ---------- */
+.games-library {
+    padding: 30px 0 78px;
+}
+
+.games-library-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.games-library-head h2 {
+    margin: 0;
+    color: var(--arcade-ink);
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    letter-spacing: -0.03em;
+}
+
+.games-library-head .games-kicker {
+    margin-bottom: 6px;
+}
+
+.games-count {
+    flex: 0 0 auto;
+    padding: 6px 11px;
+    color: var(--arcade-muted);
+    background: var(--arcade-card);
+    border: 1px solid var(--arcade-border);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.game-card {
+    padding: 10px;
+    background: var(--arcade-card);
+    border: 1px solid var(--arcade-border);
+    border-radius: 20px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--arcade-purple);
+    box-shadow: 0 20px 44px rgba(124, 58, 237, 0.18);
+}
+
+.game-card[hidden] {
+    display: none;
+}
+
+.game-thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 14px;
+    isolation: isolate;
+}
+
+.game-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.26) 1px, transparent 1px);
+    background-size: 15px 15px;
+    opacity: 0.55;
+}
+
+.game-thumb--action {
+    background: linear-gradient(135deg, #fb923c, #ef4444 60%, #7c2d12);
+}
+
+.game-thumb--puzzle {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+}
+
+.game-thumb--casual {
+    background: linear-gradient(135deg, #34d399, #0ea5e9);
+}
+
+.game-thumb--multi {
+    background: linear-gradient(135deg, #f472b6, #8b5cf6);
+}
+
+.game-thumb--racing {
+    background: linear-gradient(135deg, #fbbf24, #f97316);
+}
+
+.game-thumb--lab {
+    background: linear-gradient(135deg, #22d3ee, #6366f1);
+}
+
+.game-emoji {
+    position: relative;
+    z-index: 1;
+    font-size: 2.8rem;
+    filter: drop-shadow(0 8px 14px rgba(20, 16, 35, 0.22));
+    transition: transform 0.25s ease;
+}
+
+.game-card:hover .game-emoji {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.game-status {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    z-index: 2;
+    padding: 4px 7px;
+    color: #fff;
+    background: rgba(20, 16, 35, 0.55);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    font-size: 0.52rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.game-info {
+    padding: 10px 6px 5px;
+}
+
+.game-info h3 {
+    margin: 0 0 3px;
+    color: var(--arcade-ink);
+    font-size: 0.98rem;
+}
+
+.game-info p {
+    margin: 0;
+    color: var(--arcade-muted);
+    font-size: 0.72rem;
+}
+
+.games-empty {
+    max-width: 560px;
+    margin: 34px auto 0;
+    padding: 34px 24px;
+    text-align: center;
+    background: var(--arcade-card);
+    border: 1px dashed var(--arcade-border);
+    border-radius: 22px;
+}
+
+.games-empty[hidden] {
+    display: none;
+}
+
+.games-empty-icon {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 2.4rem;
+}
+
+.games-empty h3 {
+    margin: 0 0 6px;
+    color: var(--arcade-ink);
+    font-size: 1.1rem;
+}
+
+.games-empty p {
+    margin: 0;
+    color: var(--arcade-muted);
+    font-size: 0.82rem;
+    line-height: 1.7;
+}
+
+.games-note {
+    margin: 18px 0 0;
+    color: var(--arcade-muted);
+    font-size: 0.74rem;
+    text-align: center;
+}
+
+/* ---------- 说明区 ---------- */
+.games-about {
+    padding: 0 0 88px;
+}
+
+.games-about-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 30px;
+    background:
+        linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(236, 72, 153, 0.1)),
+        var(--arcade-card);
+    border: 1px solid var(--arcade-border);
+    border-radius: 24px;
+}
+
+.games-about-card h2 {
+    margin: 0 0 8px;
+    color: var(--arcade-ink);
+    font-size: clamp(1.35rem, 2.8vw, 1.8rem);
+}
+
+.games-about-card p:not(.games-kicker) {
+    max-width: 680px;
+    margin: 0;
+    color: var(--arcade-muted);
+    font-size: 0.88rem;
+    line-height: 1.8;
+}
+
+.games-about-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+body.games-page .btn {
+    background: linear-gradient(135deg, var(--arcade-purple), #a855f7);
+    box-shadow: 0 8px 22px rgba(124, 58, 237, 0.25);
+}
+
+body.games-page .btn:hover {
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.32);
+}
+
+body.games-page .btn-accent {
+    background: linear-gradient(135deg, var(--arcade-pink), #f472b6);
+}
+
+@media (max-width: 980px) {
+    .games-hero .container {
+        grid-template-columns: 1fr;
+    }
+
+    .games-hero-art {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .games-hero {
+        padding: 112px 0 46px;
+    }
+
+    .games-library {
+        padding-bottom: 58px;
+    }
+
+    .games-library-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .games-about-card {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .games-about-actions {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .games-search {
+        padding-left: 14px;
+    }
+
+    .games-search-tag {
+        display: none;
+    }
+
+    .games-chips {
+        gap: 6px;
+    }
+
+    .games-chip {
+        padding: 7px 12px;
+        font-size: 0.73rem;
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .game-card {
+        padding: 7px;
+        border-radius: 16px;
+    }
+
+    .game-info {
+        padding: 8px 4px 3px;
+    }
+
+    .game-info h3 {
+        font-size: 0.86rem;
+    }
+
+    .game-info p {
+        font-size: 0.66rem;
+    }
+
+    .game-emoji {
+        font-size: 2.1rem;
+    }
+
+    .game-status {
+        top: 6px;
+        right: 6px;
+        font-size: 0.46rem;
+    }
+
+    .games-about-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+}

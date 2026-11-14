@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WZA 的游戏大厅：网页小游戏总入口，之后会陆续放上自己写的小游戏和网页实验。">
+    <title>游戏大厅 · WZA Leon</title>
+    <link rel="icon" href="images/photo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/games.css">
+</head>
+<body class="games-page">
+    <div id="nav-placeholder"></div>
+
+    <main>
+        <section class="games-hero">
+            <div class="container">
+                <div class="games-hero-copy">
+                    <p class="games-kicker"><i class="fas fa-gamepad" aria-hidden="true"></i> WZA ARCADE</p>
+                    <h1>小游戏，<br><span>随时开一局</span></h1>
+                    <p class="games-lead">这里是 WZA 的游戏大厅。之后会把写好的小游戏、网页实验，以及偶尔摸鱼时发现的游戏都放在这里；现在先把入口搭好，第一批内容很快填上。</p>
+
+                    <div class="games-search" role="search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input id="gameSearch" type="search" placeholder="搜索游戏名称或分类" autocomplete="off" aria-label="搜索游戏">
+                        <span class="games-search-tag">SOON</span>
+                    </div>
+
+                    <div class="games-chips" role="group" aria-label="游戏分类">
+                        <button type="button" class="games-chip is-active" data-filter="all" aria-pressed="true">全部</button>
+                        <button type="button" class="games-chip" data-filter="action" aria-pressed="false">动作</button>
+                        <button type="button" class="games-chip" data-filter="puzzle" aria-pressed="false">益智</button>
+                        <button type="button" class="games-chip" data-filter="casual" aria-pressed="false">休闲</button>
+                        <button type="button" class="games-chip" data-filter="multi" aria-pressed="false">多人</button>
+                        <button type="button" class="games-chip" data-filter="racing" aria-pressed="false">竞速</button>
+                        <button type="button" class="games-chip" data-filter="lab" aria-pressed="false">实验</button>
+                    </div>
+
+                    <div class="games-meta">
+                        <span><strong>0</strong> 款游戏上架</span>
+                        <span><i class="fas fa-hammer" aria-hidden="true"></i> 正在搭建</span>
+                        <span><i class="fas fa-rotate" aria-hidden="true"></i> 每周更新</span>
+                    </div>
+                </div>
+
+                <div class="games-hero-art" aria-hidden="true">
+                    <div class="games-art-card games-art-card--purple">🎮</div>
+                    <div class="games-art-card games-art-card--pink">🕹️</div>
+                    <div class="games-art-card games-art-card--blue">🧩</div>
+                    <div class="games-art-badge"><span>PLAY</span><strong>0</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="games-library">
+            <div class="container">
+                <div class="games-library-head">
+                    <div>
+                        <p class="games-kicker">GAME LIBRARY</p>
+                        <h2>游戏库</h2>
+                    </div>
+                    <span class="games-count" id="gamesCount">6 个游戏位 · 0 款上架</span>
+                </div>
+
+                <div class="games-grid" id="gamesGrid">
+                    <article class="game-card" data-category="action" data-title="动作游戏位">
+                        <div class="game-thumb game-thumb--action">
+                            <span class="game-emoji">⚔️</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>动作游戏位</h3>
+                            <p>动作 · 虚位以待</p>
+                        </div>
+                    </article>
+
+                    <article class="game-card" data-category="puzzle" data-title="益智游戏位">
+                        <div class="game-thumb game-thumb--puzzle">
+                            <span class="game-emoji">🧩</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>益智游戏位</h3>
+                            <p>益智 · 虚位以待</p>
+                        </div>
+                    </article>
+
+                    <article class="game-card" data-category="casual" data-title="休闲游戏位">
+                        <div class="game-thumb game-thumb--casual">
+                            <span class="game-emoji">🌿</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>休闲游戏位</h3>
+                            <p>休闲 · 虚位以待</p>
+                        </div>
+                    </article>
+
+                    <article class="game-card" data-category="multi" data-title="多人游戏位">
+                        <div class="game-thumb game-thumb--multi">
+                            <span class="game-emoji">👥</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>多人游戏位</h3>
+                            <p>多人 · 虚位以待</p>
+                        </div>
+                    </article>
+
+                    <article class="game-card" data-category="racing" data-title="竞速游戏位">
+                        <div class="game-thumb game-thumb--racing">
+                            <span class="game-emoji">🏎️</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>竞速游戏位</h3>
+                            <p>竞速 · 虚位以待</p>
+                        </div>
+                    </article>
+
+                    <article class="game-card" data-category="lab" data-title="实验游戏位">
+                        <div class="game-thumb game-thumb--lab">
+                            <span class="game-emoji">🧪</span>
+                            <span class="game-status">COMING SOON</span>
+                        </div>
+                        <div class="game-info">
+                            <h3>实验游戏位</h3>
+                            <p>实验 · 虚位以待</p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="games-empty" id="gamesEmpty" hidden>
+                    <span class="games-empty-icon">🕹️</span>
+                    <h3>这里还没有游戏</h3>
+                    <p>换个分类或关键词试试；游戏上架后会出现在这里。</p>
+                </div>
+
+                <p class="games-note">目前展示的是游戏位占位，之后会替换成真正的游戏封面和入口。</p>
+            </div>
+        </section>
+
+        <section class="games-about">
+            <div class="container">
+                <div class="games-about-card">
+                    <div>
+                        <p class="games-kicker">ABOUT</p>
+                        <h2>这个游戏区会放什么？</h2>
+                        <p>自己写的小游戏、网页交互实验，以及一些适合课间开一局的轻量玩法。不追求大作，主打打开就能玩。</p>
+                    </div>
+                    <div class="games-about-actions">
+                        <a href="projects.html" class="btn">看看项目</a>
+                        <a href="contact.html" class="btn btn-accent">想玩什么？告诉我</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+    <script src="js/games.js"></script>
+</body>
+</html>

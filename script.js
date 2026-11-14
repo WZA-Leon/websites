@@ -26,6 +26,7 @@ function buildNavHTML() {
             <div id="navLinks" class="nav-links">
                 <a href="${sitePath('index.html')}">首页</a>
                 <a href="${sitePath('projects.html')}">项目</a>
+                <a href="${sitePath('games.html')}">游戏</a>
                 <a href="${sitePath('blog.html')}">博客</a>
                 <a href="${sitePath('gallery.html')}">摄影</a>
                 <a href="${sitePath('resources.html')}">云盘</a>
@@ -107,6 +108,7 @@ function buildFooterHTML() {
                     <ul class="footer-links">
                         <li><a href="${sitePath('index.html')}">首页</a></li>
                         <li><a href="${sitePath('projects.html')}">项目</a></li>
+                        <li><a href="${sitePath('games.html')}">游戏</a></li>
                         <li><a href="${sitePath('blog.html')}">博客</a></li>
                         <li><a href="${sitePath('gallery.html')}">摄影</a></li>
                         <li><a href="${sitePath('resources.html')}">云盘</a></li>
