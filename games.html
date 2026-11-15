@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WZA 的游戏大厅：网页小游戏总入口，之后会陆续放上自己写的小游戏和网页实验。">
+    <meta name="description" content="WZA 的游戏大厅：打开就能玩的免费网页小游戏。">
     <title>游戏大厅 · WZA Leon</title>
     <link rel="icon" href="images/photo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/games.css">
+    <link rel="stylesheet" href="css/games.css?v=20261115-3">
 </head>
 <body class="games-page">
     <div id="nav-placeholder"></div>
@@ -18,39 +18,26 @@
     <main>
         <section class="games-hero">
             <div class="container">
-                <div class="games-hero-copy">
-                    <p class="games-kicker"><i class="fas fa-gamepad" aria-hidden="true"></i> WZA ARCADE</p>
-                    <h1>小游戏，<br><span>随时开一局</span></h1>
-                    <p class="games-lead">这里是 WZA 的游戏大厅。现在已经能玩 Emoji 消消乐、植物杀手诅咒和水果合成，之后还会把写好的小游戏、网页实验，以及偶尔摸鱼时发现的游戏都放进来。</p>
-
-                    <div class="games-search" role="search">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        <input id="gameSearch" type="search" placeholder="搜索游戏名称或分类" autocomplete="off" aria-label="搜索游戏">
-                        <span class="games-search-tag">SOON</span>
+                <div class="games-hero-inner">
+                    <div class="games-hero-copy">
+                        <span class="games-eyebrow"><i class="fas fa-gamepad" aria-hidden="true"></i> WZA ARCADE</span>
+                        <h1>打开就玩，<br><span>免费小游戏</span></h1>
+                        <p class="games-lead">3 款小游戏，不用下载，电脑和手机都能直接开一局。</p>
+                        <div class="games-hero-actions">
+                            <a class="games-cta" href="#gamesGrid">开始玩 <i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+                            <span class="games-hero-note">免费 · 无需注册 · 手机可玩</span>
+                        </div>
                     </div>
 
-                    <div class="games-chips" role="group" aria-label="游戏分类">
-                        <button type="button" class="games-chip is-active" data-filter="all" aria-pressed="true">全部</button>
-                        <button type="button" class="games-chip" data-filter="action" aria-pressed="false">动作</button>
-                        <button type="button" class="games-chip" data-filter="puzzle" aria-pressed="false">益智</button>
-                        <button type="button" class="games-chip" data-filter="casual" aria-pressed="false">休闲</button>
-                        <button type="button" class="games-chip" data-filter="multi" aria-pressed="false">多人</button>
-                        <button type="button" class="games-chip" data-filter="racing" aria-pressed="false">竞速</button>
-                        <button type="button" class="games-chip" data-filter="lab" aria-pressed="false">实验</button>
-                    </div>
-
-                    <div class="games-meta">
-                        <span><strong>3</strong> 款游戏上架</span>
-                        <span><i class="fas fa-hammer" aria-hidden="true"></i> 正在搭建</span>
-                        <span><i class="fas fa-rotate" aria-hidden="true"></i> 每周更新</span>
-                    </div>
-                </div>
-
-                <div class="games-hero-art" aria-hidden="true">
-                    <div class="games-art-card games-art-card--purple">🎮</div>
-                    <div class="games-art-card games-art-card--pink">🕹️</div>
-                    <div class="games-art-card games-art-card--blue">🧩</div>
-                    <div class="games-art-badge"><span>PLAY</span><strong>3</strong></div>
+                    <a class="games-featured" href="fruitmerge.html" aria-label="打开水果合成">
+                        <span class="games-featured-tag">FEATURED · 实验</span>
+                        <div class="games-featured-art">🍉</div>
+                        <div class="games-featured-copy">
+                            <h2>水果合成</h2>
+                            <p>把相同水果碰在一起</p>
+                        </div>
+                        <span class="games-featured-play" aria-hidden="true"><i class="fas fa-play"></i></span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -59,123 +46,101 @@
             <div class="container">
                 <div class="games-library-head">
                     <div>
-                        <p class="games-kicker">GAME LIBRARY</p>
-                        <h2>游戏库</h2>
+                        <p class="games-kicker">PLAY NOW</p>
+                        <h2>全部游戏</h2>
                     </div>
-                    <span class="games-count" id="gamesCount">7 个游戏位 · 3 款上架</span>
+                    <span class="games-count" id="gamesCount">3 款游戏</span>
+                </div>
+
+                <div class="games-toolbar">
+                    <div class="games-search" role="search">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <input id="gameSearch" type="search" placeholder="搜索游戏" autocomplete="off" aria-label="搜索游戏">
+                    </div>
+
+                    <div class="games-chips" role="group" aria-label="游戏分类">
+                        <button type="button" class="games-chip is-active" data-filter="all" aria-pressed="true">全部</button>
+                        <button type="button" class="games-chip" data-filter="puzzle" aria-pressed="false">益智</button>
+                        <button type="button" class="games-chip" data-filter="casual" aria-pressed="false">休闲</button>
+                        <button type="button" class="games-chip" data-filter="lab" aria-pressed="false">实验</button>
+                    </div>
                 </div>
 
                 <div class="games-grid" id="gamesGrid">
-                    <article class="game-card" data-category="action" data-title="动作游戏位">
-                        <div class="game-thumb game-thumb--action">
-                            <span class="game-emoji">⚔️</span>
-                            <span class="game-status">COMING SOON</span>
-                        </div>
-                        <div class="game-info">
-                            <h3>动作游戏位</h3>
-                            <p>动作 · 虚位以待</p>
-                        </div>
-                    </article>
-
                     <a class="game-card game-card--live" href="match3.html" data-category="puzzle" data-title="Emoji 消消乐" data-live="true">
                         <div class="game-thumb game-thumb--puzzle">
-                            <span class="game-emoji">🍓</span>
+                            <div class="game-scene game-scene--match" aria-hidden="true">
+                                <span class="match-tile match-tile--1">🍓</span>
+                                <span class="match-tile match-tile--2">🍋</span>
+                                <span class="match-tile match-tile--3">🍇</span>
+                                <span class="match-tile match-tile--4">🍊</span>
+                                <span class="scene-spark scene-spark--1">✦</span>
+                                <span class="scene-spark scene-spark--2">✦</span>
+                            </div>
                             <span class="game-status game-status--live">PLAY NOW</span>
                             <span class="game-play" aria-hidden="true"><i class="fas fa-play"></i></span>
                         </div>
                         <div class="game-info">
-                            <h3>Emoji 消消乐 <span class="game-new">NEW</span></h3>
+                            <h3>Emoji 消消乐</h3>
                             <p>益智 · 步数挑战</p>
                         </div>
                     </a>
 
                     <a class="game-card game-card--live" href="plantcurse.html" data-category="casual" data-title="打破周雨辰的植物杀手诅咒" data-live="true">
                         <div class="game-thumb game-thumb--casual">
-                            <span class="game-emoji">🌱</span>
+                            <div class="game-scene game-scene--garden" aria-hidden="true">
+                                <span class="garden-sun">☀️</span>
+                                <span class="garden-water">💧</span>
+                                <div class="garden-plot">
+                                    <span class="garden-cell">🌱</span>
+                                    <span class="garden-cell">🌿</span>
+                                    <span class="garden-cell">🌻</span>
+                                    <span class="garden-cell">🌱</span>
+                                    <span class="garden-cell">🌿</span>
+                                    <span class="garden-cell">🌱</span>
+                                </div>
+                            </div>
                             <span class="game-status game-status--live">PLAY NOW</span>
                             <span class="game-play" aria-hidden="true"><i class="fas fa-play"></i></span>
                         </div>
                         <div class="game-info">
                             <h3>植物杀手诅咒 <span class="game-new">NEW</span></h3>
-                            <p>休闲 · 5×6 格子种植</p>
+                            <p>休闲 · 格子种植</p>
                         </div>
                     </a>
 
-                    <a class="game-card game-card--live" href="fruitmerge.html" data-category="puzzle" data-title="水果合成" data-live="true">
-                        <div class="game-thumb game-thumb--puzzle">
-                            <span class="game-emoji">🍉</span>
+                    <a class="game-card game-card--live" href="fruitmerge.html" data-category="lab" data-title="水果合成" data-live="true">
+                        <div class="game-thumb game-thumb--lab">
+                            <div class="game-scene game-scene--fruit" aria-hidden="true">
+                                <span class="fruit-ball fruit-ball--1">🍒</span>
+                                <span class="fruit-ball fruit-ball--2">🍇</span>
+                                <span class="fruit-ball fruit-ball--3">🍊</span>
+                                <span class="fruit-ball fruit-ball--4">🍉</span>
+                                <span class="fruit-ring"></span>
+                            </div>
                             <span class="game-status game-status--live">PLAY NOW</span>
                             <span class="game-play" aria-hidden="true"><i class="fas fa-play"></i></span>
                         </div>
                         <div class="game-info">
                             <h3>水果合成 <span class="game-new">NEW</span></h3>
-                            <p>益智 · 碰碰合成</p>
+                            <p>实验 · 物理合成</p>
                         </div>
                     </a>
-
-                    <article class="game-card" data-category="multi" data-title="多人游戏位">
-                        <div class="game-thumb game-thumb--multi">
-                            <span class="game-emoji">👥</span>
-                            <span class="game-status">COMING SOON</span>
-                        </div>
-                        <div class="game-info">
-                            <h3>多人游戏位</h3>
-                            <p>多人 · 虚位以待</p>
-                        </div>
-                    </article>
-
-                    <article class="game-card" data-category="racing" data-title="竞速游戏位">
-                        <div class="game-thumb game-thumb--racing">
-                            <span class="game-emoji">🏎️</span>
-                            <span class="game-status">COMING SOON</span>
-                        </div>
-                        <div class="game-info">
-                            <h3>竞速游戏位</h3>
-                            <p>竞速 · 虚位以待</p>
-                        </div>
-                    </article>
-
-                    <article class="game-card" data-category="lab" data-title="实验游戏位">
-                        <div class="game-thumb game-thumb--lab">
-                            <span class="game-emoji">🧪</span>
-                            <span class="game-status">COMING SOON</span>
-                        </div>
-                        <div class="game-info">
-                            <h3>实验游戏位</h3>
-                            <p>实验 · 虚位以待</p>
-                        </div>
-                    </article>
                 </div>
 
                 <div class="games-empty" id="gamesEmpty" hidden>
                     <span class="games-empty-icon">🕹️</span>
-                    <h3>这里还没有游戏</h3>
-                    <p>换个分类或关键词试试；游戏上架后会出现在这里。</p>
+                    <h3>没有找到游戏</h3>
+                    <p>换个分类或关键词试试。</p>
                 </div>
 
-                <p class="games-note">Emoji 消消乐、植物杀手诅咒和水果合成都可以玩，其他卡片还是游戏位占位。</p>
-            </div>
-        </section>
-
-        <section class="games-about">
-            <div class="container">
-                <div class="games-about-card">
-                    <div>
-                        <p class="games-kicker">ABOUT</p>
-                        <h2>这个游戏区会放什么？</h2>
-                        <p>自己写的小游戏、网页交互实验，以及一些适合课间开一局的轻量玩法。不追求大作，主打打开就能玩。</p>
-                    </div>
-                    <div class="games-about-actions">
-                        <a href="projects.html" class="btn">看看项目</a>
-                        <a href="contact.html" class="btn btn-accent">想玩什么？告诉我</a>
-                    </div>
-                </div>
+                <p class="games-note">全部打开即玩 · 更多小游戏正在制作中</p>
             </div>
         </section>
     </main>
 
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
-    <script src="js/games.js"></script>
+    <script src="js/games.js?v=20261115-2"></script>
 </body>
 </html>
