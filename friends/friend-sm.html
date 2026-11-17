@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>孙陌 · 个人主页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/friends.css">
+    <link rel="stylesheet" href="../css/audio-player.css">
+</head>
+<body class="friend-home friend-home--sm theme-dark">
+    <script src="../js/friend-theme.js"></script>
+
+    <header class="friend-home-header">
+        <a class="friend-home-back" href="../friends.html" aria-label="返回友链列表">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            <span>返回友链</span>
+        </a>
+        <button type="button" class="friend-home-theme" id="friendThemeToggle" data-friend-theme-toggle title="切换主题" aria-label="切换主题">🌙</button>
+    </header>
+
+    <main class="friend-home-main">
+        <section class="friend-home-hero">
+            <div class="container">
+                <div class="friend-home-profile">
+                    <img class="friend-home-avatar" src="../images/friends/sm.jpg" alt="孙陌的头像" width="150" height="150">
+                    <div class="friend-home-title">
+                        <p class="friend-home-kicker">SM's PROFILE · Max</p>
+                        <h1>这里是<span>孙陌</span>的个人主页 🚲</h1>
+                        <p class="friend-home-tagline">认真做事，偶尔猎奇，骑单车逛遍大连，在阅读和电影里找另一种生活。</p>
+                        <div class="friend-home-meta">
+                            <span><i class="fas fa-location-dot" aria-hidden="true"></i> 辽宁 大连</span>
+                            <span><i class="fas fa-bicycle" aria-hidden="true"></i> 骑行 / 运动爱好者</span>
+                            <span><i class="fas fa-music" aria-hidden="true"></i> 音乐 / 阅读 / 电影</span>
+                            <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> 大连五中 · 高二</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container friend-home-content">
+            <div class="audio-player-mount"
+                 data-audio-player
+                 data-src="../media/sm.mp3"
+                 data-title="东南苦行山"
+                 data-artist="孙陌的歌单 - 边听边逛"></div>
+
+            <div class="friend-home-grid">
+                <div class="friend-home-main-col">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-user" aria-hidden="true"></i> 关于我</h2>
+                        <p>我是孙陌，也可以叫我Max，是wza的高中同学，现在在大连市第五中学读高二。</p>
+                        <p>性格上做事认真，对新鲜、猎奇的内容有天然好奇心。平时爱好很杂：听歌、打游戏、看书、运动、到处旅行找好吃的、看电影，闲下来也会骑上自行车在城里兜风。擅长写小说、绘制地图，这些创作是我日常最愿意花时间打磨的事。</p>
+                        <p>音乐上现在循环最多的是《东南苦行山》；电影里最喜欢《欢迎来龙餐馆》，对强行煽情的影视作品完全接受不了。吃东西上最大的吐槽点就是五中食堂，除开食堂的菜品我都喜欢。平时最欣赏说话算数的人，最烦别人说话的时候随便打断。</p>
+                        <p>现在主要精力放在学习上，最大的日常怨念就是：五中食堂为什么那么难吃？</p>
+                        <p class="friend-home-quote">“人生得意须尽欢，莫使金樽空对月。”</p>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-heart" aria-hidden="true"></i> 喜欢的事</h2>
+                        <div class="friend-home-project-grid">
+                            <article class="friend-home-project">
+                                <h3>骑车与户外</h3>
+                                <p>自行车是我常用的出行方式，闲下来就爱往城外骑，吹着风逛遍大连的大街小巷。运动也是日常习惯，喜欢出去走动，不爱闷在教室里。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>自行车</span><span>户外</span><span>运动</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>阅读与创作</h3>
+                                <p>喜欢阅读，也自己写小说、画地图。这些创作没有什么宏大目标，就是把脑子里的想法慢慢落到纸上，是我自己的小世界。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>阅读</span><span>写小说</span><span>地图创作</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>音乐与电影</h3>
+                                <p>歌单里循环最多的是《东南苦行山》，不喜欢刻意神化、脱离现实的内容；电影偏爱《欢迎来龙餐馆》这种写实的故事，强行煽情的片子看两分钟就想走。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>东南苦行山</span><span>欢迎来龙餐馆</span><span>写实电影</span>
+                                </div>
+                            </article>
+                            <article class="friend-home-project">
+                                <h3>旅行与美食</h3>
+                                <p>喜欢到处旅行找好吃的，美食是出门最大的动力。唯一的雷区就是五中食堂的菜，除此之外不挑吃的，就爱吃学校以外的正常饭菜。</p>
+                                <div class="friend-home-project-tags">
+                                    <span>旅行</span><span>美食</span><span>吐槽五中食堂</span>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> 我的关键词</h2>
+                        <div class="skills-container">
+                            <span class="skill">做事认真</span>
+                            <span class="skill">猎奇</span>
+                            <span class="skill">天蝎座</span>
+                            <span class="skill">180cm</span>
+                            <span class="skill">自行车骑行</span>
+                            <span class="skill">写小说</span>
+                            <span class="skill">画地图</span>
+                            <span class="skill">音乐</span>
+                            <span class="skill">游戏</span>
+                            <span class="skill">阅读</span>
+                            <span class="skill">旅行美食</span>
+                            <span class="skill">欢迎来龙餐馆</span>
+                            <span class="skill">东南苦行山</span>
+                            <span class="skill">吐槽五中食堂</span>
+                            <span class="skill">说话算数</span>
+                            <span class="skill">高二在读</span>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> 时间线</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2009</div>
+                                <h3>我出生了</h3>
+                                <p>2009年11月9日出生在大连，天蝎座。故事从这里开始，之后慢慢长大，有了喜欢的音乐、看过的电影、骑过的路。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2016</div>
+                                <h3>上小学了</h3>
+                                <p>2016年进入东北路小学，开始背着书包上学，在学校里慢慢长大，日子简单又踏实。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2022</div>
+                                <h3>上初中了</h3>
+                                <p>2022年考入大连市第二十一中学，开启三年初中生活。在这段时间里养成了骑行、阅读的习惯，也开始尝试写东西、画地图。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2025</div>
+                                <h3>来到五中</h3>
+                                <p>2025年进入大连市第五中学读高中。直到今天最大的日常吐槽，依然是学校食堂的饭菜口味。</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">现在</div>
+                                <h3>专心学习的高二</h3>
+                                <p>现在高二，主要精力放在学习上。闲下来还是会骑车、听歌、看电影，继续在自己的小爱好里慢慢生活。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-book-open" aria-hidden="true"></i> 最近</h2>
+                        <ul class="friend-home-recent">
+                            <li>专心学习中，没什么特别的大事。</li>
+                            <li>依然在坚持不懈地吐槽五中食堂的菜。</li>
+                            <li>歌单里《东南苦行山》循环了很久。</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <aside class="friend-home-side">
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-id-card" aria-hidden="true"></i> 基本信息</h2>
+                        <ul class="friend-home-info-list">
+                            <li><span>姓名</span><strong>孙陌（Max）</strong></li>
+                            <li><span>性别</span><strong>男</strong></li>
+                            <li><span>年龄</span><strong>17 岁</strong></li>
+                            <li><span>生日</span><strong>11 月 9 日 · 天蝎座</strong></li>
+                            <li><span>身高</span><strong>180 cm</strong></li>
+                            <li><span>所在地</span><strong>辽宁大连</strong></li>
+                            <li><span>学校</span><strong>大连市第五中学</strong></li>
+                            <li><span>身份</span><strong>高二学生</strong></li>
+                            <li><span>擅长</span><strong>写小说 / 绘制地图</strong></li>
+                            <li><span>性格</span><strong>做事认真 · 猎奇</strong></li>
+                            <li><span>最近</span><strong>专心学习中</strong></li>
+                        </ul>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-paper-plane" aria-hidden="true"></i> 联系方式</h2>
+                        <ul class="friend-home-contact-list">
+                            <li>
+                                <a href="weixin://" aria-label="微信号 15840668145" title="微信号：15840668145">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-weixin" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>微信</small><strong>15840668145</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wpa.qq.com/msgrd?v=3&amp;uin=66293439&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener" aria-label="QQ 66293439">
+                                    <span class="friend-home-contact-icon"><i class="fab fa-qq" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>QQ</small><strong>66293439</strong></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tel:+8615840668145" aria-label="电话 +86 158 4066 8145">
+                                    <span class="friend-home-contact-icon"><i class="fas fa-phone" aria-hidden="true"></i></span>
+                                    <span class="friend-home-contact-text"><small>电话</small><strong>+86 158 4066 8145</strong></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section class="card friend-home-card">
+                        <h2><i class="fas fa-quote-left" aria-hidden="true"></i> 想说的话</h2>
+                        <p>Thank you very much. Wish you have a good day.</p>
+                        <p>人生得意须尽欢，莫使金樽空对月。</p>
+                    </section>
+                </aside>
+            </div>
+
+            <p class="friend-home-note">这是孙陌的好友主页；歌曲为占位内容，联系方式仅用于朋友联系，添加时请说明来意。</p>
+        </div>
+    </main>
+    <script src="../js/audio-player.js"></script>
+</body>
+</html>
