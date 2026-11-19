@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -233,7 +233,12 @@
             const DROP_Y = 54;
             const DANGER_Y = 112;
             const FIXED = 1 / 120;
-            const GRAVITY = 1500;
+            const GRAVITY = 980;
+            const FRUIT_RESTITUTION = 0.38;
+            const FLOOR_RESTITUTION = 0.32;
+            const WALL_RESTITUTION = 0.42;
+            const FRUIT_FRICTION = 0.24;
+            const SOLVER_ITERATIONS = 10;
             const BEST_KEY = 'wza.fruitmerge.best.v1';
             const SOUND_KEY = 'wza.fruitmerge.sound.v1';
             const FRUITS = [
@@ -333,6 +338,8 @@
                     vy,
                     r: fruit.r,
                     age: 0,
+                    squash: 0,
+                    squashV: 0,
                     dead: false
                 };
             }
@@ -491,40 +498,78 @@
                 const distance = Math.hypot(dx, dy);
                 const minDistance = a.r + b.r;
                 if (distance >= minDistance) return;
+
                 const nx = distance > 0.001 ? dx / distance : 1;
                 const ny = distance > 0.001 ? dy / distance : 0;
                 const overlap = minDistance - Math.max(distance, 0.001);
                 const massA = a.r * a.r;
                 const massB = b.r * b.r;
-                const total = massA + massB;
-                a.x -= nx * overlap * (massB / total);
-                a.y -= ny * overlap * (massB / total);
-                b.x += nx * overlap * (massA / total);
-                b.y += ny * overlap * (massA / total);
+                const invA = 1 / massA;
+                const invB = 1 / massB;
+                const invSum = invA + invB;
+
+                // 允许一点穿透余量，避免两个圆永远“粘”在一起
+                const correction = Math.max(0, overlap - 0.002) * 0.98;
+                const totalMass = massA + massB;
+                a.x -= nx * correction * (massB / totalMass);
+                a.y -= ny * correction * (massB / totalMass);
+                b.x += nx * correction * (massA / totalMass);
+                b.y += ny * correction * (massA / totalMass);
 
                 const relVx = b.vx - a.vx;
                 const relVy = b.vy - a.vy;
                 const along = relVx * nx + relVy * ny;
                 if (along < 0) {
-                    const restitution = 0.05;
-                    const impulse = -(1 + restitution) * along / (1 / massA + 1 / massB);
-                    a.vx -= impulse / massA * nx;
-                    a.vy -= impulse / massA * ny;
-                    b.vx += impulse / massB * nx;
-                    b.vy += impulse / massB * ny;
+                    const impact = -along;
+                    // 小碰撞不反弹，大碰撞才有弹性；避免静置时持续抖动
+                    const restitution = impact > 90 ? FRUIT_RESTITUTION : impact > 28 ? 0.14 : 0;
+                    const impulse = -(1 + restitution) * along / invSum;
+                    a.vx -= impulse * invA * nx;
+                    a.vy -= impulse * invA * ny;
+                    b.vx += impulse * invB * nx;
+                    b.vy += impulse * invB * ny;
 
                     const tx = -ny;
                     const ty = nx;
                     const tangent = (b.vx - a.vx) * tx + (b.vy - a.vy) * ty;
-                    const friction = -tangent * 0.14 / (1 / massA + 1 / massB);
-                    a.vx -= friction / massA * tx;
-                    a.vy -= friction / massA * ty;
-                    b.vx += friction / massB * tx;
-                    b.vy += friction / massB * ty;
+                    const maxFriction = Math.abs(impulse) * FRUIT_FRICTION;
+                    const frictionImpulse = Math.max(-maxFriction, Math.min(maxFriction, -tangent / invSum));
+                    a.vx -= frictionImpulse * invA * tx;
+                    a.vy -= frictionImpulse * invA * ty;
+                    b.vx += frictionImpulse * invB * tx;
+                    b.vy += frictionImpulse * invB * ty;
+
+                    if (impact > 32) {
+                        const squash = Math.min(0.2, impact / 620);
+                        a.squash = Math.max(a.squash || 0, squash);
+                        b.squash = Math.max(b.squash || 0, squash);
+                    }
                 }
 
                 a.x = clampX(a.x, a.r);
                 b.x = clampX(b.x, b.r);
+            }
+
+            function resolveWalls(body) {
+                if (body.x - body.r < WALL) {
+                    body.x = WALL + body.r;
+                    if (body.vx < 0) body.vx *= -WALL_RESTITUTION;
+                } else if (body.x + body.r > W - WALL) {
+                    body.x = W - WALL - body.r;
+                    if (body.vx > 0) body.vx *= -WALL_RESTITUTION;
+                }
+                if (body.y + body.r > FLOOR) {
+                    body.y = FLOOR - body.r;
+                    if (body.vy > 0) {
+                        const impact = body.vy;
+                        body.vy = impact > 70 ? -impact * FLOOR_RESTITUTION : 0;
+                        if (impact > 120) {
+                            body.squash = Math.max(body.squash || 0, Math.min(0.24, impact / 2200));
+                        }
+                    }
+                    // 地面横向摩擦很轻，水果不会像粘在地上一样
+                    body.vx *= 0.9995;
+                }
             }
 
             function updatePhysics(dt) {
@@ -532,12 +577,17 @@
                     if (body.dead) return;
                     body.age += dt;
                     body.vy += GRAVITY * dt;
-                    body.vx *= 0.999;
+                    body.vx *= 0.9995;
                     body.x += body.vx * dt;
                     body.y += body.vy * dt;
+
+                    // 弹性回弹：挤压值是一个衰减弹簧
+                    body.squashV += (-body.squash * 260 - body.squashV * 17) * dt;
+                    body.squash += body.squashV * dt;
+                    body.squash = Math.max(-0.24, Math.min(0.24, body.squash));
                 });
 
-                for (let iteration = 0; iteration < 3; iteration += 1) {
+                for (let iteration = 0; iteration < SOLVER_ITERATIONS; iteration += 1) {
                     for (let i = 0; i < bodies.length; i += 1) {
                         const a = bodies[i];
                         if (a.dead) continue;
@@ -546,22 +596,8 @@
                             if (!b.dead) resolveCollision(a, b);
                         }
                     }
-
                     bodies.forEach(body => {
-                        if (body.dead) return;
-                        if (body.x - body.r < WALL) {
-                            body.x = WALL + body.r;
-                            if (body.vx < 0) body.vx *= -0.24;
-                        } else if (body.x + body.r > W - WALL) {
-                            body.x = W - WALL - body.r;
-                            if (body.vx > 0) body.vx *= -0.24;
-                        }
-                        if (body.y + body.r > FLOOR) {
-                            body.y = FLOOR - body.r;
-                            if (body.vy > 0) body.vy *= -0.12;
-                            if (Math.abs(body.vy) < 24) body.vy = 0;
-                            body.vx *= 0.93;
-                        }
+                        if (!body.dead) resolveWalls(body);
                     });
                 }
 
@@ -569,11 +605,24 @@
 
                 bodies.forEach(body => {
                     if (body.dead) return;
-                    if (body.x - body.r < WALL) body.x = WALL + body.r;
-                    if (body.x + body.r > W - WALL) body.x = W - WALL - body.r;
+                    body.x = clampX(body.x, body.r);
                     if (body.y + body.r > FLOOR) {
                         body.y = FLOOR - body.r;
                         body.vy = Math.min(0, body.vy);
+                    }
+                });
+
+                // 支撑面上的微速度归零：避免水果像黏在一起一样持续抖动
+                bodies.forEach(body => {
+                    if (body.dead) return;
+                    const onFloor = body.y + body.r >= FLOOR - 1.2;
+                    const onFruit = bodies.some(other => other !== body && !other.dead &&
+                        other.y > body.y + 0.5 &&
+                        Math.hypot(other.x - body.x, other.y - body.y) <= body.r + other.r + 2.0
+                    );
+                    if ((onFloor || onFruit) && Math.abs(body.vy) < 14) {
+                        body.vy = 0;
+                        if (Math.abs(body.vx) < 7) body.vx *= 0.75;
                     }
                 });
 
@@ -628,6 +677,8 @@
                 ctx.save();
                 ctx.translate(body.x, body.y);
                 ctx.globalAlpha = alpha;
+                const squash = body.squash || 0;
+                ctx.scale(1 + squash, 1 - squash);
 
                 const gradient = ctx.createRadialGradient(-r * 0.32, -r * 0.38, r * 0.08, 0, 0, r);
                 gradient.addColorStop(0, fruit.light);
@@ -652,10 +703,15 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
 
-                ctx.font = `${Math.max(16, r * 1.18)}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(0, 0, r * 0.89, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.font = `${Math.max(16, r * 0.96)}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(fruit.emoji, 0, r * 0.06);
+                ctx.fillText(fruit.emoji, 0, r * 0.04);
+                ctx.restore();
                 ctx.restore();
             }
 
