@@ -775,6 +775,19 @@
 
         .game-footer a { color: var(--green-deep); text-decoration: none; }
         .game-footer a:hover { text-decoration: underline; }
+        .reset-data-btn {
+            flex: 0 0 auto;
+            padding: 4px 8px;
+            color: #7a4035;
+            background: #f3ddd5;
+            border: 2px solid #c69483;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 0.56rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .reset-data-btn:hover { background: #efd0c5; border-color: #b67561; }
 
         .toast {
             position: fixed;
@@ -1308,6 +1321,7 @@
 
         .lawn-cell.is-aging .cell-art { filter: sepia(0.42) brightness(0.96); opacity: 0.87; transform: scale(0.97); }
         .lawn-cell.is-aging .cell-coin { color: #765f3d; background: #f0e2bb; }
+        .lawn-cell.is-mature .cell-coin { color: #684a16; background: #ffe7a8; border-color: #c18a30; }
         .lawn-cell.is-withered { background: linear-gradient(145deg, #8b7256, #655340); border-color: #564333; }
         .lawn-cell.is-withered .cell-art { filter: grayscale(0.9) sepia(0.45); opacity: 0.74; transform: rotate(-2deg) scale(0.94); }
         .lawn-cell.is-withered .cell-coin { color: #6d5541; background: #ded0b7; }
@@ -1552,6 +1566,7 @@
         .lawn-cell.is-withered .cell-plant-hit { cursor: pointer; }
         .cell-info-plant.is-withered { border-color: #c29e82; background: #f1e4d7; }
         .cell-info-plant.is-aging { border-color: #c9b47c; background: #f5eedb; }
+        .cell-info-plant.is-mature { border-color: #c9a34f; background: #fbf0cf; }
         .cell-info-plant.is-stressed { border-color: #c58d7a; background: #f6e3dc; }
 
         /* ---------- 更新公告 ---------- */
@@ -1994,6 +2009,7 @@
             .item-dock { gap: 4px; padding: 6px; }
             .item-btn { min-height: 34px; padding-inline: 3px; font-size: 0.58rem; }
             .game-footer { font-size: 0.58rem; }
+            .reset-data-btn { align-self: stretch; min-height: 34px; }
             .flower-shop-item { flex-wrap: wrap; }
             .flower-shop-item-copy { flex-basis: calc(100% - 60px); }
             .flower-shop-sell { width: 100%; }
@@ -2008,7 +2024,7 @@
                 <a class="back-link" href="index.html">← 返回站点</a>
                 <p class="title-kicker">WZA · FOOTER EASTER EGG</p>
                 <h1 class="game-title">打破周雨辰的植物杀手诅咒</h1>
-                <p class="game-subtitle">在 5×6 的格子里自由种下十株植物（含一株隐藏款）。种子要先经历 5 天萌发，再生长 15 天成熟，成熟后 5 天老化。枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币。</p>
+                <p class="game-subtitle">在 5×6 的格子里自由种下十株植物（含一株隐藏款）。种子先经历 1 小时萌发、4 小时生长（合计 5 小时到成熟），成熟期 10 小时，老化 5 小时。挂机 3 分钟无操作或重新进入，收益降为 10%；关闭标签页后按退出与重进的时间差结算。枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币。</p>
             </div>
             <div class="header-side">
                 <div class="hud">
@@ -2090,7 +2106,7 @@
                         </div>
                         <div class="shop-list shop-list--compact" id="consumableList"></div>
 
-                        <p class="shop-footnote">种子货架每 30 秒自动刷新。种子、植物和永久装置都可以卖：普通状态返还 30%，灾害枯萎的植物返还 5%。种子萌发 5 天、生长 15 天、老化 5 天；枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币（高于除草剂等道具）。</p>
+                        <p class="shop-footnote">种子货架每 30 秒自动刷新。种子、植物和永久装置都可以卖：普通状态返还 30%，灾害枯萎的植物返还 5%。种子萌发 1 小时、生长 4 小时、成熟 10 小时、老化 5 小时；挂机/重进收益为 10%；枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币（高于除草剂等道具）。</p>
                     </aside>
                 </div>
             </section>
@@ -2108,26 +2124,27 @@
         </main>
 
         <footer class="game-footer">
-            <span>生长与灾害使用本地时间推进。种子萌发 5 天、生长 15 天、成熟后老化 5 天；枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币。</span>
+            <span>生长与灾害使用本地时间推进。种子萌发 1 小时、生长 4 小时、成熟 10 小时、老化 5 小时；挂机/重进收益为 10%，关闭标签页按时间差结算；枯萎恢复价为种子价格的 50%，按生长进度折算，最低 50 币。</span>
             <span><a href="index.html">返回站点</a> · 数据只保存在这台设备</span>
+            <button type="button" class="reset-data-btn" id="resetDataBtn">清空历史数据</button>
         </footer>
     </div>
 
     <div class="update-overlay" id="updateOverlay" hidden>
         <div class="update-card" role="dialog" aria-modal="true" aria-labelledby="updateTitle">
             <button type="button" class="update-close" id="updateClose" aria-label="关闭更新说明">×</button>
-            <p class="info-kicker">PATCH NOTES · V7</p>
-            <h2 id="updateTitle">植物杀手诅咒 · 生长与花店</h2>
-            <p class="update-lead">这次更新加入了种子萌发、新的生长周期、花店和更强烈的灾害表现。</p>
+            <p class="info-kicker">PATCH NOTES · V8</p>
+            <h2 id="updateTitle">植物杀手诅咒 · 挂机与时间差</h2>
+            <p class="update-lead">这次更新把生长周期压缩到小时级，并加入挂机/重进收益衰减和关闭标签页的时间差结算。</p>
             <ul class="update-list">
-                <li><strong>种子萌发</strong>：种下后先进入 5 天萌发期，期间显示幼苗图，不产币也不能操作。</li>
-                <li><strong>生长周期</strong>：萌发 5 天 + 生长 15 天 + 老化 5 天；成熟后才会开始老化倒计时。</li>
-                <li><strong>枯萎恢复</strong>：恢复价格改为种子价格的 50%，并按当前生长/萌发进度折算，最低 50 币（高于除草剂等道具），枯萎后不必再买一株新的。</li>
-                <li><strong>花店</strong>：右下角新增花店图标，成熟植物可以按买入价的 3 倍出售。</li>
-                <li><strong>灾害</strong>：全屏氛围、震屏、警报和灾害警告横幅都更强了；萌发期受灾伤害 ×1.5，且会直接枯萎。</li>
-                <li><strong>更新提示</strong>：从这个版本开始，每次进入游戏都会弹出本窗口。</li>
+                <li><strong>生长周期</strong>：萌发 1 小时 + 生长 4 小时（合计 5 小时到成熟）+ 成熟 10 小时 + 老化 5 小时。</li>
+                <li><strong>挂机收益</strong>：连续 3 分钟没有操作，或关闭后重新进入，金币收益降为现在的 10%，点击游戏内区域后恢复。</li>
+                <li><strong>时间差结算</strong>：关闭标签页时会保存退出时间，重新进入后按退出到重进的时间差计算离线成长和收益。</li>
+                <li><strong>枯萎恢复</strong>：恢复价格为种子价格的 50%，按生长/萌发进度折算，最低 50 币（高于除草剂等道具）。</li>
+                <li><strong>花店</strong>：右下角花店图标，成熟植物可以按买入价的 3 倍出售。</li>
+                <li><strong>更新提示</strong>：每次进入游戏都会弹出本窗口；页面底部新增“清空历史数据”按钮。</li>
             </ul>
-            <p class="update-version">版本 7 · 数据仍保存在本机</p>
+            <p class="update-version">版本 8 · 数据仍保存在本机</p>
             <button type="button" class="update-confirm" id="updateConfirm">知道了，继续种地</button>
         </div>
     </div>
@@ -2312,9 +2329,12 @@
             const verifyWindow = 3000;
             const syzCycle = 8000;
             const GROWTH_TEST_MODE = false;
-            const GERMINATION_SECONDS = GROWTH_TEST_MODE ? 15 : 5 * 86400;
-            const MATURE_SECONDS = GROWTH_TEST_MODE ? 30 : 15 * 86400;
-            const WITHER_SECONDS = GROWTH_TEST_MODE ? 60 : 5 * 86400;
+            const GERMINATION_SECONDS = GROWTH_TEST_MODE ? 5 : 1 * 3600;
+            const GROWTH_SECONDS = GROWTH_TEST_MODE ? 15 : 4 * 3600;
+            const MATURE_STAGE_SECONDS = GROWTH_TEST_MODE ? 20 : 10 * 3600;
+            const AGING_SECONDS = GROWTH_TEST_MODE ? 30 : 5 * 3600;
+            const IDLE_AFTER_MS = 3 * 60 * 1000;
+            const IDLE_INCOME_FACTOR = 0.1;
             const DISASTER_INTERVAL_SECONDS = 20;
             const GOOD_EVENT_CHANCE = 0.18;
 
@@ -2508,6 +2528,7 @@
             const flowerShopOverlay = $('flowerShopOverlay');
             const flowerShopList = $('flowerShopList');
             const flowerShopClose = $('flowerShopClose');
+            const resetDataBtn = $('resetDataBtn');
 
             let selectedSeed = null;
             let cellRefs = [];
@@ -2519,6 +2540,9 @@
             let lastUrgentDisasterKey = '';
             let disasterWarningTimer = 0;
             let lastFlowerShopKey = '__initial__';
+            let lastActionAt = 0;
+            let pendingOfflineSummary = '';
+            let suppressSave = false;
 
             /* ---------- 数据 ---------- */
             function emptyCell() {
@@ -2538,6 +2562,7 @@
                     germination: 0,
                     sprouted: false,
                     mature: false,
+                    matureAge: 0,
                     wither: 0,
                     withered: false,
                     cooldownUntil: 0,
@@ -2556,6 +2581,7 @@
                     germination: 100,
                     sprouted: true,
                     mature: false,
+                    matureAge: 0,
                     wither: 0,
                     withered: false,
                     cooldownUntil: 0,
@@ -2614,6 +2640,12 @@
                 const sprouted = raw.sprouted !== undefined
                     ? Boolean(raw.sprouted)
                     : (Boolean(raw.mature) || rawGrowth > 0 || rawGermination >= 100);
+                const matureAge = clampNumber(
+                    raw.matureAge,
+                    0,
+                    MATURE_STAGE_SECONDS,
+                    wither > 0 ? MATURE_STAGE_SECONDS : 0
+                );
                 return {
                     uid: Math.max(1, Math.floor(clampNumber(raw.uid, 1, 9999999, 1))),
                     speciesId: def.id,
@@ -2621,6 +2653,7 @@
                     germination: sprouted ? 100 : rawGermination,
                     sprouted,
                     mature: Boolean(sprouted && (raw.mature || rawGrowth >= 100)),
+                    matureAge: sprouted ? matureAge : 0,
                     wither,
                     withered: Boolean(raw.withered),
                     cooldownUntil: clampNumber(raw.cooldownUntil, 0, Date.now() + 86400000, 0),
@@ -2741,6 +2774,7 @@
             }
 
             function saveState() {
+                if (suppressSave) return;
                 try {
                     state.lastUpdate = Date.now();
                     localStorage.setItem(SAVE_KEY_V2, JSON.stringify(state));
@@ -2829,7 +2863,7 @@
                 let multiplier = (1 + growthAura(index)) * (1 + fertility * 0.25);
                 if (instance.boostUntil > now) multiplier *= 1.6;
                 if (instance.slowUntil > now) multiplier *= 0.45;
-                return (100 / MATURE_SECONDS) * multiplier;
+                return (100 / GROWTH_SECONDS) * multiplier;
             }
 
             function effectiveCoin(instance, index) {
@@ -2844,6 +2878,7 @@
                 if (def.id === 'wza' && hasAdjacentSpecies(index, 'tr')) rate *= TR_WZA_COIN_MULTIPLIER;
                 if (instance.slowUntil > Date.now()) rate *= 0.35;
                 rate *= coinAura(index);
+                if (isIdle()) rate *= IDLE_INCOME_FACTOR;
                 return rate;
             }
 
@@ -2867,6 +2902,7 @@
                 if (!instance) return;
                 const def = PLANT_BY_ID[instance.speciesId];
                 instance.mature = true;
+                instance.matureAge = 0;
                 const isNewSpecies = !state.codex[def.id];
                 if (isNewSpecies) state.codex[def.id] = now;
 
@@ -2982,8 +3018,14 @@
                         }
                     }
                     if (instance.mature && remaining > 0) {
+                        const matureLeft = Math.max(0, MATURE_STAGE_SECONDS - (instance.matureAge || 0));
+                        const matureUsed = Math.min(remaining, matureLeft);
+                        instance.matureAge = (instance.matureAge || 0) + matureUsed;
+                        remaining -= matureUsed;
+                    }
+                    if (instance.mature && remaining > 0 && (instance.matureAge || 0) >= MATURE_STAGE_SECONDS) {
                         const stressAging = instance.slowUntil > now ? 1.5 : 1;
-                        const agingRate = (100 / WITHER_SECONDS) * stressAging;
+                        const agingRate = (100 / AGING_SECONDS) * stressAging;
                         const timeToDeath = (100 - (instance.wither || 0)) / agingRate;
                         instance.wither = Math.min(100, (instance.wither || 0) + agingRate * remaining);
                         if (instance.wither >= 100) {
@@ -3061,6 +3103,22 @@
                 return Math.floor(value).toLocaleString('zh-CN');
             }
 
+            function isIdle(now = Date.now()) {
+                return now - lastActionAt >= IDLE_AFTER_MS;
+            }
+
+            function markAction() {
+                lastActionAt = Date.now();
+            }
+
+            function formatDuration(seconds) {
+                const totalMinutes = Math.max(1, Math.round(seconds / 60));
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+                if (hours <= 0) return `${minutes} 分钟`;
+                return minutes ? `${hours} 小时 ${minutes} 分钟` : `${hours} 小时`;
+            }
+
             function formatWither(instance) {
                 const value = Math.max(0, Number(instance && instance.wither) || 0);
                 return value > 0 && value < 0.1 ? '<0.1' : value.toFixed(1);
@@ -3124,6 +3182,8 @@
                     const planted = Boolean(instance);
                     const withered = Boolean(instance && instance.withered);
                     const germinating = Boolean(instance && !instance.sprouted);
+                    const matureStage = Boolean(instance && instance.mature && !withered && (instance.matureAge || 0) < MATURE_STAGE_SECONDS);
+                    const matureHoursLeft = matureStage ? Math.ceil((MATURE_STAGE_SECONDS - (instance.matureAge || 0)) / 3600) : 0;
                     const aging = Boolean(instance && instance.mature && (instance.wither || 0) > 0 && !withered);
                     const stressed = Boolean(instance && instance.slowUntil > now);
                     const inDisaster = Boolean(active && active.cells.includes(index) && !active.resolved.includes(index));
@@ -3139,6 +3199,7 @@
                     cell.classList.toggle('is-planted', planted);
                     cell.classList.toggle('is-withered', withered);
                     cell.classList.toggle('is-germinating', germinating);
+                    cell.classList.toggle('is-mature', matureStage);
                     cell.classList.toggle('is-aging', aging);
                     cell.classList.toggle('is-stressed', stressed);
                     cell.classList.toggle('is-disaster', inDisaster);
@@ -3196,16 +3257,16 @@
 
                     refs.bloom.hidden = germinating || (!bloomed && !withered);
                     refs.bloom.textContent = withered ? '🥀' : aging ? '🌾' : '✿';
-                    refs.plantHit.setAttribute('aria-label', withered ? `${def.name}灾害枯萎` : germinating ? `${def.name}种子萌发中` : aging ? `${def.name}正在自然老化` : `加速${def.name}`);
+                    refs.plantHit.setAttribute('aria-label', withered ? `${def.name}灾害枯萎` : germinating ? `${def.name}种子萌发中` : matureStage ? `${def.name}已成熟，可收获` : aging ? `${def.name}正在自然老化` : `加速${def.name}`);
                     const trBond = !germinating && def.id === 'wza' && hasAdjacentSpecies(index, 'tr');
-                    refs.coin.textContent = withered ? '枯萎' : germinating ? `萌发 ${Math.round(instance.germination || 0)}%` : stressed ? `应激 ${effectiveCoin(instance, index).toFixed(2)}/s` : aging ? `老化 ${formatWither(instance)}%` : `+${effectiveCoin(instance, index).toFixed(2)}/s${trBond ? ' · TR×6' : ''}`;
+                    refs.coin.textContent = withered ? '枯萎' : germinating ? `萌发 ${Math.round(instance.germination || 0)}%` : matureStage ? `成熟 ${matureHoursLeft}h` : stressed ? `应激 ${effectiveCoin(instance, index).toFixed(2)}/s` : aging ? `老化 ${formatWither(instance)}%` : `+${effectiveCoin(instance, index).toFixed(2)}/s${trBond ? ' · TR×6' : ''}`;
                     if (inDisaster) {
                         const item = ITEM_TYPES[disasterItem];
                         const count = state.items[disasterItem] || 0;
                         refs.disaster.textContent = `${item.name} ${count}`;
                         refs.disaster.disabled = hasDisasterDevice;
                     }
-                    cell.setAttribute('aria-label', `${def.name}，${withered ? '已枯萎' : germinating ? `种子萌发 ${Math.round(instance.germination || 0)}%` : `${instance.growth.toFixed(0)}%`}${germinating ? '，萌发期' : `，每秒 ${effectiveCoin(instance, index).toFixed(2)} WZA币`}${inDisaster ? '，有灾害' : ''}${fertility > 0 ? `，养分 ${fertility}` : ''}${anyDevice ? '，有永久装置' : ''}`);
+                    cell.setAttribute('aria-label', `${def.name}，${withered ? '已枯萎' : germinating ? `种子萌发 ${Math.round(instance.germination || 0)}%` : matureStage ? `已成熟，${matureHoursLeft} 小时后开始老化` : `${instance.growth.toFixed(0)}%`}${germinating ? '，萌发期' : `，每秒 ${effectiveCoin(instance, index).toFixed(2)} WZA币`}${inDisaster ? '，有灾害' : ''}${fertility > 0 ? `，养分 ${fertility}` : ''}${anyDevice ? '，有永久装置' : ''}`);
                 });
             }
 
@@ -3467,6 +3528,8 @@
 
                 const aging = Boolean(instance && instance.mature && (instance.wither || 0) > 0 && !instance.withered);
                 const germinating = Boolean(instance && !instance.sprouted);
+                const matureStage = Boolean(instance && instance.mature && !instance.withered && (instance.matureAge || 0) < MATURE_STAGE_SECONDS);
+                const matureHoursLeft = matureStage ? Math.ceil((MATURE_STAGE_SECONDS - (instance.matureAge || 0)) / 3600) : 0;
                 const stressed = Boolean(instance && instance.slowUntil > Date.now());
                 const restoreCost = instance ? restorePrice(instance) : 0;
                 const statusText = instance
@@ -3474,20 +3537,22 @@
                         ? '灾害枯萎 · 产币停止'
                         : germinating
                             ? `种子萌发 ${(instance.germination || 0).toFixed(1)}% · 尚未破土`
-                            : aging
-                                ? `已成熟 · 自然老化 ${formatWither(instance)}%`
-                                : instance.mature
-                                    ? '已成熟'
-                                    : `生长 ${instance.growth.toFixed(1)}%`
+                            : matureStage
+                                ? `已成熟 · 可收获 · ${matureHoursLeft} 小时后开始老化`
+                                : aging
+                                    ? `已成熟 · 自然老化 ${formatWither(instance)}%`
+                                    : instance.mature
+                                        ? '已成熟'
+                                        : `生长 ${instance.growth.toFixed(1)}%`
                     : '';
                 const plantHtml = instance
-                    ? `<div class="cell-info-plant${instance.withered ? ' is-withered' : ''}${aging ? ' is-aging' : ''}${stressed ? ' is-stressed' : ''}">
+                    ? `<div class="cell-info-plant${instance.withered ? ' is-withered' : ''}${aging ? ' is-aging' : ''}${matureStage ? ' is-mature' : ''}${stressed ? ' is-stressed' : ''}">
                         <div class="cell-info-plant-art">${germinating ? seedlingSvg(instance.germination) : plantSvg(instance.speciesId, instance.growth >= 100)}</div>
                         <div>
                             <span class="cell-info-owner">${PLANT_BY_ID[instance.speciesId].owner}</span>
                             <strong>${PLANT_BY_ID[instance.speciesId].name}</strong>
                             <p>${statusText}${stressed ? ' · 应激中' : ''}${germinating ? ' · 萌发期不产币' : ` · 每秒 ${effectiveCoin(instance, index).toFixed(2)} WZA币`}</p>
-                            <small>${instance.withered ? `灾害枯萎可以花 ${restoreCost} 币恢复（种子价的 50%，按进度折算，最低 50 币）。` : germinating ? '萌发期灾害伤害 ×1.5，受灾会直接枯萎；恢复价按萌发进度计算，比较便宜。' : stressed ? '应激中：产币和生长大幅下降，自然老化加快。' : aging ? '自然老化会持续减产，结束时老死并留下养分。' : '点击植物会直接加速它。'}${instance.speciesId === 'wza' && hasAdjacentSpecies(index, 'tr') ? ' TR 共生：产币 ×6。' : ''}</small>
+                            <small>${instance.withered ? `灾害枯萎可以花 ${restoreCost} 币恢复（种子价的 50%，按进度折算，最低 50 币）。` : germinating ? '萌发期灾害伤害 ×1.5，受灾会直接枯萎；恢复价按萌发进度计算，比较便宜。' : matureStage ? '成熟期为 10 小时，可以在右下角花店按买入价 3 倍出售；成熟期结束后才开始老化。' : stressed ? '应激中：产币和生长大幅下降，自然老化加快。' : aging ? '自然老化会持续减产，结束时老死并留下养分。' : '点击植物会直接加速它。'}${instance.speciesId === 'wza' && hasAdjacentSpecies(index, 'tr') ? ' TR 共生：产币 ×6。' : ''}</small>
                         </div>
                     </div>
                     ${instance.withered ? `<button type="button" class="cell-restore" data-restore-plant ${state.coins < restoreCost ? 'disabled' : ''}><span>恢复这株植物</span>${priceTag(restoreCost)}</button>` : ''}
@@ -3575,6 +3640,13 @@
                 if (!updateOverlay || updateOverlay.hidden) return;
                 updateOverlay.hidden = true;
                 document.body.style.overflow = (cellInfoOverlay.hidden && infoOverlay.hidden && (!flowerShopOverlay || flowerShopOverlay.hidden)) ? '' : 'hidden';
+                flushPendingOfflineSummary();
+            }
+
+            function flushPendingOfflineSummary() {
+                if (!pendingOfflineSummary) return;
+                showToast(pendingOfflineSummary, 'soft');
+                pendingOfflineSummary = '';
             }
 
             function maybeShowUpdate() {
@@ -3658,6 +3730,23 @@
                 document.body.style.overflow = (cellInfoOverlay.hidden && infoOverlay.hidden && (!updateOverlay || updateOverlay.hidden)) ? '' : 'hidden';
             }
 
+            function resetGameData() {
+                const confirmed = window.confirm('确定清空所有历史数据吗？植物、金币、图鉴、花店和商店进度都会恢复初始状态。');
+                if (!confirmed) return;
+                suppressSave = true;
+                try {
+                    Object.keys(localStorage)
+                        .filter(key => key.startsWith('wza.plantcurse'))
+                        .forEach(key => localStorage.removeItem(key));
+                    Object.keys(sessionStorage)
+                        .filter(key => key.startsWith('wza.plantcurse'))
+                        .forEach(key => sessionStorage.removeItem(key));
+                } catch (error) {
+                    // 存储不可用时仍然刷新页面，至少恢复当前会话的初始状态。
+                }
+                window.location.reload();
+            }
+
             function sellMaturePlant(index) {
                 const instance = cellInstance(index);
                 if (!instance || !instance.sprouted || instance.withered || instance.growth < 100) return;
@@ -3730,6 +3819,7 @@
 
             function renderEffects(now) {
                 const lines = [];
+                if (isIdle()) lines.push(['挂机收益', '×0.1']);
                 const active = state.activeDisaster;
                 if (active) {
                     const left = Math.max(0, (active.endsAt - now) / 1000);
@@ -4226,6 +4316,17 @@
 
             /* ---------- 事件 ---------- */
             function bindEvents() {
+                document.addEventListener('pointerdown', event => {
+                    if (event.target instanceof Element && event.target.closest('.game-shell, #flowerShopBtn, #flowerShopOverlay')) {
+                        markAction();
+                    }
+                }, { capture: true, passive: true });
+                document.addEventListener('keydown', event => {
+                    if (event.target instanceof Element && event.target.closest('.game-shell, #flowerShopOverlay')) {
+                        markAction();
+                    }
+                });
+
                 tabButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         activeTab = button.dataset.tab;
@@ -4355,6 +4456,7 @@
                         if (button) sellMaturePlant(Number(button.dataset.flowerSell));
                     });
                 }
+                if (resetDataBtn) resetDataBtn.addEventListener('click', resetGameData);
                 document.addEventListener('keydown', event => {
                     if (event.key !== 'Escape') return;
                     if (updateOverlay && !updateOverlay.hidden) closeUpdate();
@@ -4404,6 +4506,7 @@
                 });
 
                 window.addEventListener('beforeunload', saveState);
+                window.addEventListener('pagehide', saveState);
             }
 
             function maybeCoinPop(now) {
@@ -4426,8 +4529,13 @@
             function loadGame() {
                 state = normalizeState(readSavedState());
                 const now = Date.now();
+                const coinsBefore = state.coins;
                 const elapsed = Math.min(30 * 86400, Math.max(0, (now - (state.lastUpdate || now)) / 1000));
                 if (elapsed > 0) advance(elapsed, now, false);
+                const offlineGain = state.coins - coinsBefore;
+                if (elapsed >= 60 && offlineGain > 0) {
+                    pendingOfflineSummary = `离开 ${formatDuration(elapsed)}，挂机收益 +${formatCoins(offlineGain)} WZA币（10%）。`;
+                }
                 lastTick = now;
 
                 if (state.activeDisaster) {
@@ -4465,6 +4573,7 @@
                 lastSave = now;
                 window.setInterval(tick, 250);
                 maybeShowUpdate();
+                if (!updateOverlay) flushPendingOfflineSummary();
             }
 
             function tick() {

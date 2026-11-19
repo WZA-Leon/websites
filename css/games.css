@@ -693,3 +693,54 @@ body.theme-dark.games-page {
 @media (max-width: 370px) {
     .games-grid { grid-template-columns: 1fr; }
 }
+
+/* 五大赛道 3D 赛车 */
+.game-thumb--racing {
+    background:
+        radial-gradient(circle at 78% 18%, rgba(255, 195, 105, 0.78), transparent 22%),
+        radial-gradient(circle at 18% 84%, rgba(69, 212, 222, 0.36), transparent 38%),
+        linear-gradient(145deg, #1a4e63 0%, #10273c 48%, #070d16 100%);
+}
+.game-scene--racing { overflow: hidden; }
+.race-mini-sun {
+    position: absolute;
+    top: 16%;
+    right: 17%;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffe5a0 0%, #ffb666 45%, rgba(255, 151, 84, 0) 72%);
+    filter: blur(0.4px);
+}
+.race-mini-road {
+    position: absolute;
+    left: -12%;
+    right: -12%;
+    bottom: -10%;
+    height: 48%;
+    background:
+        linear-gradient(90deg, transparent 47%, rgba(255, 236, 179, 0.82) 48%, rgba(255, 236, 179, 0.82) 52%, transparent 53%) center / 100% 7px no-repeat,
+        linear-gradient(170deg, transparent 35%, #20262a 36%, #20262a 100%);
+    transform: perspective(120px) rotateX(34deg);
+    opacity: 0.85;
+}
+.race-mini-car {
+    position: relative;
+    z-index: 2;
+    margin-top: 35px;
+    font-size: clamp(2.4rem, 4.4vw, 3.7rem);
+    filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.48));
+    transform: rotate(-8deg);
+    transition: transform 0.22s ease;
+}
+.race-mini-label {
+    position: absolute;
+    top: 14px;
+    left: 15px;
+    color: rgba(194, 255, 255, 0.86);
+    font-family: Consolas, monospace;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+}
+.game-card:hover .race-mini-car { transform: translate(7px, -7px) rotate(-3deg) scale(1.06); }

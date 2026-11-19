@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="WZA 3D 赛车：五个场景、车库升级、计时赛与移动端触控。">
+    <title>WZA 3D 赛车 · 五大赛道</title>
+    <link rel="icon" href="images/photo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/page-loader.css">
+    <script src="js/page-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/racing3d.css?v=20261119-2">
+</head>
+<body class="racing-page">
+    <div id="nav-placeholder"></div>
+
+    <main class="race-main">
+        <section class="race-stage" id="raceStage" aria-label="3D 赛车游戏">
+            <canvas id="raceCanvas"></canvas>
+            <div class="race-grade"></div>
+            <div class="race-vignette"></div>
+
+            <div class="race-menu-layer" id="menuLayer">
+                <div class="race-menu-shell">
+                    <header class="race-menu-head">
+                        <div>
+                            <a class="race-back" href="games.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> 返回游戏大厅</a>
+                            <p class="race-kicker">WZA MOTORSPORT · 3D TIME TRIAL</p>
+                            <h1>五大赛道<span>3D 赛车</span></h1>
+                            <p class="race-lead">五张不同地貌的赛道。跑出成绩赚取金币，购买赛车并升级引擎、操控和制动。</p>
+                        </div>
+                        <div class="race-wallet-block">
+                            <div class="race-wallet">
+                                <span class="race-coin">W</span>
+                                <strong data-coins>0</strong>
+                                <small>WZA币</small>
+                            </div>
+                            <button type="button" class="race-ghost-btn" id="garageBtn"><i class="fas fa-wrench" aria-hidden="true"></i> 车库 / 升级</button>
+                        </div>
+                    </header>
+
+                    <div class="race-menu-body">
+                        <section class="map-picker" aria-labelledby="mapPickerTitle">
+                            <div class="race-section-head">
+                                <div>
+                                    <p class="race-kicker">SELECT CIRCUIT</p>
+                                    <h2 id="mapPickerTitle">选择地图</h2>
+                                </div>
+                                <span class="race-section-meta">5 条赛道 · 3 圈计时</span>
+                            </div>
+                            <div class="map-grid" id="mapGrid"></div>
+                        </section>
+
+                        <aside class="race-brief">
+                            <div class="race-brief-top">
+                                <span class="race-map-tag" id="mapTag">COASTAL RUN</span>
+                                <span class="race-difficulty" id="mapDifficulty">★★☆</span>
+                            </div>
+                            <h2 id="mapName">黄昏海岸</h2>
+                            <p id="mapDesc">沿着落日下的海岸公路，在长弯和海风之间寻找最晚的刹车点。</p>
+                            <div class="race-map-stats">
+                                <span><small>赛道长度</small><strong id="mapLength">—</strong></span>
+                                <span><small>最佳成绩</small><strong id="mapBest">—</strong></span>
+                                <span><small>金币倍率</small><strong id="mapReward">×1.0</strong></span>
+                            </div>
+
+                            <div class="race-current-car" id="currentCarPanel">
+                                <div class="race-car-silhouette" id="carSilhouette" aria-hidden="true">
+                                    <span class="silhouette-body"></span>
+                                    <span class="silhouette-cabin"></span>
+                                    <span class="silhouette-wheel silhouette-wheel--a"></span>
+                                    <span class="silhouette-wheel silhouette-wheel--b"></span>
+                                </div>
+                                <div>
+                                    <p class="race-kicker">CURRENT CAR</p>
+                                    <strong id="currentCarName">海岸 Rookie</strong>
+                                    <small id="currentCarStats">极速 187 km/h · 操控 1.5</small>
+                                </div>
+                            </div>
+
+                            <div class="race-brief-actions">
+                                <button type="button" class="race-primary-btn" id="startRaceBtn"><i class="fas fa-flag-checkered" aria-hidden="true"></i> 开始比赛</button>
+                                <button type="button" class="race-secondary-btn" id="garageBtn2"><i class="fas fa-car-side" aria-hidden="true"></i> 赛车与升级</button>
+                            </div>
+                            <p class="race-hint"><kbd>WASD</kbd> / <kbd>方向键</kbd> 驾驶 · <kbd>空格</kbd> 刹车 · <kbd>R</kbd> 回到赛道 · <kbd>Esc</kbd> 暂停</p>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+
+            <div class="race-hud" id="raceHud" hidden>
+                <div class="race-hud-left">
+                    <span class="race-hud-map" id="hudMap">黄昏海岸</span>
+                    <strong id="hudLap">LAP 1 / 3</strong>
+                </div>
+                <div class="race-hud-center">
+                    <div class="race-countdown" id="countdown" hidden>3</div>
+                    <span class="race-timer" id="raceTime">00:00.000</span>
+                    <span class="race-hud-status" id="raceStatus">准备发车</span>
+                </div>
+                <div class="race-hud-right">
+                    <div class="race-speed"><strong id="hudSpeed">0</strong><span>KM/H</span></div>
+                    <button type="button" class="race-icon-btn" id="pauseBtn" aria-label="暂停"><i class="fas fa-pause" aria-hidden="true"></i></button>
+                    <button type="button" class="race-icon-btn" id="soundBtn" aria-label="静音"><i class="fas fa-volume-high" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <div class="race-touch-controls" id="touchControls" aria-hidden="true">
+                <div class="touch-steer">
+                    <button type="button" class="touch-btn touch-btn--steer" data-control="left" aria-label="向左"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                    <button type="button" class="touch-btn touch-btn--steer" data-control="right" aria-label="向右"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                </div>
+                <div class="touch-pedals">
+                    <button type="button" class="touch-btn touch-btn--brake" data-control="brake" aria-label="刹车">刹车</button>
+                    <button type="button" class="touch-btn touch-btn--throttle" data-control="throttle" aria-label="油门">油门</button>
+                </div>
+            </div>
+
+            <div class="race-flash" id="raceFlash" aria-hidden="true"></div>
+
+            <div class="race-modal-layer" id="pauseLayer" hidden>
+                <div class="race-modal race-modal--small">
+                    <p class="race-kicker">RACE PAUSED</p>
+                    <h2>比赛暂停</h2>
+                    <p>调整一下呼吸，继续追回时间。</p>
+                    <button type="button" class="race-primary-btn" id="resumeBtn">继续比赛</button>
+                    <button type="button" class="race-secondary-btn" id="restartBtn">重新开始</button>
+                    <button type="button" class="race-text-btn" id="quitToMenuBtn">退出到地图选择</button>
+                </div>
+            </div>
+
+            <div class="race-modal-layer" id="resultsLayer" hidden>
+                <div class="race-modal race-result-modal">
+                    <div class="result-badge" id="resultBadge">FINISH</div>
+                    <p class="race-kicker">RACE COMPLETE</p>
+                    <h2 id="resultTitle">完赛</h2>
+                    <div class="result-grid">
+                        <span><small>总时间</small><strong id="resultTime">—</strong></span>
+                        <span><small>最快单圈</small><strong id="resultLap">—</strong></span>
+                        <span><small>最高速度</small><strong id="resultSpeed">—</strong></span>
+                        <span><small>成绩积分</small><strong id="resultScore">—</strong></span>
+                    </div>
+                    <div class="result-coins"><span class="race-coin">W</span> <strong id="resultCoins">+0</strong><small>WZA币</small></div>
+                    <button type="button" class="race-primary-btn" id="raceAgainBtn">再跑一次</button>
+                    <button type="button" class="race-secondary-btn" id="resultGarageBtn">去车库升级</button>
+                    <button type="button" class="race-text-btn" id="resultMenuBtn">返回地图选择</button>
+                </div>
+            </div>
+
+            <div class="race-modal-layer race-garage-layer" id="garageLayer" hidden>
+                <div class="race-garage-modal">
+                    <header class="race-garage-head">
+                        <div>
+                            <p class="race-kicker">WZA GARAGE</p>
+                            <h2>车库与升级</h2>
+                        </div>
+                        <div class="race-wallet">
+                            <span class="race-coin">W</span>
+                            <strong data-coins>0</strong>
+                            <small>WZA币</small>
+                        </div>
+                        <button type="button" class="race-icon-btn" id="garageClose" aria-label="关闭车库"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+                    </header>
+                    <div class="garage-list" id="garageList"></div>
+                    <p class="garage-note">升级会应用到对应赛车。成绩越好，金币和赛道倍率越高。</p>
+                </div>
+            </div>
+
+            <div class="race-loading" id="loadingLayer">
+                <div class="loading-ring"></div>
+                <p>正在生成赛道…</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+    <script type="importmap">
+        { "imports": { "three": "./js/vendor/three.module.min.js" } }
+    </script>
+    <script type="module" src="js/racing3d.js?v=20261119-4"></script>
+</body>
+</html>
