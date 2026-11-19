@@ -27,9 +27,9 @@ const MAPS = [
         desc: '落日下的海岸公路，长弯与海风。晚一点刹车，就能把速度带进下一个弯。',
         reward: 1.0,
         points: [
-            [0, 0, 1.6], [55, -10, 1.8], [105, -36, 2.2], [126, -85, 2.8],
-            [112, -137, 3.2], [72, -166, 3.4], [24, -167, 3.0], [-28, -151, 2.5],
-            [-74, -116, 2.0], [-102, -72, 1.7], [-94, -28, 1.5], [-58, 4, 1.6]
+            [0, 0, 1.6], [55, -10, 2.7], [105, -36, 4.9], [126, -85, 6.8],
+            [112, -137, 7.7], [72, -166, 6.3], [24, -167, 4.8], [-28, -151, 3.7],
+            [-74, -116, 2.9], [-102, -72, 2.2], [-94, -28, 1.7], [-58, 4, 1.3]
         ],
         roadWidth: 15,
         groundY: -2.2,
@@ -64,10 +64,10 @@ const MAPS = [
         desc: '午夜的霓虹街区，直角弯和窄路。城市灯光会反射在湿漉漉的沥青上。',
         reward: 1.25,
         points: [
-            [0, 0, 0.8], [65, -8, 0.9], [118, -28, 1.1], [142, -67, 1.2],
-            [132, -111, 1.0], [94, -138, 0.8], [48, -146, 0.7], [10, -128, 0.6],
-            [-18, -91, 0.5], [-54, -72, 0.4], [-103, -80, 0.3], [-133, -53, 0.2],
-            [-139, -14, 0.1], [-119, 22, 0.0], [-76, 38, 0.0], [-28, 32, 0.2]
+            [0, 0, 0.5], [65, -8, 0.7], [118, -28, 1.3], [142, -67, 2.6],
+            [132, -111, 3.8], [94, -138, 3.2], [48, -146, 2.3], [10, -128, 1.5],
+            [-18, -91, 0.9], [-54, -72, 0.5], [-103, -80, 0.2], [-133, -53, 0.0],
+            [-139, -14, 0.2], [-119, 22, 0.9], [-76, 38, 1.5], [-28, 32, 1.0]
         ],
         roadWidth: 14,
         groundY: -1.0,
@@ -140,9 +140,9 @@ const MAPS = [
         desc: '峡谷中的高速长弯，热浪和横风会不断把车身往外推。相信下压力。',
         reward: 1.3,
         points: [
-            [-160, -12, 1.6], [-112, -74, 1.8], [-44, -112, 2.2], [25, -110, 2.4],
-            [84, -82, 2.0], [132, -34, 1.8], [145, 22, 1.4], [111, 74, 1.2],
-            [54, 102, 1.0], [-8, 104, 0.9], [-72, 85, 0.8], [-126, 48, 1.0]
+            [-160, -12, 1.4], [-112, -74, 2.8], [-44, -112, 4.6], [25, -110, 6.2],
+            [84, -82, 7.0], [132, -34, 6.0], [145, 22, 4.8], [111, 74, 3.6],
+            [54, 102, 2.6], [-8, 104, 2.0], [-72, 85, 1.6], [-126, 48, 1.2]
         ],
         roadWidth: 16,
         groundY: -2.0,
@@ -328,6 +328,8 @@ const hudMap = $('hudMap');
 const hudLap = $('hudLap');
 const hudSpeed = $('hudSpeed');
 const raceTime = $('raceTime');
+const nitroFill = $('nitroFill');
+const nitroText = $('nitroText');
 const raceStatus = $('raceStatus');
 const countdown = $('countdown');
 const pauseLayer = $('pauseLayer');
@@ -364,6 +366,10 @@ let sunLight = null;
 let weather = null;
 let sunTarget = null;
 let headlight = null;
+let aiCars = [];
+let skidMarks = null;
+let colliders = [];
+let terrainData = null;
 
 const race = {
     lap: 1,
@@ -380,14 +386,19 @@ const race = {
 
 const carState = {
     pos: new THREE.Vector3(),
+    velocity: new THREE.Vector3(),
     yaw: 0,
     speed: 0,
+    slip: 0,
+    nitro: 1,
+    drifting: false,
+    hitUntil: 0,
     steer: 0,
     index: 0,
     lateral: 0
 };
 
-const input = { throttle: false, brake: false, left: false, right: false };
+const input = { throttle: false, brake: false, left: false, right: false, drift: false, nitro: false };
 
 /* ---------- formatting ---------- */
 function formatCoins(value) {
@@ -651,6 +662,10 @@ function disposeWorld() {
     weather = null;
     sunLight = null;
     headlight = null;
+    skidMarks = null;
+    aiCars = [];
+    colliders = [];
+    terrainData = null;
 }
 
 function createSky(mapConfig) {
@@ -963,19 +978,6 @@ function addTrackToWorld(mapConfig) {
         world.add(curb);
     });
 
-    const apronMat = new THREE.MeshStandardMaterial({
-        map: makeGroundTexture(mapConfig.groundColor, mapConfig.props === 'desert' ? 'sand' : mapConfig.props === 'snow' ? 'snow' : mapConfig.props === 'city' ? 'asphalt' : 'grass'),
-        color: 0xffffff,
-        roughness: 0.98,
-        metalness: 0.01,
-        side: THREE.DoubleSide
-    });
-    [-1, 1].forEach(sign => {
-        const apron = new THREE.Mesh(makeApronGeometry(samples, sign, half + 3.2, mapConfig.groundY, mapConfig.props === 'coast' ? 26 : 58), apronMat);
-        apron.receiveShadow = true;
-        world.add(apron);
-    });
-
     if (mapConfig.guardrail) addGuardrails(samples, half, mapConfig);
     addStartGate(samples, half, mapConfig);
 }
@@ -1066,35 +1068,112 @@ function addStartGate(samples, half, mapConfig) {
 }
 
 /* ---------- ground / scenery ---------- */
-function addGround(mapConfig) {
-    const groundTexture = makeGroundTexture(mapConfig.groundColor, mapConfig.props === 'desert' ? 'sand' : mapConfig.props === 'snow' ? 'snow' : mapConfig.props === 'city' ? 'asphalt' : 'grass');
-    const mat = new THREE.MeshStandardMaterial({
-        map: groundTexture,
-        color: 0xffffff,
-        roughness: 0.97,
-        metalness: 0.02
-    });
+function nearestTerrainSample(x, z) {
+    let best = Infinity;
+    let bestIndex = 0;
+    const stride = 3;
+    for (let i = 0; i < track.count; i += stride) {
+        const s = track.samples[i];
+        const dx = x - s.point.x;
+        const dz = z - s.point.z;
+        const d = dx * dx + dz * dz;
+        if (d < best) { best = d; bestIndex = i; }
+    }
+    for (let i = Math.max(0, bestIndex - 3); i <= Math.min(track.count, bestIndex + 3); i++) {
+        const s = track.samples[i];
+        const dx = x - s.point.x;
+        const dz = z - s.point.z;
+        const d = dx * dx + dz * dz;
+        if (d < best) { best = d; bestIndex = i; }
+    }
+    return { distance: Math.sqrt(best), y: track.samples[bestIndex].point.y };
+}
+
+function buildTerrain(mapConfig) {
+    const size = 1600;
+    const segments = IS_TOUCH ? 72 : 96;
+    const step = size / segments;
+    const min = -size / 2;
+    const base = mapConfig.props === 'coast' ? mapConfig.groundY - 1.55 : mapConfig.groundY;
+    const positions = [];
+    const uvs = [];
+    const heights = new Float32Array((segments + 1) * (segments + 1));
+    const noiseSeed = mapConfig.id.length * 17.3;
+    for (let zIndex = 0; zIndex <= segments; zIndex++) {
+        const z = min + zIndex * step;
+        for (let xIndex = 0; xIndex <= segments; xIndex++) {
+            const x = min + xIndex * step;
+            const nearest = nearestTerrainSample(x, z);
+            const edge = track.halfWidth + 4.2;
+            const blend = clamp((nearest.distance - edge) / 88, 0, 1);
+            const smooth = blend * blend * (3 - 2 * blend);
+            const noise = (
+                Math.sin(x * 0.022 + noiseSeed) * Math.cos(z * 0.019 - noiseSeed) * 0.9 +
+                Math.sin((x + z) * 0.009 + noiseSeed * 0.7) * 0.65
+            ) * (mapConfig.props === 'city' ? 0.15 : 1.15);
+            const y = lerp(nearest.y - 0.27, base + noise, smooth);
+            const idx = zIndex * (segments + 1) + xIndex;
+            heights[idx] = y;
+            positions.push(x, y, z);
+            uvs.push(x / 12, z / 12);
+        }
+    }
+    const indices = [];
+    for (let zIndex = 0; zIndex < segments; zIndex++) {
+        for (let xIndex = 0; xIndex < segments; xIndex++) {
+            const a = zIndex * (segments + 1) + xIndex;
+            const b = a + 1;
+            const c = a + (segments + 1);
+            const d = c + 1;
+            indices.push(a, c, b, b, c, d);
+        }
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    const texture = makeGroundTexture(
+        mapConfig.groundColor,
+        mapConfig.props === 'desert' ? 'sand' : mapConfig.props === 'snow' ? 'snow' : mapConfig.props === 'city' ? 'asphalt' : 'grass'
+    );
+    texture.repeat.set(1, 1);
+    const mat = new THREE.MeshStandardMaterial({ map: texture, color: 0xffffff, roughness: 0.96, metalness: 0.02 });
+    const terrain = new THREE.Mesh(geo, mat);
+    terrain.receiveShadow = true;
+    world.add(terrain);
+    terrainData = { size, segments, step, min, heights };
+
     if (mapConfig.props === 'coast') {
         const waterMat = new THREE.MeshPhysicalMaterial({
-            color: 0x174e63,
-            roughness: 0.16,
-            metalness: 0.28,
-            clearcoat: 1,
-            clearcoatRoughness: 0.12,
-            envMapIntensity: 1.8
+            color: 0x174e63, roughness: 0.14, metalness: 0.3, clearcoat: 1, clearcoatRoughness: 0.1, envMapIntensity: 1.8
         });
         const water = new THREE.Mesh(new THREE.PlaneGeometry(2500, 2500, 1, 1), waterMat);
         water.rotation.x = -Math.PI / 2;
-        water.position.y = mapConfig.groundY - 0.15;
+        water.position.y = mapConfig.groundY - 0.2;
         world.add(water);
-    } else {
-        const ground = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400, 1, 1), mat);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = mapConfig.groundY;
-        ground.receiveShadow = true;
-        world.add(ground);
     }
+}
 
+function terrainHeightAt(x, z) {
+    if (!terrainData) return map.groundY;
+    const { segments, step, min, heights } = terrainData;
+    const fx = clamp((x - min) / step, 0, segments - 0.0001);
+    const fz = clamp((z - min) / step, 0, segments - 0.0001);
+    const ix = Math.floor(fx);
+    const iz = Math.floor(fz);
+    const tx = fx - ix;
+    const tz = fz - iz;
+    const row = segments + 1;
+    const h00 = heights[iz * row + ix];
+    const h10 = heights[iz * row + ix + 1];
+    const h01 = heights[(iz + 1) * row + ix];
+    const h11 = heights[(iz + 1) * row + ix + 1];
+    return lerp(lerp(h00, h10, tx), lerp(h01, h11, tx), tz);
+}
+
+function addGround(mapConfig) {
+    buildTerrain(mapConfig);
     addMountains(mapConfig);
 }
 
@@ -1115,7 +1194,7 @@ function addMountains(mapConfig) {
         const radius = (isCoast ? 780 : 540) + rng() * (isCoast ? 620 : 620);
         const scale = (isCoast ? 22 : mapConfig.props === 'snow' ? 65 : 42) + rng() * (isCoast ? 44 : mapConfig.props === 'snow' ? 95 : 62);
         items.push({
-            p: new THREE.Vector3(Math.cos(angle) * radius, mapConfig.groundY + scale * 0.46, Math.sin(angle) * radius),
+            p: new THREE.Vector3(Math.cos(angle) * radius, terrainHeightAt(Math.cos(angle) * radius, Math.sin(angle) * radius) + scale * 0.46, Math.sin(angle) * radius),
             q: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rng() * TAU, 0)),
             s: new THREE.Vector3(scale * (0.7 + rng() * 0.8), scale, scale * (0.7 + rng() * 0.8))
         });
@@ -1173,7 +1252,48 @@ function buildProps(mapConfig) {
     if (mapConfig.props === 'snow') buildSnowProps(rng);
     if (mapConfig.props === 'desert') buildDesertProps(rng);
     if (mapConfig.props === 'sakura') buildSakuraProps(rng);
+    addRoadsidePlants(mapConfig, rng);
     buildWeather(mapConfig, rng);
+}
+
+function addRoadsidePlants(mapConfig, rng) {
+    const bushGeo = new THREE.IcosahedronGeometry(1, 0);
+    const flowerGeo = new THREE.ConeGeometry(0.22, 0.55, 5);
+    const bushColors = mapConfig.props === 'snow' ? [0x456b60, 0x5b7a6a] :
+        mapConfig.props === 'desert' ? [0x677245, 0x7b7c4d] :
+        mapConfig.props === 'sakura' ? [0x58734c, 0x71915c] : [0x4f7d4e, 0x65945a];
+    const flowerColors = mapConfig.props === 'snow' ? [0xd7e5e5, 0xaecac9] :
+        mapConfig.props === 'desert' ? [0xd5a85f, 0xc48a50] :
+        mapConfig.props === 'sakura' ? [0xf2a9c0, 0xffd0dd] : [0xe4c85f, 0xe9a8b5, 0xf2eee0];
+    const bushMats = bushColors.map(color => new THREE.MeshStandardMaterial({ color, roughness: 0.92, flatShading: true }));
+    const flowerMats = flowerColors.map(color => new THREE.MeshStandardMaterial({ color, roughness: 0.78, flatShading: true }));
+    const bushesByColor = bushMats.map(() => []);
+    const flowersByColor = flowerMats.map(() => []);
+    trackSidePlacements(rng, 13, 4.5, 22, 2).forEach(({ p, sample }, index) => {
+        if (index % 3 === 0) return;
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.08, p.z);
+        if (rng() > 0.42) {
+            const colorIndex = Math.floor(rng() * bushesByColor.length);
+            const scale = rand(rng, 0.28, 0.82);
+            bushesByColor[colorIndex].push({
+                p: base.clone().add(new THREE.Vector3(0, scale * 0.45, 0)),
+                q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())),
+                s: new THREE.Vector3(scale * 1.2, scale * 0.8, scale * 1.1)
+            });
+        } else {
+            const colorIndex = Math.floor(rng() * flowersByColor.length);
+            const scale = rand(rng, 0.6, 1.25);
+            for (let n = 0; n < 3; n++) {
+                flowersByColor[colorIndex].push({
+                    p: base.clone().add(new THREE.Vector3(rand(rng, -0.5, 0.5), 0.18, rand(rng, -0.5, 0.5))),
+                    q: new THREE.Quaternion(),
+                    s: new THREE.Vector3(scale, scale, scale)
+                });
+            }
+        }
+    });
+    bushesByColor.forEach((items, i) => addInstances(bushGeo, bushMats[i], items, false, true));
+    flowersByColor.forEach((items, i) => addInstances(flowerGeo, flowerMats[i], items, false, false));
 }
 
 function groundAt(p) {
@@ -1190,7 +1310,8 @@ function buildCoastProps(rng) {
     const leaves = [];
     spots.forEach(({ p, sample }, index) => {
         if (index % 3 === 0) return;
-        const base = new THREE.Vector3(p.x, sample.point.y - 0.18, p.z);
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.18, p.z);
+        addCollider(base.x, base.z, 0.58 * rand(rng, 0.9, 1.2));
         const tilt = new THREE.Quaternion().setFromEuler(new THREE.Euler(rand(rng, -0.08, 0.08), rng() * TAU, rand(rng, -0.08, 0.08)));
         const scale = rand(rng, 0.78, 1.35);
         trunks.push({ p: base.clone().add(new THREE.Vector3(0, 2.25 * scale, 0)), q: tilt, s: new THREE.Vector3(scale, scale, scale) });
@@ -1208,11 +1329,13 @@ function buildCoastProps(rng) {
 
     const rockGeo = new THREE.DodecahedronGeometry(1, 0);
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x6f6556, roughness: 0.95, flatShading: true });
-    const rocks = trackSidePlacements(rng, 37, 7, 50, 1).map(({ p, sample }) => ({
-        p: new THREE.Vector3(p.x, sample.point.y - 0.1, p.z),
+    const rocks = trackSidePlacements(rng, 37, 7, 50, 1).map(({ p, sample }) => {
+        addCollider(p.x, p.z, 1.15);
+        return ({
+        p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.1, p.z),
         q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())),
         s: new THREE.Vector3(rand(rng, 0.8, 2.4), rand(rng, 0.55, 1.5), rand(rng, 0.8, 2.2))
-    }));
+    }); });
     addInstances(rockGeo, rockMat, rocks, true, true);
 
     // beach umbrellas
@@ -1222,7 +1345,7 @@ function buildCoastProps(rng) {
     const canopyMats = [0xe56f63, 0xe6b95e, 0x5bc1bd].map(color => new THREE.MeshStandardMaterial({ color, roughness: 0.6 }));
     const umbrellas = trackSidePlacements(rng, 82, 12, 24, 1).slice(0, 8);
     umbrellas.forEach(({ p, sample }, i) => {
-        const base = new THREE.Vector3(p.x, sample.point.y - 0.2, p.z);
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.2, p.z);
         const pole = new THREE.Mesh(poleGeo, poleMat);
         pole.position.copy(base).y += 1.1;
         const canopy = new THREE.Mesh(canopyGeo, canopyMats[i % canopyMats.length]);
@@ -1243,7 +1366,7 @@ function buildCoastProps(rng) {
     const lamp = new THREE.Mesh(new THREE.SphereGeometry(1.3, 12, 8), new THREE.MeshBasicMaterial({ color: 0xffe4a2 }));
     lamp.position.y = 24.5;
     lighthouse.add(tower, band, lamp);
-    lighthouse.position.set(-225, map.groundY, -250);
+    lighthouse.position.set(-225, terrainHeightAt(-225, -250), -250);
     world.add(lighthouse);
 }
 
@@ -1266,7 +1389,7 @@ function buildCityProps(rng) {
             const p = s.point.clone().addScaledVector(s.side, sign * offset);
             const h = rand(rng, 16, 64);
             buildings.push({
-                p: new THREE.Vector3(p.x, map.groundY + h / 2, p.z),
+                p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) + h / 2, p.z),
                 q: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rng() * TAU, 0)),
                 s: new THREE.Vector3(rand(rng, 8, 19), h, rand(rng, 8, 19))
             });
@@ -1284,6 +1407,8 @@ function buildCityProps(rng) {
         const s = track.samples[i];
         [-1, 1].forEach(sign => {
             const p = s.point.clone().addScaledVector(s.side, sign * (track.halfWidth + 4.2));
+            p.y = terrainHeightAt(p.x, p.z);
+            addCollider(p.x, p.z, 0.34);
             poles.push({ p: p.clone().add(new THREE.Vector3(0, 2.7, 0)), q: new THREE.Quaternion(), s: new THREE.Vector3(1, 1, 1) });
             lamps.push({ p: p.clone().add(new THREE.Vector3(0, 5.45, 0)), q: new THREE.Quaternion(), s: new THREE.Vector3(1, 1, 1) });
         });
@@ -1299,7 +1424,7 @@ function buildCityProps(rng) {
         const p = s.point.clone().addScaledVector(s.side, sign * (track.halfWidth + rand(rng, 10, 18)));
         const mat = new THREE.MeshBasicMaterial({ color: neonColors[i % neonColors.length] });
         const board = new THREE.Mesh(new THREE.BoxGeometry(rand(rng, 3, 5), rand(rng, 7, 15), 0.18), mat);
-        board.position.set(p.x, map.groundY + rand(rng, 12, 25), p.z);
+        board.position.set(p.x, terrainHeightAt(p.x, p.z) + rand(rng, 12, 25), p.z);
         board.rotation.y = Math.atan2(s.tangent.x, s.tangent.z) + (rng() > 0.5 ? 0 : Math.PI);
         world.add(board);
     }
@@ -1345,7 +1470,7 @@ function buildSnowProps(rng) {
     trackSidePlacements(rng, 19, 9, 52, 2).forEach(({ p, sample }, index) => {
         if (index % 4 === 0) return;
         const scale = rand(rng, 0.7, 1.55);
-        const base = new THREE.Vector3(p.x, sample.point.y - 0.25, p.z);
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.25, p.z);
         trunks.push({ p: base.clone().add(new THREE.Vector3(0, 1.6 * scale, 0)), q: new THREE.Quaternion(), s: new THREE.Vector3(scale, scale, scale) });
         pines.push({ p: base.clone().add(new THREE.Vector3(0, 4.0 * scale, 0)), q: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rng() * TAU, 0)), s: new THREE.Vector3(scale, scale, scale) });
         caps.push({ p: base.clone().add(new THREE.Vector3(0, 6.05 * scale, 0)), q: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rng() * TAU, 0)), s: new THREE.Vector3(scale, scale, scale) });
@@ -1356,17 +1481,19 @@ function buildSnowProps(rng) {
 
     const rockGeo = new THREE.DodecahedronGeometry(1, 0);
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x78858c, roughness: 0.95, flatShading: true });
-    const rocks = trackSidePlacements(rng, 41, 7, 35, 1).map(({ p, sample }) => ({
-        p: new THREE.Vector3(p.x, sample.point.y - 0.1, p.z),
+    const rocks = trackSidePlacements(rng, 41, 7, 35, 1).map(({ p, sample }) => {
+        addCollider(p.x, p.z, 1.0);
+        return ({
+        p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.1, p.z),
         q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())),
         s: new THREE.Vector3(rand(rng, 0.8, 2.1), rand(rng, 0.6, 1.4), rand(rng, 0.8, 2.0))
-    }));
+    }); });
     addInstances(rockGeo, rockMat, rocks, true, true);
 
     const snowBankGeo = new THREE.SphereGeometry(1, 8, 5);
     const snowBankMat = new THREE.MeshStandardMaterial({ color: 0xe5efef, roughness: 0.92, flatShading: true });
     const banks = trackSidePlacements(rng, 31, 4, 17, 2).map(({ p, sample }) => ({
-        p: new THREE.Vector3(p.x, sample.point.y - 0.2, p.z),
+        p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.2, p.z),
         q: new THREE.Quaternion(),
         s: new THREE.Vector3(rand(rng, 1.6, 4.3), rand(rng, 0.35, 0.85), rand(rng, 1.2, 3.4))
     }));
@@ -1382,7 +1509,7 @@ function buildDesertProps(rng) {
         const radius = rand(rng, 230, 520);
         const h = rand(rng, 10, 26);
         mesas.push({
-            p: new THREE.Vector3(Math.cos(angle) * radius, map.groundY + h / 2, Math.sin(angle) * radius),
+            p: new THREE.Vector3(Math.cos(angle) * radius, terrainHeightAt(Math.cos(angle) * radius, Math.sin(angle) * radius) + h / 2, Math.sin(angle) * radius),
             q: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rng() * TAU, 0)),
             s: new THREE.Vector3(rand(rng, 8, 18), h, rand(rng, 8, 17))
         });
@@ -1396,8 +1523,9 @@ function buildDesertProps(rng) {
     const arms = [];
     trackSidePlacements(rng, 27, 8, 46, 2).forEach(({ p, sample }, index) => {
         if (index % 3 === 0) return;
-        const base = new THREE.Vector3(p.x, sample.point.y - 0.2, p.z);
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.2, p.z);
         const scale = rand(rng, 0.7, 1.25);
+        addCollider(base.x, base.z, 0.62 * scale);
         body.push({ p: base.clone().add(new THREE.Vector3(0, 1.9 * scale, 0)), q: new THREE.Quaternion(), s: new THREE.Vector3(scale, scale, scale) });
         if (rng() > 0.4) {
             arms.push({
@@ -1412,11 +1540,13 @@ function buildDesertProps(rng) {
 
     const rockGeo = new THREE.DodecahedronGeometry(1, 0);
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x8c5942, roughness: 0.98, flatShading: true });
-    const rocks = trackSidePlacements(rng, 23, 6, 28, 2).map(({ p, sample }) => ({
-        p: new THREE.Vector3(p.x, sample.point.y - 0.1, p.z),
+    const rocks = trackSidePlacements(rng, 23, 6, 28, 2).map(({ p, sample }) => {
+        addCollider(p.x, p.z, 0.9);
+        return ({
+        p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.1, p.z),
         q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())),
         s: new THREE.Vector3(rand(rng, 0.5, 2.8), rand(rng, 0.5, 1.5), rand(rng, 0.6, 2.4))
-    }));
+    }); });
     addInstances(rockGeo, rockMat, rocks, true, true);
 }
 
@@ -1430,8 +1560,9 @@ function buildSakuraProps(rng) {
     const crowns = [];
     trackSidePlacements(rng, 17, 9, 38, 2).forEach(({ p, sample }, index) => {
         if (index % 3 === 0) return;
-        const base = new THREE.Vector3(p.x, sample.point.y - 0.25, p.z);
+        const base = new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.25, p.z);
         const scale = rand(rng, 0.75, 1.4);
+        addCollider(base.x, base.z, 0.62 * scale);
         trunks.push({ p: base.clone().add(new THREE.Vector3(0, 2.1 * scale, 0)), q: new THREE.Quaternion(), s: new THREE.Vector3(scale, scale, scale) });
         crowns.push({ p: base.clone().add(new THREE.Vector3(rand(rng, -0.35, 0.35), 4.4 * scale, rand(rng, -0.35, 0.35))), q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())), s: new THREE.Vector3(scale * 1.25, scale * 0.95, scale * 1.15) });
         crowns.push({ p: base.clone().add(new THREE.Vector3(rand(rng, -0.8, 0.8), 4.6 * scale, rand(rng, -0.8, 0.8))), q: new THREE.Quaternion(), s: new THREE.Vector3(scale * 0.7, scale * 0.7, scale * 0.7) });
@@ -1442,11 +1573,13 @@ function buildSakuraProps(rng) {
 
     const rockGeo = new THREE.DodecahedronGeometry(1, 0);
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x5c6254, roughness: 0.96, flatShading: true });
-    const rocks = trackSidePlacements(rng, 39, 5, 22, 1).map(({ p, sample }) => ({
-        p: new THREE.Vector3(p.x, sample.point.y - 0.1, p.z),
+    const rocks = trackSidePlacements(rng, 39, 5, 22, 1).map(({ p, sample }) => {
+        addCollider(p.x, p.z, 0.8);
+        return ({
+        p: new THREE.Vector3(p.x, terrainHeightAt(p.x, p.z) - 0.1, p.z),
         q: new THREE.Quaternion().setFromEuler(new THREE.Euler(rng(), rng() * TAU, rng())),
         s: new THREE.Vector3(rand(rng, 0.5, 1.8), rand(rng, 0.4, 1.0), rand(rng, 0.6, 1.7))
-    }));
+    }); });
     addInstances(rockGeo, rockMat, rocks, true, true);
 
     // torii gate near start
@@ -1652,6 +1785,21 @@ function makeCarModel(carDef) {
         sprite.scale.set(0.7, 0.7, 0.7);
         group.add(sprite);
     });
+    const flames = [];
+    [-0.34, 0.34].forEach(x => {
+        const flame = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: glowTexture,
+            color: 0x6ce8ff,
+            transparent: true,
+            opacity: 0,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending
+        }));
+        flame.position.set(x, 0.3, -2.16);
+        flame.scale.set(0.26, 0.26, 0.26);
+        group.add(flame);
+        flames.push(flame);
+    });
 
     // wheels
     const wheelGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.24, 18);
@@ -1681,7 +1829,92 @@ function makeCarModel(carDef) {
     });
 
     group.position.y = 0.02;
-    return { group, wheels, frontPivots, paint, underglow, headlights: [] };
+    return { group, wheels, frontPivots, paint, underglow, flames, headlights: [] };
+}
+
+function makeTrafficCar(color) {
+    const group = new THREE.Group();
+    const paint = new THREE.MeshStandardMaterial({ color, roughness: 0.38, metalness: 0.58 });
+    const glass = new THREE.MeshStandardMaterial({ color: 0x071017, roughness: 0.12, metalness: 0.3 });
+    const dark = new THREE.MeshStandardMaterial({ color: 0x12171a, roughness: 0.55, metalness: 0.45 });
+    const body = new THREE.Mesh(new THREE.BoxGeometry(1.72, 0.42, 3.45), paint);
+    body.position.y = 0.42;
+    body.castShadow = true;
+    const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.42, 0.52, 1.5), glass);
+    cabin.position.set(0, 0.84, -0.2);
+    cabin.castShadow = true;
+    const hood = new THREE.Mesh(new THREE.BoxGeometry(1.62, 0.16, 1.1), paint);
+    hood.position.set(0, 0.62, 1.05);
+    const wheelGeo = new THREE.CylinderGeometry(0.31, 0.31, 0.2, 12);
+    wheelGeo.rotateZ(Math.PI / 2);
+    const tire = new THREE.MeshStandardMaterial({ color: 0x111416, roughness: 0.85 });
+    [[-0.86, 1.13], [0.86, 1.13], [-0.86, -1.13], [0.86, -1.13]].forEach(([x, z]) => {
+        const wheel = new THREE.Mesh(wheelGeo, tire);
+        wheel.position.set(x, 0.33, z);
+        wheel.castShadow = true;
+        group.add(wheel);
+    });
+    [-0.52, 0.52].forEach(x => {
+        const head = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.04), new THREE.MeshBasicMaterial({ color: 0xffefc8 }));
+        head.position.set(x, 0.48, 1.73);
+        const tail = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, 0.04), new THREE.MeshBasicMaterial({ color: 0xff382b }));
+        tail.position.set(x, 0.46, -1.73);
+        group.add(head, tail);
+    });
+    group.add(body, cabin, hood);
+    return group;
+}
+
+function buildTraffic(mapConfig) {
+    aiCars = [];
+    const colors = [0xe3a83d, 0x4e8d9b, 0xb95a55, 0x7d6bb2];
+    for (let i = 0; i < 4; i++) {
+        const group = makeTrafficCar(colors[i % colors.length]);
+        const progress = [0.09, 0.3, 0.52, 0.74][i] * track.count;
+        group.position.copy(track.samples[Math.floor(progress)].point);
+        group.position.y += 0.34;
+        group.rotation.y = Math.atan2(track.samples[0].tangent.x, track.samples[0].tangent.z);
+        world.add(group);
+        aiCars.push({
+            group,
+            progress: [0.09, 0.3, 0.52, 0.74][i] * track.count,
+            speed: 14 + i * 2.2,
+            lane: i % 2 === 0 ? -1.9 : 1.9,
+            spin: 0
+        });
+    }
+}
+
+function resetTraffic() {
+    aiCars.forEach((ai, i) => {
+        ai.progress = [0.09, 0.3, 0.52, 0.74][i] * track.count;
+        ai.speed = 14 + i * 2.2;
+        placeTrafficCar(ai);
+    });
+}
+
+function placeTrafficCar(ai) {
+    const index = Math.floor(ai.progress) % track.count;
+    const sample = track.samples[index];
+    const forward = sample.tangent;
+    const right = new THREE.Vector3(forward.z, 0, -forward.x);
+    ai.group.position.copy(sample.point).addScaledVector(right, ai.lane);
+    ai.group.position.y = sample.point.y + 0.34;
+    ai.group.rotation.y = Math.atan2(forward.x, forward.z);
+    ai.group.rotation.x = -Math.asin(clamp(forward.y, -0.25, 0.25)) * 0.3;
+}
+
+function updateTraffic(dt) {
+    if (!track || !aiCars.length) return;
+    aiCars.forEach(ai => {
+        ai.progress += (ai.speed * dt / track.length) * track.count;
+        if (ai.progress >= track.count) ai.progress -= track.count;
+        placeTrafficCar(ai);
+        ai.spin += ai.speed * dt / 0.3;
+        ai.group.children.forEach(child => {
+            if (child.geometry && child.geometry.type === 'CylinderGeometry') child.rotation.x = ai.spin;
+        });
+    });
 }
 
 function addCarToWorld() {
@@ -1708,11 +1941,17 @@ function placeCarAtStart() {
     carState.pos.copy(s.point);
     carState.yaw = Math.atan2(s.tangent.x, s.tangent.z);
     carState.speed = 0;
+    carState.slip = 0;
+    carState.nitro = 1;
+    carState.drifting = false;
+    carState.hitUntil = 0;
+    carState.velocity.set(0, 0, 0);
     carState.steer = 0;
     carState.index = 18;
     carState.lateral = 0;
     carRoot.position.set(carState.pos.x, s.point.y + 0.34, carState.pos.z);
     carRoot.rotation.set(0, carState.yaw, 0);
+    resetSkidMarks();
     race.prevIndex = 18;
     updateChaseCamera(1, true);
 }
@@ -1733,11 +1972,15 @@ function buildWorld(mapConfig) {
     world.add(sky);
     createEnvironment(mapConfig);
     createLights(mapConfig);
-    addGround(mapConfig);
     track = makeTrack(mapConfig);
+    addGround(mapConfig);
+    colliders = [];
     addTrackToWorld(mapConfig);
     buildProps(mapConfig);
     addCarToWorld();
+    buildTraffic(mapConfig);
+    skidMarks = createSkidMarks();
+    resetSkidMarks();
 
     menuAngle = 0;
     mapName.textContent = mapConfig.name;
@@ -1966,6 +2209,7 @@ function startRace() {
     pauseLayer.hidden = true;
     document.body.classList.add('race-live');
     placeCarAtStart();
+    resetTraffic();
     race.lap = 1;
     race.time = 0;
     race.lapStart = 0;
@@ -1981,6 +2225,8 @@ function startRace() {
     input.brake = false;
     input.left = false;
     input.right = false;
+    input.drift = false;
+    input.nitro = false;
     countdown.hidden = false;
     countdown.textContent = '3';
     raceStatus.textContent = '准备发车';
@@ -1997,6 +2243,7 @@ function pauseRace() {
     pausedFrom = mode;
     mode = 'paused';
     pauseLayer.hidden = false;
+    updateNitroFlames(false);
     setEngineGain(0.0001);
 }
 
@@ -2008,6 +2255,8 @@ function resumeRace() {
     input.throttle = false;
     input.left = false;
     input.right = false;
+    input.drift = false;
+    input.nitro = false;
     if (audioCtx) audioCtx.resume();
 }
 
@@ -2069,6 +2318,7 @@ function finishRace() {
     document.body.classList.remove('race-live');
     raceStatus.textContent = isBest ? '新纪录' : '完赛';
     setEngineGain(0.0001);
+    updateNitroFlames(false);
     playFinishSound();
 }
 
@@ -2187,7 +2437,8 @@ function bindInputs() {
         if (key === 's' || key === 'arrowdown') input.brake = true;
         if (key === 'a' || key === 'arrowleft') input.left = true;
         if (key === 'd' || key === 'arrowright') input.right = true;
-        if (key === ' ') input.brake = true;
+        if (key === ' ' || key === 'shift') input.drift = true;
+        if (key === 'x') input.nitro = true;
         if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(key)) event.preventDefault();
     });
 
@@ -2197,7 +2448,8 @@ function bindInputs() {
         if (key === 's' || key === 'arrowdown') input.brake = false;
         if (key === 'a' || key === 'arrowleft') input.left = false;
         if (key === 'd' || key === 'arrowright') input.right = false;
-        if (key === ' ') input.brake = false;
+        if (key === ' ' || key === 'shift') input.drift = false;
+        if (key === 'x') input.nitro = false;
     });
 
     touchControls.querySelectorAll('[data-control]').forEach(button => {
@@ -2228,79 +2480,278 @@ function resetCarToTrack() {
     carState.pos.copy(nearest.point);
     carState.yaw = Math.atan2(nearest.tangent.x, nearest.tangent.z);
     carState.speed = 0;
+    carState.slip = 0;
+    carState.drifting = false;
+    carState.velocity.set(0, 0, 0);
     carState.steer = 0;
     carState.index = nearest.index;
     carState.lateral = 0;
     carRoot.position.set(carState.pos.x, nearest.point.y + 0.34, carState.pos.z);
     carRoot.rotation.set(0, carState.yaw, 0);
+    resetSkidMarks();
     race.prevIndex = nearest.index;
     updateChaseCamera(1, true);
     raceStatus.textContent = '已回到赛道';
 }
 
 /* ---------- physics / camera / render ---------- */
+function createSkidMarks() {
+    const max = 900;
+    const positions = new Float32Array(max * 4 * 3);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage));
+    const indices = [];
+    for (let i = 0; i < max; i++) {
+        const a = i * 4;
+        indices.push(a, a + 1, a + 2, a + 1, a + 3, a + 2);
+    }
+    geo.setIndex(indices);
+    geo.setDrawRange(0, 0);
+    const mat = new THREE.MeshBasicMaterial({
+        color: 0x111111,
+        transparent: true,
+        opacity: 0.56,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -2
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.frustumCulled = false;
+    mesh.renderOrder = 2;
+    world.add(mesh);
+    return { max, positions, geo, mesh, index: 0, count: 0, last: [null, null] };
+}
+
+function resetSkidMarks() {
+    if (!skidMarks) return;
+    skidMarks.index = 0;
+    skidMarks.count = 0;
+    skidMarks.last = [null, null];
+    skidMarks.geo.setDrawRange(0, 0);
+}
+
+function addSkidSegment(a, b, width = 0.13) {
+    if (!skidMarks) return;
+    const dx = b.x - a.x;
+    const dz = b.z - a.z;
+    const length = Math.hypot(dx, dz);
+    if (length < 0.05 || length > 2.4) return;
+    const px = (-dz / length) * width * 0.5;
+    const pz = (dx / length) * width * 0.5;
+    const i = skidMarks.index % skidMarks.max;
+    const offset = i * 12;
+    const y = Math.max(a.y, b.y);
+    skidMarks.positions[offset] = a.x + px;
+    skidMarks.positions[offset + 1] = y;
+    skidMarks.positions[offset + 2] = a.z + pz;
+    skidMarks.positions[offset + 3] = a.x - px;
+    skidMarks.positions[offset + 4] = y;
+    skidMarks.positions[offset + 5] = a.z - pz;
+    skidMarks.positions[offset + 6] = b.x + px;
+    skidMarks.positions[offset + 7] = y;
+    skidMarks.positions[offset + 8] = b.z + pz;
+    skidMarks.positions[offset + 9] = b.x - px;
+    skidMarks.positions[offset + 10] = y;
+    skidMarks.positions[offset + 11] = b.z - pz;
+    skidMarks.index += 1;
+    skidMarks.count = Math.min(skidMarks.max, skidMarks.count + 1);
+    skidMarks.geo.setDrawRange(0, skidMarks.count * 6);
+    skidMarks.geo.attributes.position.needsUpdate = true;
+}
+
+function updateSkidMarks(dt, onRoad) {
+    if (!skidMarks || !carRoot) return;
+    carRoot.updateMatrixWorld(true);
+    const active = Math.abs(carState.speed) > 2.5 &&
+        (input.brake || input.drift || Math.abs(carState.slip) > 2.1 || (input.throttle && Math.abs(carState.slip) > 1.2));
+    if (!active) {
+        skidMarks.last[0] = null;
+        skidMarks.last[1] = null;
+        return;
+    }
+    const y = carRoot.position.y - 0.325;
+    for (let i = 0; i < 2; i++) {
+        const local = new THREE.Vector3(i === 0 ? -0.9 : 0.9, 0, -1.34);
+        carRoot.localToWorld(local);
+        local.y = y;
+        const previous = skidMarks.last[i];
+        if (previous) addSkidSegment(previous, local, i === 0 ? 0.12 : 0.12);
+        skidMarks.last[i] = local.clone();
+    }
+}
+
+function updateNitroFlames(active) {
+    if (!carVisual || !carVisual.flames) return;
+    carVisual.flames.forEach(flame => {
+        const target = active ? 0.9 : 0;
+        flame.material.opacity = lerp(flame.material.opacity, target, 0.22);
+        const scale = active ? 0.5 + Math.random() * 0.32 : 0.22;
+        flame.scale.set(scale, scale * 1.8, scale);
+    });
+}
+
 function updateCar(dt) {
     if (!carRoot || !track) return;
     const stats = getCarStats(selectedCarId);
-    const steering = (input.left ? -1 : 0) + (input.right ? 1 : 0);
+    const steering = (input.left ? 1 : 0) + (input.right ? -1 : 0);
     carState.steer = lerp(carState.steer, steering, 1 - Math.pow(0.001, dt));
 
     const projected = track.nearest(carRoot.position, carState.index);
     carState.index = projected.index;
     carState.lateral = projected.lateral;
-    const roadLimit = track.halfWidth + 1.2;
-    const onRoad = Math.abs(projected.lateral) <= track.halfWidth + 0.1;
+    const onRoad = Math.abs(projected.lateral) <= track.halfWidth + 0.15;
+    if (!onRoad) race.offroadTime += dt;
 
-    if (!onRoad) {
-        race.offroadTime += dt;
-        carState.speed *= Math.pow(0.46, dt);
+    let forward = new THREE.Vector3(Math.sin(carState.yaw), 0, Math.cos(carState.yaw));
+    let right = new THREE.Vector3(forward.z, 0, -forward.x);
+    let vf = carState.velocity.dot(forward);
+    const slope = clamp(projected.tangent.y, -0.45, 0.45);
+    const slopeForce = -9.8 * slope * 0.62;
+    const drag = onRoad ? 0.18 : 1.15;
+
+    if (input.throttle) {
+        const accelFactor = 1 - clamp(Math.max(0, vf) / (stats.maxSpeed + 1), 0, 1);
+        carState.velocity.addScaledVector(forward, stats.accel * (0.35 + accelFactor * 0.65) * dt);
     }
-    if (Math.abs(projected.lateral) > roadLimit) {
-        const correction = Math.sign(projected.lateral) * roadLimit - projected.lateral;
-        carRoot.position.addScaledVector(projected.side, correction);
-        carState.speed *= 0.7;
-        flashRace();
+    if (input.brake) {
+        if (vf > 0.45) {
+            carState.velocity.addScaledVector(forward, -stats.brakeForce * dt);
+        } else {
+            carState.velocity.addScaledVector(forward, -stats.accel * 0.62 * dt);
+        }
+    }
+    carState.velocity.addScaledVector(forward, slopeForce * dt);
+    carState.velocity.multiplyScalar(Math.exp(-drag * dt));
+
+    const wantNitro = input.nitro && carState.nitro > 0.01 && vf > 0.5;
+    if (wantNitro) {
+        carState.velocity.addScaledVector(forward, stats.accel * 2.45 * dt);
+        carState.nitro = Math.max(0, carState.nitro - dt * 0.36);
+    } else {
+        const recharge = 0.012 + (Math.abs(carState.velocity.dot(right)) > 2 ? 0.05 : 0);
+        carState.nitro = Math.min(1, carState.nitro + recharge * dt);
     }
 
-    const maxSpeed = stats.maxSpeed * (onRoad ? 1 : 0.52);
-    if (input.throttle) carState.speed += stats.accel * dt * (1 - carState.speed / (maxSpeed + 1));
-    if (input.brake) carState.speed -= stats.brakeForce * dt;
-    carState.speed -= carState.speed * (onRoad ? 0.075 : 0.36) * dt;
-    carState.speed = clamp(carState.speed, 0, maxSpeed);
-    race.topSpeed = Math.max(race.topSpeed, carState.speed);
+    if (input.drift) {
+        carState.velocity.multiplyScalar(Math.exp(-1.1 * dt));
+    }
 
-    const speedFactor = clamp(carState.speed / stats.maxSpeed, 0, 1);
-    const turnRate = stats.turn * (0.38 + speedFactor * 0.9) * (carState.speed > 1 ? 1 : 0);
-    carState.yaw += carState.steer * turnRate * dt;
-    const forward = new THREE.Vector3(Math.sin(carState.yaw), 0, Math.cos(carState.yaw));
-    carRoot.position.addScaledVector(forward, carState.speed * dt);
+    const speedFactor = clamp(Math.abs(vf) / stats.maxSpeed, 0, 1);
+    const turnRate = stats.turn * (0.3 + speedFactor * 0.92) * (input.drift ? 1.5 : 1);
+    carState.yaw += carState.steer * turnRate * dt * (vf < -0.2 ? -1 : 1);
+
+    forward = new THREE.Vector3(Math.sin(carState.yaw), 0, Math.cos(carState.yaw));
+    right = new THREE.Vector3(forward.z, 0, -forward.x);
+    let newForward = carState.velocity.dot(forward);
+    let lateral = carState.velocity.dot(right);
+    const grip = input.drift ? 0.72 : onRoad ? 7.6 : 1.7;
+    lateral *= Math.exp(-grip * dt);
+    const maxForward = stats.maxSpeed * (onRoad ? 1 : 0.58) * (wantNitro ? 1.25 : 1);
+    const maxReverse = stats.maxSpeed * 0.38;
+    newForward = clamp(newForward, -maxReverse, maxForward);
+    carState.velocity.copy(forward).multiplyScalar(newForward).addScaledVector(right, lateral);
+
+    carRoot.position.addScaledVector(carState.velocity, dt);
+    carState.speed = carState.velocity.dot(forward);
+    carState.slip = lateral;
+    carState.drifting = Math.abs(lateral) > 1.8 || (input.drift && Math.abs(carState.speed) > 4);
+    race.topSpeed = Math.max(race.topSpeed, Math.abs(carState.speed));
+
+    resolveStaticCollisions();
+    resolveTrafficCollisions();
 
     const after = track.nearest(carRoot.position, carState.index);
     carState.index = after.index;
     carState.lateral = after.lateral;
-    carRoot.position.y = after.point.y + 0.34;
+    const afterOnRoad = Math.abs(after.lateral) <= track.halfWidth + 0.15;
+    const surfaceY = afterOnRoad ? after.point.y : terrainHeightAt(carRoot.position.x, carRoot.position.z);
+    carRoot.position.y = surfaceY + 0.34;
 
-    // avoid driving backwards through the start line / lap counter
     updateLapProgress(after.index);
 
     carRoot.rotation.y = carState.yaw;
     carRoot.rotation.x = -Math.asin(clamp(after.tangent.y, -0.25, 0.25)) * 0.36;
-    carRoot.rotation.z = -carState.steer * speedFactor * 0.028;
+    carRoot.rotation.z = -carState.steer * speedFactor * 0.04 - lateral * 0.0035;
 
     if (carVisual) {
         carVisual.wheels.forEach((wheel, index) => {
             wheel.rotation.x += carState.speed * dt / 0.36;
-            if (index < 2) {
-                wheel.parent.rotation.y = carState.steer * 0.38;
-            }
+            if (index < 2) wheel.parent.rotation.y = carState.steer * 0.42;
         });
-        carVisual.underglow.material.opacity = 0.06 + speedFactor * 0.12;
+        carVisual.underglow.material.opacity = 0.05 + speedFactor * 0.12;
+        updateNitroFlames(wantNitro);
     }
 
+    updateSkidMarks(dt, onRoad);
     updateChaseCamera(dt);
-    hudSpeed.textContent = String(Math.round(carState.speed * 3.6));
+    hudSpeed.textContent = String(Math.round(Math.abs(carState.speed) * 3.6));
     hudLap.textContent = `LAP ${Math.min(race.lap, TOTAL_LAPS)} / ${TOTAL_LAPS}`;
     raceTime.textContent = formatTime(race.time);
+    nitroFill.style.width = `${Math.round(carState.nitro * 100)}%`;
+    nitroText.textContent = `${Math.round(carState.nitro * 100)}%`;
+    if (!countdown.hidden) return;
+    raceStatus.textContent = performance.now() < carState.hitUntil ? '碰撞！' : carState.drifting ? '漂移中' : !onRoad ? '越野中' : wantNitro ? '氮气加速' : '比赛进行中';
+}
+
+function addCollider(x, z, radius) {
+    colliders.push({ x, z, radius });
+}
+
+function resolveStaticCollisions() {
+    if (!colliders.length || !carRoot) return;
+    const carRadius = 1.05;
+    colliders.forEach(collider => {
+        const dx = carRoot.position.x - collider.x;
+        const dz = carRoot.position.z - collider.z;
+        const distance = Math.hypot(dx, dz);
+        const minDistance = carRadius + collider.radius;
+        if (distance > 0.01 && distance < minDistance) {
+            const nx = dx / distance;
+            const nz = dz / distance;
+            const push = minDistance - distance;
+            carRoot.position.x += nx * push;
+            carRoot.position.z += nz * push;
+            const vn = carState.velocity.x * nx + carState.velocity.z * nz;
+            if (vn < 0) {
+                carState.velocity.x -= nx * vn * 1.15;
+                carState.velocity.z -= nz * vn * 1.15;
+            }
+            carState.velocity.multiplyScalar(0.48);
+            carState.speed *= 0.48;
+            flashRace();
+            carState.hitUntil = performance.now() + 750;
+            raceStatus.textContent = '碰撞！';
+        }
+    });
+}
+
+function resolveTrafficCollisions() {
+    if (!aiCars.length) return;
+    const hitRadius = 2.25;
+    aiCars.forEach(ai => {
+        const dx = carRoot.position.x - ai.group.position.x;
+        const dz = carRoot.position.z - ai.group.position.z;
+        const distance = Math.hypot(dx, dz);
+        if (distance > 0.01 && distance < hitRadius) {
+            const nx = dx / distance;
+            const nz = dz / distance;
+            const push = hitRadius - distance;
+            carRoot.position.x += nx * push;
+            carRoot.position.z += nz * push;
+            const vn = carState.velocity.x * nx + carState.velocity.z * nz;
+            if (vn < 0) {
+                carState.velocity.x -= nx * vn * 1.35;
+                carState.velocity.z -= nz * vn * 1.35;
+            }
+            carState.velocity.multiplyScalar(0.62);
+            carState.speed *= 0.62;
+            flashRace();
+            carState.hitUntil = performance.now() + 750;
+            raceStatus.textContent = '碰撞！';
+            ai.speed = Math.max(8, ai.speed * 0.88);
+        }
+    });
 }
 
 function updateLapProgress(index) {
@@ -2333,6 +2784,7 @@ function flashRace() {
 function tick(dt) {
     if (mode === 'menu') {
         updateMenuCamera(dt);
+        updateTraffic(dt * 0.22);
         if (weather) weather.update(dt, carRoot.position);
         return;
     }
@@ -2362,6 +2814,7 @@ function tick(dt) {
     }
     if (mode === 'racing') {
         race.time += dt;
+        updateTraffic(dt);
         updateCar(dt);
         if (weather) weather.update(dt, carRoot.position);
         updateEngineSound();
@@ -2421,6 +2874,8 @@ function bindUi() {
     $('soundBtn').innerHTML = `<i class="fas fa-volume-${audioMuted ? 'xmark' : 'high'}" aria-hidden="true"></i>`;
     $('soundBtn').classList.toggle('is-muted', audioMuted);
 }
+
+
 
 
 

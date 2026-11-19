@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/racing3d.css?v=20261119-2">
+    <link rel="stylesheet" href="css/racing3d.css?v=20261119-4">
 </head>
 <body class="racing-page">
     <div id="nav-placeholder"></div>
@@ -83,7 +83,7 @@
                                 <button type="button" class="race-primary-btn" id="startRaceBtn"><i class="fas fa-flag-checkered" aria-hidden="true"></i> 开始比赛</button>
                                 <button type="button" class="race-secondary-btn" id="garageBtn2"><i class="fas fa-car-side" aria-hidden="true"></i> 赛车与升级</button>
                             </div>
-                            <p class="race-hint"><kbd>WASD</kbd> / <kbd>方向键</kbd> 驾驶 · <kbd>空格</kbd> 刹车 · <kbd>R</kbd> 回到赛道 · <kbd>Esc</kbd> 暂停</p>
+                            <p class="race-hint"><kbd>WASD</kbd> / <kbd>方向键</kbd> 驾驶 · <kbd>S</kbd> 刹车 / 倒车 · <kbd>空格</kbd>/<kbd>Shift</kbd> 漂移 · <kbd>X</kbd> 氮气 · <kbd>R</kbd> 回到赛道 · <kbd>Esc</kbd> 暂停</p>
                         </aside>
                     </div>
                 </div>
@@ -98,6 +98,11 @@
                     <div class="race-countdown" id="countdown" hidden>3</div>
                     <span class="race-timer" id="raceTime">00:00.000</span>
                     <span class="race-hud-status" id="raceStatus">准备发车</span>
+                    <div class="race-nitro" aria-label="氮气">
+                        <span>N2O</span>
+                        <div class="race-nitro-track"><i id="nitroFill"></i></div>
+                        <small id="nitroText">100%</small>
+                    </div>
                 </div>
                 <div class="race-hud-right">
                     <div class="race-speed"><strong id="hudSpeed">0</strong><span>KM/H</span></div>
@@ -112,8 +117,12 @@
                     <button type="button" class="touch-btn touch-btn--steer" data-control="right" aria-label="向右"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
                 </div>
                 <div class="touch-pedals">
-                    <button type="button" class="touch-btn touch-btn--brake" data-control="brake" aria-label="刹车">刹车</button>
+                    <button type="button" class="touch-btn touch-btn--brake" data-control="brake" aria-label="刹车 / 倒车">刹车</button>
                     <button type="button" class="touch-btn touch-btn--throttle" data-control="throttle" aria-label="油门">油门</button>
+                </div>
+                <div class="touch-aux">
+                    <button type="button" class="touch-btn touch-btn--aux" data-control="drift" aria-label="手刹漂移">漂移</button>
+                    <button type="button" class="touch-btn touch-btn--aux touch-btn--nitro" data-control="nitro" aria-label="氮气加速">N2O</button>
                 </div>
             </div>
 
@@ -179,6 +188,6 @@
     <script type="importmap">
         { "imports": { "three": "./js/vendor/three.module.min.js" } }
     </script>
-    <script type="module" src="js/racing3d.js?v=20261119-4"></script>
+    <script type="module" src="js/racing3d.js?v=20261119-12"></script>
 </body>
 </html>

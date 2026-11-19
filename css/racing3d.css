@@ -496,6 +496,10 @@ kbd {
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.68);
 }
 .race-hud-status { display: block; margin-top: 3px; color: #b3c9cb; font-size: 0.56rem; letter-spacing: 0.06em; }
+.race-nitro { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 6px; color: #9ff7ff; font-family: var(--race-mono); font-size: 0.45rem; }
+.race-nitro-track { width: 74px; height: 4px; overflow: hidden; background: rgba(157, 224, 231, 0.18); border-radius: 99px; }
+#nitroFill { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, #59d7ff, #b8fff4); border-radius: inherit; transition: width 0.12s linear; }
+.race-nitro small { min-width: 28px; color: #8db8bc; font-size: 0.43rem; }
 .race-countdown {
     position: fixed;
     left: 50%;
@@ -582,6 +586,9 @@ kbd {
     border-color: rgba(255, 201, 118, 0.48);
 }
 .touch-btn--brake { color: #ffd2c9; border-color: rgba(255, 145, 126, 0.35); }
+.touch-aux { position: absolute; right: 0; bottom: 78px; display: flex; gap: 6px; pointer-events: auto; }
+.touch-btn--aux { width: 44px; height: 44px; font-size: 0.48rem; border-radius: 11px; }
+.touch-btn--nitro { color: #a9fcff; border-color: rgba(103, 237, 255, 0.48); background: rgba(12, 55, 67, 0.38); }
 .lap-toast {
     position: absolute;
     left: 50%;
@@ -857,6 +864,8 @@ kbd {
     .race-touch-controls { left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); }
     .touch-btn { width: 56px; height: 56px; }
     .touch-btn--throttle { width: 61px; height: 61px; }
+    .touch-btn--aux { width: 42px; height: 42px; }
+    .touch-aux { bottom: 72px; }
     .race-modal { padding: 18px; }
     .race-result-modal h2 { font-size: 1.8rem; }
 }
@@ -871,6 +880,8 @@ kbd {
     #hudLap { font-size: 0.6rem; }
     .race-hud-center { min-width: 105px; }
     .race-timer { font-size: 0.85rem; }
+    .race-nitro { margin-top: 3px; }
+    .race-nitro-track { width: 58px; }
     .race-speed { min-width: 62px; }
     .race-speed strong { font-size: 0.9rem; }
     .race-speed span { font-size: 0.38rem; }
