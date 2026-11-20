@@ -140,6 +140,27 @@
         .guide-name { min-width: 0; overflow: hidden; color: var(--ink); font-size: 0.58rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
         .guide-tier { margin-left: auto; color: #9a8767; font-family: var(--font-mono); font-size: 0.5rem; }
         .guide-note { margin: 10px 0 0; padding-top: 8px; border-top: 1px dashed #d8ccb4; color: #7a7564; font-size: 0.62rem; line-height: 1.55; }
+
+        .tool-shop { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #d8ccb4; }
+        .tool-shop-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+        .tool-shop-head h3 { margin: 0; font-size: 0.75rem; letter-spacing: 0.02em; }
+        .tool-shop-head span { color: var(--sun-deep); font-family: var(--font-mono); font-size: 0.58rem; font-weight: 700; }
+        .tool-item { display: flex; align-items: center; gap: 7px; padding: 7px; background: #fffaf0; border: 1px solid #d8ccb4; border-radius: 9px; }
+        .tool-icon { flex: 0 0 27px; width: 27px; height: 27px; display: grid; place-items: center; background: #f1e4c8; border-radius: 8px; font-size: 1rem; }
+        .tool-copy { min-width: 0; flex: 1; }
+        .tool-copy strong { display: block; font-size: 0.66rem; }
+        .tool-copy small { display: block; margin-top: 2px; color: var(--muted); font-size: 0.52rem; line-height: 1.4; }
+        .tool-buy { min-height: 29px; padding: 3px 7px; border: 1px solid var(--sun-deep); border-radius: 6px; background: #f6dfaa; color: #6d4518; font-size: 0.56rem; font-weight: 800; cursor: pointer; white-space: nowrap; }
+        .tool-buy:hover { background: #f0d28d; }
+        .tool-buy:disabled { opacity: 0.4; cursor: not-allowed; }
+        .tool-inventory { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; color: var(--muted); font-size: 0.56rem; }
+        .tool-inventory strong { color: var(--ink); font-family: var(--font-mono); }
+        .tool-inventory button { min-height: 28px; padding: 3px 9px; border: 1px solid #9cae86; border-radius: 6px; background: #e4efd5; color: var(--green-deep); font-size: 0.56rem; font-weight: 800; cursor: pointer; }
+        .tool-inventory button:hover { background: #d6e8c1; }
+        .tool-inventory button.is-active { background: #c87562; border-color: #a45240; color: #fffaf0; }
+        .tool-shop-hint { margin: 6px 0 0; color: var(--muted); font-size: 0.53rem; line-height: 1.5; }
+        #gameCanvas.is-removing { cursor: crosshair; box-shadow: inset 0 0 0 4px rgba(200, 117, 98, 0.38); }
+
         .danger-key { display: inline-block; width: 9px; height: 9px; margin-right: 4px; border-radius: 50%; background: var(--danger); vertical-align: -1px; }
 
         .game-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 17px; padding-top: 12px; border-top: 2px solid var(--paper-deep); color: var(--muted); font-size: 0.65rem; }
@@ -212,6 +233,27 @@
                 <h2>合成顺序</h2>
                 <p>相同水果合成下一阶。红色虚线是危险线。</p>
                 <div class="guide-grid" id="guideGrid"></div>
+
+                <div class="tool-shop" id="toolShop">
+                    <div class="tool-shop-head">
+                        <h3>道具商店</h3>
+                        <span>当前积分 <b id="toolScore">0</b></span>
+                    </div>
+                    <div class="tool-item">
+                        <span class="tool-icon">🔨</span>
+                        <div class="tool-copy">
+                            <strong>消除锤 · 1000 分</strong>
+                            <small>购买后点击“使用”，再点击一个水果将其移除。</small>
+                        </div>
+                        <button type="button" class="tool-buy" id="buyHammerBtn">购买</button>
+                    </div>
+                    <div class="tool-inventory">
+                        <span>持有 <strong id="hammerCount">0</strong> 个消除锤</span>
+                        <button type="button" id="useHammerBtn">使用</button>
+                    </div>
+                    <p class="tool-shop-hint" id="toolHint">道具会保存在本机，重新开始不会丢失。</p>
+                </div>
+
                 <p class="guide-note"><span class="danger-key"></span>水果堆过危险线约 2 秒，本局结束。合成西瓜是最高阶，两个西瓜会直接消失并给分。</p>
             </aside>
         </main>
@@ -237,8 +279,10 @@
             const FRUIT_RESTITUTION = 0.38;
             const FLOOR_RESTITUTION = 0.32;
             const WALL_RESTITUTION = 0.42;
-            const FRUIT_FRICTION = 0.24;
+            const FRUIT_FRICTION = 0.1;
             const SOLVER_ITERATIONS = 10;
+            const HAMMER_COST = 1000;
+            const TOOL_KEY = 'wza.fruitmerge.tools.v1';
             const BEST_KEY = 'wza.fruitmerge.best.v1';
             const SOUND_KEY = 'wza.fruitmerge.sound.v1';
             const FRUITS = [
@@ -271,6 +315,11 @@
             const soundBtn = document.getElementById('soundBtn');
             const restartBtn = document.getElementById('restartBtn');
             const overlayRestart = document.getElementById('overlayRestart');
+            const toolScoreEl = document.getElementById('toolScore');
+            const hammerCountEl = document.getElementById('hammerCount');
+            const buyHammerBtn = document.getElementById('buyHammerBtn');
+            const useHammerBtn = document.getElementById('useHammerBtn');
+            const toolHint = document.getElementById('toolHint');
 
             let bodies = [];
             let particles = [];
@@ -289,6 +338,8 @@
             let lastFrame = 0;
             let nextId = 1;
             let audioCtx = null;
+            let hammers = readTools();
+            let removeMode = false;
 
             function readNumber(key) {
                 try {
@@ -315,6 +366,19 @@
                 try { localStorage.setItem(SOUND_KEY, sound ? 'on' : 'off'); } catch (error) {}
             }
 
+            function readTools() {
+                try {
+                    const raw = JSON.parse(localStorage.getItem(TOOL_KEY) || 'null');
+                    return Math.max(0, Math.min(99, Math.floor(Number(raw && raw.hammers) || 0)));
+                } catch (error) {
+                    return 0;
+                }
+            }
+
+            function saveTools() {
+                try { localStorage.setItem(TOOL_KEY, JSON.stringify({ hammers })); } catch (error) {}
+            }
+
             function randomDropTier() {
                 const roll = Math.random();
                 if (roll < 0.42) return 0;
@@ -338,8 +402,6 @@
                     vy,
                     r: fruit.r,
                     age: 0,
-                    squash: 0,
-                    squashV: 0,
                     dead: false
                 };
             }
@@ -377,6 +439,13 @@
                 nextName.textContent = FRUITS[nextTier].name;
                 soundBtn.textContent = `音效：${sound ? '开' : '关'}`;
                 soundBtn.classList.toggle('is-muted', !sound);
+                toolScoreEl.textContent = String(score);
+                hammerCountEl.textContent = String(hammers);
+                buyHammerBtn.disabled = gameOver || score < HAMMER_COST || hammers >= 99;
+                buyHammerBtn.textContent = `购买 · ${HAMMER_COST}`;
+                useHammerBtn.disabled = gameOver || hammers <= 0;
+                useHammerBtn.textContent = removeMode ? '取消' : '使用';
+                useHammerBtn.classList.toggle('is-active', removeMode);
             }
 
             function buildGuide() {
@@ -431,8 +500,54 @@
                 }
             }
 
+            function buyHammer() {
+                if (gameOver || score < HAMMER_COST || hammers >= 99) return;
+                score -= HAMMER_COST;
+                hammers += 1;
+                saveTools();
+                toolHint.textContent = '已购买 1 个消除锤，点击“使用”后选择水果。';
+                updateHud();
+            }
+
+            function toggleRemoveMode() {
+                if (gameOver || hammers <= 0) return;
+                removeMode = !removeMode;
+                canvas.classList.toggle('is-removing', removeMode);
+                toolHint.textContent = removeMode ? '消除模式：点击一个水果将其移除。' : '购买后可点“使用”，再点击水果。';
+                updateHud();
+            }
+
+            function removeFruitAtEvent(event) {
+                if (!removeMode || hammers <= 0) return;
+                const point = eventToBoard(event);
+                let target = -1;
+                let bestDistance = Infinity;
+                bodies.forEach((body, index) => {
+                    if (body.dead) return;
+                    const distance = Math.hypot(body.x - point.x, body.y - point.y);
+                    if (distance <= body.r + 10 && distance < bestDistance) {
+                        bestDistance = distance;
+                        target = index;
+                    }
+                });
+                if (target < 0) {
+                    toolHint.textContent = '没有点到水果，请再点一次。';
+                    return;
+                }
+                const body = bodies[target];
+                bodies.splice(target, 1);
+                createParticles(body.x, body.y, FRUITS[body.tier].color);
+                hammers -= 1;
+                saveTools();
+                removeMode = false;
+                canvas.classList.remove('is-removing');
+                toolHint.textContent = '消除完成。';
+                sfx('merge', body.tier);
+                updateHud();
+            }
+
             function dropFruit() {
-                if (gameOver || !canDrop) return;
+                if (gameOver || !canDrop || removeMode) return;
                 const fruit = FRUITS[currentTier];
                 const x = clampX(pointerX, fruit.r);
                 bodies.push(createBody(currentTier, x, DROP_Y, 0, 120));
@@ -502,8 +617,9 @@
                 const nx = distance > 0.001 ? dx / distance : 1;
                 const ny = distance > 0.001 ? dy / distance : 0;
                 const overlap = minDistance - Math.max(distance, 0.001);
-                const massA = a.r * a.r;
-                const massB = b.r * b.r;
+                // 用体积近似质量：大水果明显更重，碰撞时不会被小水果轻易顶飞
+                const massA = a.r * a.r * a.r;
+                const massB = b.r * b.r * b.r;
                 const invA = 1 / massA;
                 const invB = 1 / massB;
                 const invSum = invA + invB;
@@ -522,7 +638,7 @@
                 if (along < 0) {
                     const impact = -along;
                     // 小碰撞不反弹，大碰撞才有弹性；避免静置时持续抖动
-                    const restitution = impact > 90 ? FRUIT_RESTITUTION : impact > 28 ? 0.14 : 0;
+                    const restitution = impact > 140 ? FRUIT_RESTITUTION : impact > 45 ? 0.08 : 0;
                     const impulse = -(1 + restitution) * along / invSum;
                     a.vx -= impulse * invA * nx;
                     a.vy -= impulse * invA * ny;
@@ -539,11 +655,6 @@
                     b.vx += frictionImpulse * invB * tx;
                     b.vy += frictionImpulse * invB * ty;
 
-                    if (impact > 32) {
-                        const squash = Math.min(0.2, impact / 620);
-                        a.squash = Math.max(a.squash || 0, squash);
-                        b.squash = Math.max(b.squash || 0, squash);
-                    }
                 }
 
                 a.x = clampX(a.x, a.r);
@@ -563,9 +674,6 @@
                     if (body.vy > 0) {
                         const impact = body.vy;
                         body.vy = impact > 70 ? -impact * FLOOR_RESTITUTION : 0;
-                        if (impact > 120) {
-                            body.squash = Math.max(body.squash || 0, Math.min(0.24, impact / 2200));
-                        }
                     }
                     // 地面横向摩擦很轻，水果不会像粘在地上一样
                     body.vx *= 0.9995;
@@ -580,11 +688,6 @@
                     body.vx *= 0.9995;
                     body.x += body.vx * dt;
                     body.y += body.vy * dt;
-
-                    // 弹性回弹：挤压值是一个衰减弹簧
-                    body.squashV += (-body.squash * 260 - body.squashV * 17) * dt;
-                    body.squash += body.squashV * dt;
-                    body.squash = Math.max(-0.24, Math.min(0.24, body.squash));
                 });
 
                 for (let iteration = 0; iteration < SOLVER_ITERATIONS; iteration += 1) {
@@ -612,17 +715,17 @@
                     }
                 });
 
-                // 支撑面上的微速度归零：避免水果像黏在一起一样持续抖动
+                // 稳定接触面，避免重力反复把堆叠水果弹起；不冻结横向速度，避免重新变“黏”
                 bodies.forEach(body => {
                     if (body.dead) return;
-                    const onFloor = body.y + body.r >= FLOOR - 1.2;
+                    const onFloor = body.y + body.r >= FLOOR - 1.0;
                     const onFruit = bodies.some(other => other !== body && !other.dead &&
                         other.y > body.y + 0.5 &&
-                        Math.hypot(other.x - body.x, other.y - body.y) <= body.r + other.r + 2.0
+                        Math.hypot(other.x - body.x, other.y - body.y) <= body.r + other.r + 1.6
                     );
-                    if ((onFloor || onFruit) && Math.abs(body.vy) < 14) {
+                    if ((onFloor || onFruit) && Math.abs(body.vy) < 10) {
                         body.vy = 0;
-                        if (Math.abs(body.vx) < 7) body.vx *= 0.75;
+                        if (Math.abs(body.vx) < 0.7) body.vx = 0;
                     }
                 });
 
@@ -650,8 +753,11 @@
             function endGame() {
                 gameOver = true;
                 canDrop = false;
+                removeMode = false;
+                canvas.classList.remove('is-removing');
                 finalScore.textContent = String(score);
                 gameOverlay.hidden = false;
+                updateHud();
                 sfx('over');
             }
 
@@ -667,6 +773,8 @@
                 nextTier = randomDropTier();
                 pointerX = W / 2;
                 gameOverlay.hidden = true;
+                removeMode = false;
+                canvas.classList.remove('is-removing');
                 updateHud();
                 sfx('restart');
             }
@@ -677,8 +785,6 @@
                 ctx.save();
                 ctx.translate(body.x, body.y);
                 ctx.globalAlpha = alpha;
-                const squash = body.squash || 0;
-                ctx.scale(1 + squash, 1 - squash);
 
                 const gradient = ctx.createRadialGradient(-r * 0.32, -r * 0.38, r * 0.08, 0, 0, r);
                 gradient.addColorStop(0, fruit.light);
@@ -833,10 +939,17 @@
                 requestAnimationFrame(loop);
             }
 
-            function pointerToBoard(event) {
+            function eventToBoard(event) {
                 const rect = canvas.getBoundingClientRect();
-                pointerX = (event.clientX - rect.left) / rect.width * W;
-                pointerX = clampX(pointerX, FRUITS[currentTier].r);
+                return {
+                    x: (event.clientX - rect.left) / rect.width * W,
+                    y: (event.clientY - rect.top) / rect.height * H
+                };
+            }
+
+            function pointerToBoard(event) {
+                const point = eventToBoard(event);
+                pointerX = clampX(point.x, FRUITS[currentTier].r);
             }
 
             canvas.addEventListener('pointermove', event => {
@@ -848,7 +961,7 @@
                 if (gameOver) return;
                 ensureAudio();
                 pointerActive = true;
-                pointerToBoard(event);
+                if (!removeMode) pointerToBoard(event);
                 if (canvas.setPointerCapture) {
                     try { canvas.setPointerCapture(event.pointerId); } catch (error) {}
                 }
@@ -856,8 +969,12 @@
 
             canvas.addEventListener('pointerup', event => {
                 if (gameOver || !pointerActive) return;
-                pointerToBoard(event);
                 pointerActive = false;
+                if (removeMode) {
+                    removeFruitAtEvent(event);
+                    return;
+                }
+                pointerToBoard(event);
                 dropFruit();
             });
 
@@ -883,6 +1000,8 @@
 
             restartBtn.addEventListener('click', restart);
             overlayRestart.addEventListener('click', restart);
+            buyHammerBtn.addEventListener('click', buyHammer);
+            useHammerBtn.addEventListener('click', toggleRemoveMode);
 
             document.addEventListener('visibilitychange', () => {
                 lastFrame = 0;
@@ -890,6 +1009,7 @@
 
             buildGuide();
             updateHud();
+
             requestAnimationFrame(loop);
         })();
     </script>
