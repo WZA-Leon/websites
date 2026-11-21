@@ -11,29 +11,31 @@
         { emoji: '🍇', name: '葡萄' },
         { emoji: '🍋', name: '柠檬' },
         { emoji: '🍓', name: '草莓' },
-        { emoji: '🫐', name: '蓝莓' },
+        { emoji: '🍊', name: '橘子' },
         { emoji: '🥝', name: '猕猴桃' }
     ];
     const SPECIAL_TYPES = {
         bomb: { emoji: '💣', name: '炸弹方块' },
         wild: { emoji: '❓', name: '万能方块' }
     };
-    const REWARDS = [
-        'WZA 的赞美：这轮消得真漂亮。',
-        'WZA 隔空亲了你一口（虚拟）。',
-        'WZA 发了 0.00 元红包，并说“拿去买糖”。',
-        'WZA 给你竖了个大大的拇指。',
-        'WZA 请你喝了一杯空气奶茶。',
-        'WZA 摸了摸你的头，说下一轮也拜托了。',
-        'WZA 把“今日消除冠军”的称号借你用一天。',
-        'WZA 认真地说：你比昨天更会玩了。'
-    ];
     const TYPE_INDEXES = TYPES.map((_, index) => index);
-    const SAVE_KEY = 'wza.match3.save.v2';
+    const SAVE_KEY = 'wza.match3.save.v3';
     const BEST_KEY = 'wza.match3.best.v1';
     const START_MOVES = 20;
-    const MAX_MOVES = 40;
-    const MOVES_PER_SCORE = 250;
+    const TOOL_COST = 1000;
+    const LEVELS = [
+        { type: 'score', target: 1200, moves: 20, snow: 0, name: '得分热身' },
+        { type: 'snow', target: 6, moves: 20, snow: 10, name: '初雪' },
+        { type: 'score', target: 2600, moves: 22, snow: 0, name: '连击挑战' },
+        { type: 'snow', target: 9, moves: 22, snow: 14, name: '破冰行动' },
+        { type: 'score', target: 4500, moves: 24, snow: 0, name: '高分冲刺' },
+        { type: 'snow', target: 12, moves: 24, snow: 17, name: '雪原清扫' }
+    ];
+    const TOOL_NAMES = {
+        hammer: '锤子',
+        bomb: '炸弹改造',
+        random: '随机改造'
+    };
 
     const boardEl = document.getElementById('match3Board');
     const fxEl = document.getElementById('match3Fx');
@@ -52,13 +54,26 @@
     const restartBtn = document.getElementById('restartBtn');
     const toastEl = document.getElementById('match3Toast');
     const roundOverlay = document.getElementById('roundOverlay');
-    const roundEndNumberEl = document.getElementById('roundEndNumber');
+    const roundKickerEl = document.getElementById('roundKicker');
+    const roundTitleEl = document.getElementById('roundTitle');
+    const roundCopyEl = document.getElementById('roundCopy');
     const roundEndScoreEl = document.getElementById('roundEndScore');
-    const roundEndTotalEl = document.getElementById('roundEndTotal');
+    const roundEndSnowEl = document.getElementById('roundEndSnow');
+    const roundNextLabelEl = document.getElementById('roundNextLabel');
+    const roundNextTargetEl = document.getElementById('roundNextTarget');
+    const roundNextUnitEl = document.getElementById('roundNextUnit');
     const roundNextMovesEl = document.getElementById('roundNextMoves');
-    const roundBonusSpecialsEl = document.getElementById('roundBonusSpecials');
-    const roundRewardEl = document.getElementById('roundReward');
     const nextRoundBtn = document.getElementById('nextRoundBtn');
+    const modeLabel = document.getElementById('modeLabel');
+    const missionTypeEl = document.getElementById('missionType');
+    const missionTextEl = document.getElementById('missionText');
+    const missionFillEl = document.getElementById('missionFill');
+    const missionProgressEl = document.getElementById('missionProgress');
+    const missionHintEl = document.getElementById('missionHint');
+    const roundSnowEl = document.getElementById('roundSnowValue');
+    const toolButtons = Array.from(document.querySelectorAll('[data-tool]'));
+    const cancelToolBtn = document.getElementById('cancelToolBtn');
+    const toolStatusEl = document.getElementById('toolStatus');
 
     if (!boardEl || !fxEl) return;
 
@@ -80,10 +95,9 @@
     let round = 1;
     let roundStartScore = 0;
     let roundOver = false;
-    let pendingNextMoves = START_MOVES;
-    let pendingStartSpecials = { bombs: 0, wilds: 0 };
-    let pendingReward = '';
-    let lastReward = '';
+    let levelWon = false;
+    let snowCleared = 0;
+    let activeTool = null;
     let dragState = null;
     let suppressClick = false;
     let suppressClickTimer = null;
@@ -105,17 +119,55 @@
         return Math.floor(Math.random() * TYPES.length);
     }
 
+    function levelDefAt(level) {
+        const base = LEVELS[(level - 1) % LEVELS.length];
+        const cycle = Math.floor((level - 1) / LEVELS.length);
+        return {
+            ...base,
+            target: base.type === 'snow'
+                ? base.target + cycle * 2
+                : base.target + cycle * 1500,
+            snow: base.snow + cycle * 2,
+            moves: base.moves + Math.min(6, cycle)
+        };
+    }
+
+    function levelDef() {
+        return levelDefAt(round);
+    }
+
+    function objectiveProgress() {
+        const def = levelDef();
+        return def.type === 'snow'
+            ? snowCleared
+            : Math.max(0, score - roundStartScore);
+    }
+
+    function objectiveMet() {
+        return objectiveProgress() >= levelDef().target;
+    }
+
+    function objectiveLabel(def = levelDef()) {
+        return def.type === 'snow'
+            ? `消除 ${def.target} 块雪`
+            : `达到 ${format(def.target)} 分`;
+    }
+
     function currentTypes() {
         return grid.map(row => row.map(tile => (
             tile && tile.kind === 'normal' ? tile.typeIndex : null
         )));
     }
 
+    function currentFrozen() {
+        return grid.map(row => row.map(tile => Boolean(tile && tile.frozen)));
+    }
+
     function serializeBoard() {
         return grid.map(row => row.map(tile => {
             if (!tile) return null;
             if (tile.kind === 'bomb' || tile.kind === 'wild') return tile.kind;
-            return tile.typeIndex;
+            return tile.frozen ? `f:${tile.typeIndex}` : tile.typeIndex;
         }));
     }
 
@@ -202,16 +254,17 @@
         return vertical >= 3;
     }
 
-    function hasPossibleMoveTypes(types) {
+    function hasPossibleMoveTypes(types, frozen = null) {
+        const isFrozen = (r, c) => Boolean(frozen && frozen[r] && frozen[r][c]);
         for (let r = 0; r < ROWS; r += 1) {
             for (let c = 0; c < COLS; c += 1) {
-                if (c + 1 < COLS) {
+                if (c + 1 < COLS && !isFrozen(r, c) && !isFrozen(r, c + 1)) {
                     [types[r][c], types[r][c + 1]] = [types[r][c + 1], types[r][c]];
                     const possible = matchAtTypes(types, r, c) || matchAtTypes(types, r, c + 1);
                     [types[r][c], types[r][c + 1]] = [types[r][c + 1], types[r][c]];
                     if (possible) return true;
                 }
-                if (r + 1 < ROWS) {
+                if (r + 1 < ROWS && !isFrozen(r, c) && !isFrozen(r + 1, c)) {
                     [types[r][c], types[r + 1][c]] = [types[r + 1][c], types[r][c]];
                     const possible = matchAtTypes(types, r, c) || matchAtTypes(types, r + 1, c);
                     [types[r][c], types[r + 1][c]] = [types[r + 1][c], types[r][c]];
@@ -223,9 +276,9 @@
     }
 
     function hasPossibleMove() {
-        // 场上有炸弹或万能块时，总可以通过交换它们来产生动作。
-        if (grid.flat().some(tile => tile && tile.kind !== 'normal')) return true;
-        return hasPossibleMoveTypes(currentTypes());
+        // 炸弹/万能块只有在没被雪冻住时才能主动交换。
+        if (grid.flat().some(tile => tile && tile.kind !== 'normal' && !tile.frozen)) return true;
+        return hasPossibleMoveTypes(currentTypes(), currentFrozen());
     }
 
     function findMatches() {
@@ -313,7 +366,7 @@
 
         let best = null;
         matched.forEach(tile => {
-            if (tile.kind !== 'normal') return;
+            if (tile.kind !== 'normal' || tile.frozen) return;
             const run = runLengthAt(tile);
             if (!best || run > best.run) best = { tile, run };
         });
@@ -369,6 +422,7 @@
         const victim = neighbors[Math.floor(Math.random() * neighbors.length)];
         score += 10;
         cleared += 1;
+        if (victim.frozen) clearSnow(victim);
         combo = 1;
         if (score > best) best = score;
         updateHud();
@@ -410,6 +464,7 @@
         showScoreFloat(affected, gained, 1);
         spawnParticles(affected);
         affected.forEach(tile => {
+            if (tile.frozen) clearSnow(tile);
             tile.el.classList.add(tile.kind === 'bomb' ? 'is-detonating' : 'is-matched');
         });
         showToast(`💣 炸弹引爆，清出 ${count} 格`);
@@ -423,6 +478,28 @@
 
         await refillBoard();
         await sleep(250);
+    }
+
+    function clearSnow(tile, animate = true) {
+        if (!tile || !tile.frozen) return false;
+        const snow = tile.el.querySelector('.tile-snow');
+        if (snow) {
+            snow.classList.add('is-clearing');
+            if (animate) {
+                tile.el.classList.add('is-snow-clearing');
+                window.setTimeout(() => {
+                    tile.el.classList.remove('is-snow-clearing');
+                    if (snow.isConnected) snow.remove();
+                }, 380);
+            } else {
+                snow.remove();
+            }
+        }
+        tile.frozen = false;
+        tile.el.classList.remove('is-frozen');
+        snowCleared += 1;
+        updateHud();
+        return true;
     }
 
     /* ---------- 渲染 ---------- */
@@ -444,10 +521,12 @@
     }
 
     function createTile(cell, row, col) {
-        const specialKind = cell === 'bomb' || cell === 'wild' ? cell : null;
+        const frozen = typeof cell === 'string' && cell.startsWith('f:');
+        const value = frozen ? Number(cell.slice(2)) : cell;
+        const specialKind = value === 'bomb' || value === 'wild' ? value : null;
         const kind = specialKind || 'normal';
-        const typeIndex = specialKind ? null : cell;
-        const type = specialKind ? SPECIAL_TYPES[specialKind] : typeAt(cell);
+        const typeIndex = specialKind ? null : value;
+        const type = specialKind ? SPECIAL_TYPES[specialKind] : typeAt(typeIndex);
         const tile = {
             id: ++spawnId,
             kind,
@@ -455,19 +534,21 @@
             type,
             row,
             col,
+            frozen,
             el: document.createElement('button')
         };
 
         tile.el.type = 'button';
-        tile.el.className = `tile${specialKind ? ` is-${specialKind}` : ''}`;
-        tile.el.dataset.type = specialKind || String(cell);
-        tile.el.innerHTML = `<span class="tile-face ${specialKind ? `special-${specialKind}` : `type-${cell}`}"><span class="tile-emoji">${type.emoji}</span></span>`;
+        tile.el.className = `tile${specialKind ? ` is-${specialKind}` : ''}${frozen ? ' is-frozen' : ''}`;
+        tile.el.dataset.type = specialKind || String(typeIndex);
+        tile.el.innerHTML = `<span class="tile-face ${specialKind ? `special-${specialKind}` : `type-${typeIndex}`}"><span class="tile-emoji">${type.emoji}</span></span>${frozen ? '<span class="tile-snow" aria-hidden="true"></span>' : ''}`;
         tile.el.addEventListener('click', () => onTileClick(tile));
         tile.el.addEventListener('pointerdown', event => onPointerDown(event, tile));
         tile.el.addEventListener('pointermove', onPointerMove);
         tile.el.addEventListener('pointerup', onPointerUp);
         tile.el.addEventListener('pointercancel', onPointerCancel);
         setTilePosition(tile, row, col, false);
+        tile.el.setAttribute('aria-label', `${type.name}${frozen ? '，被雪冻住' : ''}，第 ${row + 1} 行第 ${col + 1} 列`);
         boardEl.appendChild(tile.el);
 
         return tile;
@@ -486,7 +567,7 @@
             const emoji = face.querySelector('.tile-emoji');
             if (emoji) emoji.textContent = tile.type.emoji;
         }
-        tile.el.setAttribute('aria-label', `${tile.type.name}，第 ${tile.row + 1} 行第 ${tile.col + 1} 列`);
+        tile.el.setAttribute('aria-label', `${tile.type.name}${tile.frozen ? '，被雪冻住' : ''}，第 ${tile.row + 1} 行第 ${tile.col + 1} 列`);
     }
 
     function setTileSpecial(tile, kind) {
@@ -505,7 +586,7 @@
             const emoji = face.querySelector('.tile-emoji');
             if (emoji) emoji.textContent = tile.type.emoji;
         }
-        tile.el.setAttribute('aria-label', `${tile.type.name}，第 ${tile.row + 1} 行第 ${tile.col + 1} 列`);
+        tile.el.setAttribute('aria-label', `${tile.type.name}${tile.frozen ? '，被雪冻住' : ''}，第 ${tile.row + 1} 行第 ${tile.col + 1} 列`);
     }
 
     function buildBoard(cells) {
@@ -530,27 +611,29 @@
         }, 1100);
     }
 
-    function applyStartingSpecials(specials) {
-        const normalTiles = grid.flat().filter(tile => tile && tile.kind === 'normal');
-        if (!normalTiles.length) return;
+    function makeLevelBoard(def) {
+        let fallback = null;
+        for (let attempt = 0; attempt < 80; attempt += 1) {
+            const types = generateTypes();
+            const frozen = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+            if (def.snow > 0) {
+                const positions = Array.from({ length: ROWS * COLS }, (_, index) => index);
+                for (let i = positions.length - 1; i > 0; i -= 1) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [positions[i], positions[j]] = [positions[j], positions[i]];
+                }
+                positions.slice(0, Math.min(def.snow, positions.length)).forEach(index => {
+                    frozen[Math.floor(index / COLS)][index % COLS] = true;
+                });
+            }
 
-        for (let i = normalTiles.length - 1; i > 0; i -= 1) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [normalTiles[i], normalTiles[j]] = [normalTiles[j], normalTiles[i]];
+            const cells = types.map((row, r) => row.map((value, c) => (
+                frozen[r][c] ? `f:${value}` : value
+            )));
+            fallback = cells;
+            if (def.snow === 0 || hasPossibleMoveTypes(types, frozen)) return cells;
         }
-
-        let index = 0;
-        const place = kind => {
-            const tile = normalTiles[index];
-            index += 1;
-            if (!tile) return;
-            setTileSpecial(tile, kind);
-            tile.el.classList.add('is-special-forming');
-            window.setTimeout(() => tile.el.classList.remove('is-special-forming'), 650);
-        };
-
-        for (let i = 0; i < specials.bombs; i += 1) place('bomb');
-        for (let i = 0; i < specials.wilds; i += 1) place('wild');
+        return fallback || generateTypes();
     }
 
     function clearSelection() {
@@ -602,6 +685,14 @@
 
     function onPointerDown(event, tile) {
         if (busy || roundOver || !tile) return;
+        if (activeTool) {
+            setLiveStatus(`点击任意方块使用${TOOL_NAMES[activeTool]}`);
+            return;
+        }
+        if (tile.frozen) {
+            setLiveStatus('雪块冻住了这个方块，不能交换；先消除它');
+            return;
+        }
         if (event.pointerType === 'mouse' && event.button !== 0) return;
 
         event.preventDefault();
@@ -676,7 +767,32 @@
 
     /* ---------- HUD / 存档 ---------- */
 
+    function updateToolButtons() {
+        const def = levelDef();
+        toolButtons.forEach(button => {
+            const type = button.dataset.tool;
+            const isActive = activeTool === type;
+            button.classList.toggle('is-active', isActive);
+            button.disabled = busy || roundOver || (!isActive && score < TOOL_COST);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+        if (cancelToolBtn) cancelToolBtn.hidden = !activeTool;
+        if (toolStatusEl) {
+            toolStatusEl.classList.toggle('is-targeting', Boolean(activeTool));
+            if (activeTool) {
+                toolStatusEl.textContent = `已购买${TOOL_NAMES[activeTool]}，点击棋盘上任意方块使用。`;
+            } else {
+                toolStatusEl.textContent = score >= TOOL_COST
+                    ? '选中道具后，再点棋盘上的方块。'
+                    : `还需要 ${format(Math.max(0, TOOL_COST - score))} 分才能购买道具。`;
+            }
+        }
+        if (missionHintEl) missionHintEl.textContent = `第 ${round} 关 · ${def.name}`;
+    }
+
     function updateHud() {
+        const def = levelDef();
+        const progress = Math.min(objectiveProgress(), def.target);
         if (scoreEl) scoreEl.textContent = format(score);
         if (bestEl) bestEl.textContent = format(best);
         if (movesEl) movesEl.textContent = format(Math.max(0, movesLeft));
@@ -685,10 +801,103 @@
         if (maxComboEl) maxComboEl.textContent = `x${Math.max(1, maxCombo)}`;
         if (roundValueEl) roundValueEl.textContent = String(round);
         if (roundScoreEl) roundScoreEl.textContent = format(Math.max(0, score - roundStartScore));
+        if (roundSnowEl) roundSnowEl.textContent = format(snowCleared);
+        if (missionTypeEl) missionTypeEl.textContent = def.type === 'snow' ? '破冰目标' : '得分目标';
+        if (missionTextEl) missionTextEl.textContent = objectiveLabel(def);
+        if (missionFillEl) missionFillEl.style.width = `${Math.min(100, (progress / Math.max(1, def.target)) * 100)}%`;
+        if (missionProgressEl) {
+            missionProgressEl.textContent = `${format(progress)} / ${format(def.target)}${def.type === 'snow' ? ' 块' : ''}`;
+        }
+        if (modeLabel) {
+            modeLabel.innerHTML = `<i class="fas fa-layer-group" aria-hidden="true"></i> 第 <strong>${round}</strong> 关 · ${def.type === 'snow' ? '破冰目标' : '得分目标'}`;
+        }
+        updateToolButtons();
     }
 
     function setLiveStatus(text) {
         if (liveStatusEl) liveStatusEl.textContent = text;
+    }
+
+    function cancelTool(refund = true) {
+        if (!activeTool) return;
+        const tool = activeTool;
+        activeTool = null;
+        if (refund) score += TOOL_COST;
+        boardWrap.classList.remove('is-tool-mode');
+        updateHud();
+        if (refund) {
+            showToast(`已取消${TOOL_NAMES[tool]}，${format(TOOL_COST)} 分已退回`);
+            setLiveStatus('已取消道具');
+        }
+    }
+
+    function activateTool(type) {
+        if (busy || roundOver || !TOOL_NAMES[type]) return;
+        if (activeTool === type) {
+            cancelTool(true);
+            return;
+        }
+        if (activeTool) cancelTool(true);
+        if (score < TOOL_COST) {
+            showToast(`还差 ${format(TOOL_COST - score)} 分才能购买${TOOL_NAMES[type]}`);
+            return;
+        }
+        score -= TOOL_COST;
+        activeTool = type;
+        clearSelection();
+        boardWrap.classList.add('is-tool-mode');
+        updateHud();
+        showToast(`已购买${TOOL_NAMES[type]}，点击任意方块使用`);
+        setLiveStatus(`点击任意方块使用${TOOL_NAMES[type]}`);
+    }
+
+    async function useTool(tile) {
+        if (!activeTool || busy || roundOver || !tile) return;
+        const tool = activeTool;
+        activeTool = null;
+        boardWrap.classList.remove('is-tool-mode');
+        busy = true;
+        clearSelection();
+        updateHud();
+        setLiveStatus(`正在使用${TOOL_NAMES[tool]}…`);
+
+        if (tile.frozen) clearSnow(tile);
+
+        if (tool === 'hammer') {
+            sfx.play('bomb', { count: 1 });
+            tile.el.classList.add('is-hammered');
+            await sleep(190);
+            if (tile.el.isConnected) tile.el.remove();
+            grid[tile.row][tile.col] = null;
+            await refillBoard();
+            await resolveMatches();
+        } else if (tool === 'bomb') {
+            setTileSpecial(tile, 'bomb');
+            tile.el.classList.remove('is-hammered', 'is-tool-flash');
+            tile.el.classList.add('is-tool-flash');
+            window.setTimeout(() => tile.el.classList.remove('is-tool-flash'), 500);
+            sfx.play('specialBomb');
+            showToast('方块已改造成 💣 炸弹');
+            await sleep(300);
+        } else {
+            setTileType(tile, randomTypeIndex());
+            tile.el.classList.remove('is-tool-flash');
+            tile.el.classList.add('is-tool-flash');
+            window.setTimeout(() => tile.el.classList.remove('is-tool-flash'), 500);
+            sfx.play('specialWild');
+            showToast('方块已变成随机方块');
+            await sleep(250);
+            await resolveMatches();
+        }
+
+        if (!roundOver) {
+            busy = false;
+            updateHud();
+            if (!evaluateLevel()) {
+                saveProgress();
+                setLiveStatus('道具使用完毕，继续消除吧');
+            }
+        }
     }
 
     function markSaved(text = '进度已保存') {
@@ -711,70 +920,55 @@
         }
     }
 
-    function calcNextMoves(roundScore) {
-        return Math.min(
-            MAX_MOVES,
-            START_MOVES + Math.floor(Math.max(0, roundScore) / MOVES_PER_SCORE)
-        );
-    }
-
-    function calcStartSpecials(roundScore) {
-        const wilds = Math.min(2, 1 + (roundScore >= 1000 ? 1 : 0));
-        const bombs = roundScore >= 2000
-            ? Math.min(2, 1 + (roundScore >= 5000 ? 1 : 0))
-            : 0;
-        return { bombs, wilds };
-    }
-
-    function specialsLabel(specials) {
-        const parts = [];
-        if (specials.bombs > 0) parts.push(`💣×${specials.bombs}`);
-        if (specials.wilds > 0) parts.push(`❓×${specials.wilds}`);
-        return parts.length ? parts.join(' · ') : '无';
-    }
-
-    function pickReward() {
-        const candidates = REWARDS.filter(reward => reward !== lastReward);
-        const pool = candidates.length ? candidates : REWARDS;
-        const reward = pool[Math.floor(Math.random() * pool.length)];
-        lastReward = reward;
-        return reward;
-    }
-
     function hideRoundOverlay() {
         if (roundOverlay) roundOverlay.hidden = true;
     }
 
-    function showRoundOverlay() {
-        const roundScore = Math.max(0, score - roundStartScore);
-        pendingNextMoves = calcNextMoves(roundScore);
-        pendingStartSpecials = calcStartSpecials(roundScore);
-        if (!pendingReward) pendingReward = pickReward();
+    function showLevelOverlay(won) {
+        roundOver = true;
+        levelWon = Boolean(won);
+        busy = true;
+        clearSelection();
 
-        if (roundEndNumberEl) roundEndNumberEl.textContent = String(round);
-        if (roundEndScoreEl) roundEndScoreEl.textContent = format(roundScore);
-        if (roundEndTotalEl) roundEndTotalEl.textContent = format(score);
-        if (roundNextMovesEl) roundNextMovesEl.textContent = String(pendingNextMoves);
-        if (roundBonusSpecialsEl) roundBonusSpecialsEl.textContent = specialsLabel(pendingStartSpecials);
-        if (roundRewardEl) roundRewardEl.textContent = pendingReward;
-        if (nextRoundBtn) nextRoundBtn.textContent = `开始第 ${round + 1} 轮`;
+        const current = levelDef();
+        const next = levelDefAt(won ? round + 1 : round);
+        const levelScore = Math.max(0, score - roundStartScore);
+        if (roundKickerEl) roundKickerEl.textContent = won ? 'LEVEL COMPLETE' : 'LEVEL FAILED';
+        if (roundTitleEl) roundTitleEl.textContent = won ? `第 ${round} 关完成` : `第 ${round} 关未完成`;
+        if (roundCopyEl) {
+            roundCopyEl.textContent = won
+                ? `目标完成：${objectiveLabel(current)}。`
+                : `步数用完了，本关目标是${objectiveLabel(current)}。重试不会保留本关损失的道具分。`;
+        }
+        if (roundEndScoreEl) roundEndScoreEl.textContent = format(levelScore);
+        if (roundEndSnowEl) roundEndSnowEl.textContent = format(snowCleared);
+        if (roundNextLabelEl) roundNextLabelEl.textContent = won ? '下一关目标' : '本关目标';
+        if (roundNextTargetEl) roundNextTargetEl.textContent = format(next.target);
+        if (roundNextUnitEl) roundNextUnitEl.textContent = next.type === 'snow' ? '块雪' : '分';
+        if (roundNextMovesEl) roundNextMovesEl.textContent = `${next.moves} 步`;
+        if (nextRoundBtn) nextRoundBtn.textContent = won ? '下一关' : '重试本关';
         if (roundOverlay) roundOverlay.hidden = false;
+        updateHud();
     }
 
     function saveProgress(showStatus = true) {
+        if (activeTool) return;
         if (!grid.length) return;
         if (grid.flat().some(tile => !tile)) return;
 
         try {
             const payload = {
-                v: 2,
+                v: 3,
                 board: serializeBoard(),
                 score,
                 movesLeft,
                 cleared,
                 maxCombo,
                 round,
-                roundStartScore
+                roundStartScore,
+                snowCleared,
+                roundOver,
+                levelWon
             };
             localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
             localStorage.setItem(BEST_KEY, String(best));
@@ -782,6 +976,22 @@
         } catch (e) {
             if (showStatus) markSaved('浏览器未允许本地保存');
         }
+    }
+
+    function parseStoredCell(value) {
+        if (Number.isInteger(value) && value >= 0 && value < TYPES.length) {
+            return { value, normalType: value };
+        }
+        if (value === 'bomb' || value === 'wild') {
+            return { value, normalType: null };
+        }
+        if (typeof value === 'string' && value.startsWith('f:')) {
+            const typeIndex = Number(value.slice(2));
+            if (Number.isInteger(typeIndex) && typeIndex >= 0 && typeIndex < TYPES.length) {
+                return { value, normalType: typeIndex };
+            }
+        }
+        return null;
     }
 
     function loadProgress() {
@@ -792,42 +1002,38 @@
             return false;
         }
 
-        if (!data || data.v !== 2 || !Array.isArray(data.board)) return false;
+        if (!data || data.v !== 3 || !Array.isArray(data.board)) return false;
         if (data.board.length !== ROWS) return false;
         if (data.board.some(row => !Array.isArray(row) || row.length !== COLS)) return false;
-        if (data.board.some(row => row.some(value => {
-            const isNormal = Number.isInteger(value) && value >= 0 && value < TYPES.length;
-            return !isNormal && value !== 'bomb' && value !== 'wild';
-        }))) return false;
 
-        const normalTypes = data.board.map(row => row.map(value =>
-            Number.isInteger(value) ? value : null
-        ));
+        const parsedBoard = data.board.map(row => row.map(parseStoredCell));
+        if (parsedBoard.some(row => row.some(cell => !cell))) return false;
 
-        // 存档必须是一个已经稳定、没有现成三连的棋盘。
+        const normalTypes = parsedBoard.map(row => row.map(cell => cell.normalType));
         if (findTypeMatches(normalTypes).size > 0) return false;
 
         score = Number.isFinite(Number(data.score)) ? Math.max(0, Math.floor(Number(data.score))) : 0;
         movesLeft = Number.isFinite(Number(data.movesLeft))
             ? Math.max(0, Math.floor(Number(data.movesLeft)))
-            : START_MOVES;
+            : levelDefAt(Number(data.round) || 1).moves;
         cleared = Number.isFinite(Number(data.cleared)) ? Math.max(0, Math.floor(Number(data.cleared))) : 0;
         maxCombo = Number.isFinite(Number(data.maxCombo)) ? Math.max(0, Math.floor(Number(data.maxCombo))) : 0;
         round = Number.isFinite(Number(data.round)) ? Math.max(1, Math.floor(Number(data.round))) : 1;
         roundStartScore = Number.isFinite(Number(data.roundStartScore))
-            ? Math.max(0, Math.min(score, Math.floor(Number(data.roundStartScore))))
-            : 0;
-        roundOver = movesLeft <= 0;
-        pendingNextMoves = calcNextMoves(score - roundStartScore);
+            ? Math.max(0, Math.floor(Number(data.roundStartScore)))
+            : Math.max(0, score);
+        snowCleared = Number.isFinite(Number(data.snowCleared)) ? Math.max(0, Math.floor(Number(data.snowCleared))) : 0;
+        levelWon = Boolean(data.levelWon);
+        roundOver = Boolean(data.roundOver) || movesLeft <= 0 || objectiveMet();
+        if (roundOver) levelWon = Boolean(data.levelWon) || objectiveMet();
         best = Math.max(readBest(), score);
         buildBoard(data.board);
         updateHud();
         markSaved('已恢复上次进度');
 
         if (roundOver) {
-            busy = true;
-            showRoundOverlay();
-            setLiveStatus('本轮步数用完了，准备下一轮');
+            showLevelOverlay(levelWon);
+            setLiveStatus(levelWon ? '关卡完成' : '关卡未完成');
         } else {
             setLiveStatus('欢迎回来，继续消除吧');
         }
@@ -901,10 +1107,27 @@
 
         for (let c = 0; c < COLS; c += 1) {
             let writeRow = ROWS - 1;
+            const spawnAt = row => {
+                const tile = createTile(randomTypeIndex(), row, c);
+                grid[row][c] = tile;
+                drops.push({ tile, row, col: c });
+            };
 
             for (let r = ROWS - 1; r >= 0; r -= 1) {
                 const tile = grid[r][c];
                 if (!tile) continue;
+
+                // 雪块像钉子一样固定在原地，不参与下落。
+                if (tile.frozen) {
+                    while (writeRow > r) {
+                        spawnAt(writeRow);
+                        writeRow -= 1;
+                    }
+                    grid[r][c] = tile;
+                    writeRow = r - 1;
+                    continue;
+                }
+
                 if (r !== writeRow) {
                     grid[writeRow][c] = tile;
                     grid[r][c] = null;
@@ -913,20 +1136,15 @@
                 writeRow -= 1;
             }
 
-            const emptyCount = writeRow + 1;
-            for (let r = writeRow; r >= 0; r -= 1) {
-                const typeIndex = randomTypeIndex();
-                const startRow = r - emptyCount;
-                const tile = createTile(typeIndex, startRow, c);
-                grid[r][c] = tile;
-                drops.push({ tile, row: r, col: c });
+            while (writeRow >= 0) {
+                spawnAt(writeRow);
+                writeRow -= 1;
             }
         }
 
         if (drops.length) {
             await nextFrame();
             drops.forEach(({ tile, row, col }) => {
-                setTilePosition(tile, row, col, true);
                 tile.el.classList.add('is-new');
                 window.setTimeout(() => tile.el.classList.remove('is-new'), 340);
             });
@@ -943,9 +1161,10 @@
         boardWrap.classList.add('is-shaking');
 
         let types = null;
+        const frozen = currentFrozen();
         for (let attempt = 0; attempt < 120; attempt += 1) {
             const candidate = makeRandomTypes();
-            if (findTypeMatches(candidate).size === 0 && hasPossibleMoveTypes(candidate)) {
+            if (findTypeMatches(candidate).size === 0 && hasPossibleMoveTypes(candidate, frozen)) {
                 types = candidate;
                 break;
             }
@@ -967,6 +1186,7 @@
         boardWrap.classList.remove('is-shaking');
         setLiveStatus('洗牌完成，继续消除吧');
         busy = wasBusy;
+        updateHud();
     }
 
     async function ensurePlayable() {
@@ -1005,6 +1225,7 @@
             sfx.play(cascade > 1 ? 'cascade' : 'match', { count, cascade });
 
             matched.forEach(tile => {
+                if (tile.frozen) clearSnow(tile);
                 tile.el.classList.add(special && tile === special.tile ? 'is-forming' : 'is-matched');
             });
             await sleep(250);
@@ -1040,13 +1261,19 @@
         combo = 0;
         updateHud();
         if (newBest) celebrateBest();
-        if (movesLeft > 0) await ensurePlayable();
-        saveProgress();
-        setLiveStatus(movesLeft > 0 ? '继续消除吧' : '本轮步数用完了');
+        if (!evaluateLevel()) {
+            if (movesLeft > 0) await ensurePlayable();
+            saveProgress();
+            setLiveStatus(movesLeft > 0 ? '继续消除吧' : '步数用完了');
+        }
     }
 
     async function attemptSwap(a, b) {
-        if (busy || roundOver) return;
+        if (busy || roundOver || activeTool) return;
+        if (!a || !b || a.frozen || b.frozen) {
+            showToast('被雪冻住的方块不能交换');
+            return;
+        }
         busy = true;
         clearSelection();
         sfx.play('swap');
@@ -1061,13 +1288,11 @@
             updateHud();
             await detonateBomb(bombTile);
             await resolveMatches();
-            busy = false;
-
-            if (movesLeft <= 0) {
-                endRound();
-                return;
+            if (!roundOver) {
+                busy = false;
+                updateHud();
+                if (!evaluateLevel()) saveProgress();
             }
-            saveProgress();
             return;
         }
 
@@ -1113,13 +1338,11 @@
         movesLeft = Math.max(0, movesLeft - 1);
         updateHud();
         await resolveMatches();
-        busy = false;
-
-        if (movesLeft <= 0) {
-            endRound();
-            return;
+        if (!roundOver) {
+            busy = false;
+            updateHud();
+            if (!evaluateLevel()) saveProgress();
         }
-        saveProgress();
     }
 
     function onTileClick(tile) {
@@ -1132,6 +1355,18 @@
 
     function handleTileSelection(tile) {
         if (busy || roundOver || !tile) return;
+
+        if (activeTool) {
+            useTool(tile);
+            return;
+        }
+
+        if (tile.frozen) {
+            sfx.play('invalid');
+            setLiveStatus('雪块冻住了这个方块，不能交换；先消除它');
+            showToast('雪块冻住的方块不能移动');
+            return;
+        }
 
         if (!selected) {
             selected = tile;
@@ -1160,70 +1395,94 @@
         attemptSwap(first, tile);
     }
 
-    /* ---------- 轮次 / 开局 ---------- */
+    /* ---------- 关卡 / 开局 ---------- */
 
-    function endRound() {
-        if (roundOver) return;
-
-        roundOver = true;
-        busy = true;
-        clearSelection();
-        pendingNextMoves = calcNextMoves(score - roundStartScore);
-        pendingReward = pickReward();
-        showRoundOverlay();
-        sfx.play('roundEnd', { round });
-        saveProgress();
-        setLiveStatus(`第 ${round} 轮结束，本轮 ${format(score - roundStartScore)} 分`);
+    function evaluateLevel() {
+        if (roundOver) return true;
+        if (objectiveMet()) {
+            endLevel(true);
+            return true;
+        }
+        if (movesLeft <= 0) {
+            endLevel(false);
+            return true;
+        }
+        return false;
     }
 
-    function startNextRound() {
-        if (!roundOver) return;
+    function endLevel(won) {
+        if (roundOver) return;
+        if (activeTool) cancelTool(true);
+        showLevelOverlay(won);
+        sfx.play(won ? 'roundStart' : 'roundEnd', { round });
+        saveProgress();
+        setLiveStatus(won
+            ? `第 ${round} 关完成，继续下一关`
+            : `第 ${round} 关未完成，可以重试`);
+    }
 
-        round += 1;
-        roundStartScore = score;
-        movesLeft = pendingNextMoves || calcNextMoves(0);
+    function beginLevel(level) {
+        round = level;
+        const def = levelDef();
+        movesLeft = def.moves;
+        snowCleared = 0;
         roundOver = false;
+        levelWon = false;
         busy = false;
         combo = 0;
-        const startingSpecials = { ...pendingStartSpecials };
-        const startingReward = pendingReward;
-        hideRoundOverlay();
+        activeTool = null;
         clearSelection();
-        boardWrap.classList.remove('is-shaking');
-        buildBoard(generateTypes());
-        applyStartingSpecials(startingSpecials);
+        hideRoundOverlay();
+        boardWrap.classList.remove('is-shaking', 'is-tool-mode');
+        buildBoard(makeLevelBoard(def));
         updateHud();
         saveProgress();
+        if (!hasPossibleMove()) ensurePlayable();
         sfx.play('roundStart', { round, movesLeft });
-        setLiveStatus(`第 ${round} 轮开始，剩余 ${movesLeft} 步`);
-        if (startingReward) showToast(`WZA 的奖励：${startingReward}`);
-        pendingReward = '';
-        pendingStartSpecials = { bombs: 0, wilds: 0 };
+        setLiveStatus(`第 ${round} 关开始：${objectiveLabel(def)}，剩余 ${movesLeft} 步`);
+    }
+
+    function startNextLevel() {
+        if (!roundOver || !levelWon) return;
+        round += 1;
+        roundStartScore = score;
+        beginLevel(round);
+        markSaved('下一关已保存');
+    }
+
+    function retryLevel() {
+        if (!roundOver || levelWon) return;
+        score = roundStartScore;
+        roundStartScore = score;
+        beginLevel(round);
+        markSaved('本关已重开');
+        showToast('本关重开，道具分不会返还');
     }
 
     function startNewGame() {
         clearSelection();
+        activeTool = null;
+        boardWrap.classList.remove('is-tool-mode');
         round = 1;
-        movesLeft = START_MOVES;
+        movesLeft = levelDefAt(1).moves;
         roundStartScore = 0;
         roundOver = false;
-        pendingNextMoves = START_MOVES;
-        pendingStartSpecials = { bombs: 0, wilds: 0 };
-        pendingReward = '';
+        levelWon = false;
         busy = false;
         score = 0;
         cleared = 0;
         maxCombo = 0;
         combo = 0;
+        snowCleared = 0;
         boardWrap.classList.remove('is-shaking');
         hideRoundOverlay();
 
-        const types = generateTypes();
-        buildBoard(types);
+        buildBoard(makeLevelBoard(levelDef()));
         updateHud();
         saveProgress();
-        markSaved('新棋局已保存');
-        setLiveStatus('第 1 轮开始，拖动或点击交换 emoji');
+        if (!hasPossibleMove()) ensurePlayable();
+        markSaved('新关卡已保存');
+        setLiveStatus(`第 1 关开始：${objectiveLabel()}，拖动或点击交换 emoji`);
     }
 
     function syncSoundToggle() {
@@ -1250,16 +1509,33 @@
                     showToast('等这一轮消除结束再重开吧');
                     return;
                 }
-                if (!window.confirm('重新开始会清空当前分数和进度，最高分会保留。继续吗？')) return;
+                if (!window.confirm('重新开始会清空当前分数和关卡进度，最高分会保留。继续吗？')) return;
                 startNewGame();
             });
         }
 
         if (nextRoundBtn) {
             nextRoundBtn.addEventListener('click', () => {
-                if (roundOver) startNextRound();
+                if (!roundOver) return;
+                if (levelWon) startNextLevel();
+                else retryLevel();
             });
         }
+
+        toolButtons.forEach(button => {
+            button.addEventListener('click', () => activateTool(button.dataset.tool));
+        });
+
+        if (cancelToolBtn) {
+            cancelToolBtn.addEventListener('click', () => cancelTool(true));
+        }
+
+        window.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && activeTool) {
+                event.preventDefault();
+                cancelTool(true);
+            }
+        });
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && !busy) saveProgress(false);

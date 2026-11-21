@@ -171,6 +171,63 @@ body.theme-dark.match3-page {
     box-shadow: 0 20px 55px rgba(48, 29, 88, 0.1);
 }
 
+.match3-mission {
+    max-width: 660px;
+    margin: 0 auto 10px;
+    padding: 10px 12px;
+    background:
+        linear-gradient(135deg, rgba(124, 58, 237, 0.10), rgba(236, 72, 153, 0.06)),
+        var(--m3-card);
+    border: 1px solid rgba(124, 58, 237, 0.18);
+    border-radius: 13px;
+}
+
+.match3-mission-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.match3-mission-type {
+    color: var(--m3-purple);
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+}
+
+.match3-mission-top strong {
+    color: var(--m3-ink);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.match3-mission-bar {
+    height: 8px;
+    margin: 8px 0 5px;
+    overflow: hidden;
+    background: rgba(124, 58, 237, 0.11);
+    border-radius: 999px;
+}
+
+.match3-mission-bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--m3-purple), var(--m3-pink));
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+.match3-mission-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--m3-muted);
+    font-size: 0.6rem;
+    font-variant-numeric: tabular-nums;
+}
+
 .match3-hud {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -267,6 +324,24 @@ body.theme-dark.match3-page {
     cursor: grabbing;
 }
 
+.match3-board-wrap.is-tool-mode .tile {
+    cursor: crosshair;
+}
+
+.match3-board-wrap.is-tool-mode .tile:not(.is-frozen) .tile-face {
+    outline: 2px dashed rgba(251, 191, 36, 0.8);
+    outline-offset: -3px;
+}
+
+.match3-board-wrap.is-tool-mode .tile:hover .tile-face {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+        inset 0 2px 0 rgba(255, 255, 255, 0.42),
+        0 7px 16px rgba(0, 0, 0, 0.24),
+        0 0 22px rgba(251, 191, 36, 0.72);
+}
+
 .tile.is-dragging .tile-face {
     outline: 3px solid #fbbf24;
     outline-offset: -2px;
@@ -319,6 +394,7 @@ body.theme-dark.match3-page {
 .tile-emoji {
     position: relative;
     z-index: 1;
+    /* frozen tiles keep the emoji visible under a frost layer */
     display: grid;
     place-items: center;
     width: 72%;
@@ -370,9 +446,9 @@ body.theme-dark.match3-page {
 }
 
 .tile-face.type-4 {
-    --tile-bg: linear-gradient(145deg, #93c5fd 0%, #2563eb 52%, #1e3a8a 100%);
-    --tile-edge: #bfdbfe;
-    --tile-glow: rgba(59, 130, 246, 0.4);
+    --tile-bg: linear-gradient(145deg, #fed7aa 0%, #f97316 52%, #7c2d12 100%);
+    --tile-edge: #ffedd5;
+    --tile-glow: rgba(249, 115, 22, 0.42);
 }
 
 .tile-face.type-5 {
@@ -382,7 +458,7 @@ body.theme-dark.match3-page {
 }
 
 @media (hover: hover) {
-    .tile:hover .tile-face {
+    .tile:not(.is-frozen):hover .tile-face {
         transform: translateY(-2px);
         box-shadow:
             inset 0 -3px 0 rgba(0, 0, 0, 0.1),
@@ -391,7 +467,7 @@ body.theme-dark.match3-page {
             0 0 18px var(--tile-glow, rgba(255, 255, 255, 0.14));
     }
 
-    .tile:hover .tile-emoji {
+    .tile:not(.is-frozen):hover .tile-emoji {
         transform: scale(1.08);
     }
 }
@@ -454,6 +530,63 @@ body.theme-dark.match3-page {
 
 .tile.is-wild .tile-face {
     animation: m3WildPulse 2.1s ease-in-out infinite;
+}
+
+/* 被雪冻住的方块：不能交换，也不参与下落 */
+.tile.is-frozen {
+    cursor: not-allowed;
+}
+
+.tile.is-frozen .tile-face {
+    border-color: #e8fbff;
+    box-shadow:
+        inset 0 -4px 0 rgba(33, 98, 130, 0.18),
+        inset 0 2px 0 rgba(255, 255, 255, 0.6),
+        0 4px 14px rgba(39, 136, 174, 0.32);
+}
+
+.tile.is-frozen .tile-emoji {
+    opacity: 0.76;
+    filter: saturate(0.55) brightness(1.06);
+}
+
+.tile-snow {
+    position: absolute;
+    inset: 2px;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(235, 252, 255, 0.88);
+    border-radius: 11px;
+    background:
+        linear-gradient(145deg, rgba(239, 253, 255, 0.68), rgba(150, 211, 237, 0.50)),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.30) 0 4px, transparent 4px 9px);
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.25),
+        inset 0 0 18px rgba(255, 255, 255, 0.48);
+    color: rgba(47, 131, 168, 0.8);
+    font-size: 1.15rem;
+    line-height: 1;
+    pointer-events: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.tile-snow::after {
+    content: '❄';
+    font-size: 0.95em;
+}
+
+.tile.is-snow-clearing .tile-snow {
+    animation: m3SnowBreak 0.38s ease-out forwards;
+}
+
+.tile.is-hammered .tile-face {
+    animation: m3HammerHit 0.32s ease-in forwards;
+}
+
+.tile.is-tool-flash .tile-face {
+    animation: m3ToolFlash 0.45s ease-out;
 }
 
 .tile.is-detonating {
@@ -689,6 +822,118 @@ body.theme-dark.match3-page {
     background:
         linear-gradient(135deg, rgba(124, 58, 237, 0.1), transparent 70%),
         var(--m3-card);
+}
+
+.match3-shop {
+    background:
+        linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(236, 72, 153, 0.06)),
+        var(--m3-card);
+}
+
+.shop-note {
+    margin: 0 0 9px;
+    color: var(--m3-muted);
+    font-size: 0.65rem;
+    line-height: 1.6;
+}
+
+.tool-list {
+    display: grid;
+    gap: 6px;
+}
+
+.tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 7px;
+    color: var(--m3-ink);
+    background: var(--m3-card);
+    border: 1px solid var(--m3-border);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.tool-btn:hover:not(:disabled) {
+    border-color: var(--m3-purple);
+    transform: translateY(-1px);
+}
+
+.tool-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+}
+
+.tool-btn.is-active {
+    background: rgba(251, 191, 36, 0.14);
+    border-color: #fbbf24;
+}
+
+.tool-icon {
+    flex: 0 0 25px;
+    width: 25px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.tool-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.tool-copy strong {
+    display: block;
+    font-size: 0.7rem;
+}
+
+.tool-copy small {
+    display: block;
+    overflow: hidden;
+    color: var(--m3-muted);
+    font-size: 0.56rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tool-cost {
+    flex: 0 0 auto;
+    color: var(--m3-pink);
+    font-size: 0.56rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.tool-cancel {
+    width: 100%;
+    margin-top: 7px;
+    padding: 6px;
+    color: var(--m3-muted);
+    background: transparent;
+    border: 1px dashed var(--m3-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.62rem;
+}
+
+.tool-cancel:hover {
+    color: var(--m3-pink);
+    border-color: var(--m3-pink);
+}
+
+.tool-status {
+    margin: 7px 0 0;
+    color: var(--m3-muted);
+    font-size: 0.6rem;
+    line-height: 1.5;
+}
+
+.tool-status.is-targeting {
+    color: #a16207;
+    font-weight: 700;
 }
 
 .match3-toast {
@@ -953,6 +1198,24 @@ body.theme-dark.match3-page {
     100% { transform: rotateY(0) scale(1); }
 }
 
+@keyframes m3SnowBreak {
+    0% { opacity: 1; transform: scale(1); }
+    45% { opacity: 1; transform: scale(1.16) rotate(5deg); }
+    100% { opacity: 0; transform: scale(0.15) rotate(-18deg); }
+}
+
+@keyframes m3HammerHit {
+    0% { transform: scale(1) rotate(0); }
+    40% { transform: scale(1.18, 0.78) rotate(-6deg); filter: brightness(1.7); }
+    100% { transform: scale(0) rotate(22deg); opacity: 0; }
+}
+
+@keyframes m3ToolFlash {
+    0% { transform: scale(0.7); filter: brightness(1.9); opacity: 0; }
+    45% { transform: scale(1.12); filter: brightness(1.3); opacity: 1; }
+    100% { transform: scale(1); filter: brightness(1); opacity: 1; }
+}
+
 @keyframes m3BoardShake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-5px) rotate(-0.5deg); }
@@ -1046,6 +1309,16 @@ body.theme-dark.match3-page {
         border-radius: 18px;
     }
 
+    .match3-mission {
+        padding: 9px 10px;
+    }
+
+    .match3-mission-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+
     .match3-hud {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 7px;
@@ -1071,6 +1344,12 @@ body.theme-dark.match3-page {
     .tile-face {
         inset: 2px;
         border-radius: 10px;
+    }
+
+    .tile-snow {
+        inset: 2px;
+        border-radius: 9px;
+        font-size: 0.9rem;
     }
 
     .match3-fx {
@@ -1117,6 +1396,9 @@ body.theme-dark.match3-page {
     .tile.is-detonating .tile-face,
     .tile.is-forming .tile-face,
     .tile.is-special-forming .tile-face,
+    .tile.is-snow-clearing .tile-snow,
+    .tile.is-hammered .tile-face,
+    .tile.is-tool-flash .tile-face,
     .fx-score,
     .fx-combo,
     .fx-particle,

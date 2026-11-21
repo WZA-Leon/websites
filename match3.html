@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Emoji 消消乐：拖动或点击交换相邻 emoji，三个或以上连成一线消除。限步轮次挑战，上一轮得分越高，下一轮步数越多。">
-    <title>Emoji 消消乐 · 步数挑战 · WZA Arcade</title>
+    <meta name="description" content="Emoji 消消乐：在有限步数内达到目标分数，或敲碎足够的雪块。冻住的方块不能交换。">
+    <title>Emoji 消消乐 · 目标关卡 · WZA Arcade</title>
     <link rel="icon" href="images/photo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/page-loader.css">
     <script src="js/page-loader.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="css/match3.css">
+    <link rel="stylesheet" href="css/match3.css?v=20261121-3">
 </head>
 <body class="match3-page">
     <div id="nav-placeholder"></div>
@@ -22,14 +22,14 @@
                     <i class="fas fa-arrow-left" aria-hidden="true"></i>
                     <span>游戏大厅</span>
                 </a>
-                <span class="match3-mode"><i class="fas fa-layer-group" aria-hidden="true"></i> 第 <strong id="roundValue">1</strong> 轮 · 限步</span>
+                <span class="match3-mode" id="modeLabel"><i class="fas fa-layer-group" aria-hidden="true"></i> 第 <strong id="roundValue">1</strong> 关 · 得分目标</span>
             </div>
 
             <header class="match3-head">
                 <div>
                     <p class="match3-kicker">WZA ARCADE · MATCH 3</p>
                     <h1>Emoji 消消乐</h1>
-                    <p class="match3-lead">拖动或点击交换相邻的 emoji，让三个或以上连成一线。四连会生成 ❓ 万能块，五连会生成 💣 炸弹块；每轮有步数限制，上一轮得分越高，下一轮步数和开局特殊方块越多。</p>
+                    <p class="match3-lead">在有限步数内达到分数目标，或敲碎足够的雪块。被雪冻住的方块不能交换。四连生成 ❓ 万能块，五连生成 💣 炸弹块；也可以花 1000 分购买道具打开局面。</p>
                 </div>
                 <div class="match3-actions">
                     <button type="button" class="match3-icon-btn" id="soundToggle" aria-pressed="false" aria-label="音效开关" title="音效占位（待接入音频）">🔇</button>
@@ -41,6 +41,18 @@
 
             <div class="match3-layout">
                 <section class="match3-stage">
+                    <div class="match3-mission" id="missionPanel">
+                        <div class="match3-mission-top">
+                            <span class="match3-mission-type" id="missionType">得分目标</span>
+                            <strong id="missionText">达到 1,200 分</strong>
+                        </div>
+                        <div class="match3-mission-bar"><span id="missionFill"></span></div>
+                        <div class="match3-mission-meta">
+                            <span id="missionProgress">0 / 1,200</span>
+                            <span id="missionHint">剩余步数内完成</span>
+                        </div>
+                    </div>
+
                     <div class="match3-hud">
                         <div class="hud-item">
                             <span>得分</span>
@@ -66,27 +78,23 @@
 
                         <div class="match3-round" id="roundOverlay" hidden>
                             <div class="match3-round-card">
-                                <p class="match3-round-kicker">ROUND COMPLETE</p>
-                                <h2>第 <span id="roundEndNumber">1</span> 轮结束</h2>
-                                <p class="match3-round-copy">上一轮得分越高，下一轮步数和开局特殊方块越多：步数每 250 分 +1，最多 40 步。</p>
+                                <p class="match3-round-kicker" id="roundKicker">LEVEL COMPLETE</p>
+                                <h2 id="roundTitle">第 1 关完成</h2>
+                                <p class="match3-round-copy" id="roundCopy">目标完成，下一关继续。</p>
                                 <div class="match3-round-stats">
-                                    <div><span>本轮得分</span><strong id="roundEndScore">0</strong></div>
-                                    <div><span>总分</span><strong id="roundEndTotal">0</strong></div>
+                                    <div><span>本关得分</span><strong id="roundEndScore">0</strong></div>
+                                    <div><span>雪块清除</span><strong id="roundEndSnow">0</strong></div>
                                 </div>
                                 <div class="match3-next-moves">
-                                    <span>下一轮</span>
-                                    <strong id="roundNextMoves">20</strong>
-                                    <small>步</small>
+                                    <span id="roundNextLabel">下一关目标</span>
+                                    <strong id="roundNextTarget">1,200</strong>
+                                    <small id="roundNextUnit">分</small>
                                 </div>
                                 <div class="match3-round-bonus">
-                                    <span>下一轮开局</span>
-                                    <strong id="roundBonusSpecials">❓×1</strong>
+                                    <span>下一关步数</span>
+                                    <strong id="roundNextMoves">20 步</strong>
                                 </div>
-                                <div class="match3-round-reward">
-                                    <span>WZA 的奖励</span>
-                                    <strong id="roundReward">下一轮也拜托了。</strong>
-                                </div>
-                                <button type="button" class="match3-next-round" id="nextRoundBtn">开始第 2 轮</button>
+                                <button type="button" class="match3-next-round" id="nextRoundBtn">下一关</button>
                             </div>
                         </div>
                     </div>
@@ -101,30 +109,49 @@
                     <section class="side-card">
                         <h2><i class="fas fa-circle-info" aria-hidden="true"></i> 怎么玩</h2>
                         <ul class="side-list">
-                            <li>拖动一个 emoji 到相邻格，或者点选两个相邻 emoji 交换。</li>
-                            <li>三个或以上同款连成横线或竖线，就会消除。</li>
-                            <li>一次消除后掉下来的新组合会继续连锁，连击越高分越多。</li>
-                            <li>四连生成 ❓ 万能块；它能替代任意元素参与横竖三连。</li>
-                            <li>五连生成 💣 炸弹块；和任意相邻方块交换后炸开 3×3 区域。</li>
-                            <li>新生成的 ❓ 如果没凑成三连，会随机消除旁边一个元素。</li>
-                            <li>每轮步数用完后结算，下一轮步数和开局特殊方块由本轮得分决定。</li>
-                            <li>没有可消除的组合时会自动洗牌，不会卡死。</li>
+                            <li>拖动或点选两个相邻 emoji 交换，三个或以上同款连成线就会消除。</li>
+                            <li>每关有步数限制：达到目标分数，或消除目标数量的雪块即可过关。</li>
+                            <li>被雪冻住的方块不能拖动或交换，但可以参与连线；被消除时雪块也会碎掉。</li>
+                            <li>四连生成 ❓ 万能块，五连生成 💣 炸弹块；炸弹可炸开周围区域。</li>
+                            <li>连锁会继续计分，连击越高单次消除得分越高。</li>
+                            <li>道具商店花 1000 分购买锤子、炸弹改造或随机改造，不消耗步数。</li>
+                            <li>没有可消除组合时会自动洗牌，不会卡死。</li>
                         </ul>
                     </section>
 
                     <section class="side-card">
                         <h2><i class="fas fa-chart-simple" aria-hidden="true"></i> 本次进度</h2>
                         <div class="side-stats">
-                            <div class="is-wide"><span>本轮得分</span><strong id="roundScoreValue">0</strong></div>
+                            <div class="is-wide"><span>本关得分</span><strong id="roundScoreValue">0</strong></div>
+                            <div><span>雪块清除</span><strong id="roundSnowValue">0</strong></div>
                             <div><span>已消除</span><strong id="clearedValue">0</strong></div>
                             <div><span>最高连击</span><strong id="maxComboValue">x1</strong></div>
                         </div>
-                        <p class="side-note">最高分、轮次和当前棋盘的进度会保存在这台设备的浏览器里，刷新或下次打开可以接着玩。</p>
+                        <p class="side-note">关卡、棋盘、雪块和最高分都会保存在这台设备的浏览器里，刷新或下次打开可以接着玩。</p>
                     </section>
 
-                    <section class="side-card side-card--sfx">
-                        <h2><i class="fas fa-volume-low" aria-hidden="true"></i> 音效</h2>
-                        <p>音效接口已经预留，接入音频文件后即可生效。现在可以先玩，声音按钮会记住你的开关偏好。</p>
+                    <section class="side-card match3-shop">
+                        <h2><i class="fas fa-toolbox" aria-hidden="true"></i> 道具商店</h2>
+                        <p class="shop-note">每件 1000 分，购买后点击任意方块使用。</p>
+                        <div class="tool-list">
+                            <button type="button" class="tool-btn" data-tool="hammer">
+                                <span class="tool-icon">🔨</span>
+                                <span class="tool-copy"><strong>锤子</strong><small>敲掉任意一个方块</small></span>
+                                <span class="tool-cost">1000 分</span>
+                            </button>
+                            <button type="button" class="tool-btn" data-tool="bomb">
+                                <span class="tool-icon">💣</span>
+                                <span class="tool-copy"><strong>炸弹改造</strong><small>把任意方块变成炸弹</small></span>
+                                <span class="tool-cost">1000 分</span>
+                            </button>
+                            <button type="button" class="tool-btn" data-tool="random">
+                                <span class="tool-icon">🎲</span>
+                                <span class="tool-copy"><strong>随机改造</strong><small>把任意方块变成随机方块</small></span>
+                                <span class="tool-cost">1000 分</span>
+                            </button>
+                        </div>
+                        <button type="button" class="tool-cancel" id="cancelToolBtn" hidden>取消当前道具</button>
+                        <p class="tool-status" id="toolStatus">选中道具后，再点棋盘上的方块。</p>
                     </section>
                 </aside>
             </div>
@@ -136,6 +163,6 @@
 
     <script src="script.js"></script>
     <script src="js/match3-sfx.js"></script>
-    <script src="js/match3.js"></script>
+    <script src="js/match3.js?v=20261121-3"></script>
 </body>
 </html>
